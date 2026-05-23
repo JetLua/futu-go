@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"encoding/binary"
+	"fmt"
 	"futu/pb"
-	"io"
-	"log"
 	"net"
+	"sync"
+	"sync/atomic"
 	"time"
 
 	"google.golang.org/protobuf/proto"
@@ -18,6 +19,7 @@ type Config struct {
 }
 
 type Futu struct {
+	mu     sync.RWMutex
 	uid    uint64
 	c      net.Conn
 	end    chan struct{}
@@ -29,6 +31,7 @@ type Futu struct {
 	err    chan error
 	msgFns []func(any)
 	errFns []func(error)
+	Order  *Order
 }
 
 func New(cfg Config) (*Futu, error) {
@@ -44,7 +47,7 @@ func New(cfg Config) (*Futu, error) {
 
 	f := &Futu{
 		c:      c,
-		n:      1,
+		n:      0,
 		rsa:    rsa,
 		end:    make(chan struct{}),
 		err:    make(chan error),
@@ -52,6 +55,8 @@ func New(cfg Config) (*Futu, error) {
 		msgFns: make([]func(any), 0),
 		errFns: make([]func(error), 0),
 	}
+
+	f.Order = &Order{futu: f}
 
 	go f.loop()
 
@@ -129,8 +134,7 @@ func (f *Futu) ping(t time.Duration) {
 封包协议
 */
 func (f *Futu) pack(id uint32, raw []byte) ([]byte, error) {
-	n := f.n
-	f.n += 1
+	n := atomic.AddUint32(&f.n, 1)
 	hash := sha1.Sum(raw)
 	if id == ID.Init {
 		raw = f.rsa.Encrypt(raw)
@@ -150,10 +154,15 @@ func (f *Futu) pack(id uint32, raw []byte) ([]byte, error) {
 	binary.LittleEndian.PutUint32(header[12:], uint32(l))
 	copy(header[16:], hash[:])
 
-	c := chanPool.Get().(chan []byte)
-	defer chanPool.Put(c)
+	c := make(chan []byte)
+	f.mu.Lock()
 	f.tasks[n] = c
-	defer delete(f.tasks, n)
+	f.mu.Unlock()
+	defer func() {
+		f.mu.Lock()
+		delete(f.tasks, n)
+		f.mu.Unlock()
+	}()
 
 	_, err := f.c.Write(header)
 	if err != nil {
@@ -174,7 +183,7 @@ func (f *Futu) loop() {
 	for {
 		n, err := f.c.Read(data)
 		if err != nil {
-			log.Println(err)
+			f.emit(err)
 			f.end <- struct{}{}
 			break
 		}
@@ -219,32 +228,26 @@ func (f *Futu) emit(raw any) {
 	switch v := raw.(type) {
 	case error:
 		for _, fn := range f.errFns {
-			fn(v)
+			go fn(v)
 		}
 	default:
 		for _, fn := range f.msgFns {
-			fn(v)
+			go fn(v)
 		}
 	}
 }
 
 func (f *Futu) handle() {
-	data, err := io.ReadAll(&f.pool)
-	if err != nil {
-		f.emit(err)
-		return
-	}
-
 	for {
+		data := f.pool.Bytes()
 		size := len(data)
 		// 数据长度小于协议头
 		if size < 44 {
-			f.pool.Write(data)
 			return
 		}
 
 		if string(data[:2]) != "FT" {
-			log.Println("协议解析失败")
+			f.emit(fmt.Errorf("协议解析失败"))
 			return
 		}
 
@@ -253,43 +256,52 @@ func (f *Futu) handle() {
 
 		// 数据不够放弃解析
 		if size < total {
-			f.pool.Write(data)
 			return
 		}
 
-		id := binary.LittleEndian.Uint32(data[2:6])
-		n := binary.LittleEndian.Uint32(data[8:12])
+		packet := make([]byte, total)
+		m, err := f.pool.Read(packet)
+		if err != nil || m != total {
+			f.emit(fmt.Errorf("pool: 读取数据失败"))
+			return
+		}
+
+		id := binary.LittleEndian.Uint32(packet[2:6])
+		n := binary.LittleEndian.Uint32(packet[8:12])
 
 		var body []byte
-		body = data[44:total]
+		body = packet[44:total]
 		if id == ID.Init {
 			body = f.rsa.Decrypt(body)
 		} else {
 			body = f.aes.Decrypt(body)
 		}
 		// 关联任务
-		task := f.tasks[n]
+		f.mu.Lock()
+		task, ok := f.tasks[n]
+		if ok {
+			// 避免重复处理
+			delete(f.tasks, n)
+		}
+		f.mu.Unlock()
 
-		if task != nil {
+		if ok {
 			task <- body
-		}
-
-		switch id {
-		case ID.NotifyOrder:
-			r1 := &pb.NotifyOrder{}
-			err := proto.Unmarshal(body, r1)
-			if err != nil {
-				f.emit(err)
-			} else {
-				log.Println(id)
-				f.emit(r1)
-			}
-		}
-
-		if size > total {
-			data = data[total:]
+			// 或许应该这样
+			// select { case task <- body: default: }
 		} else {
-			return
+			switch id {
+			case ID.NotifyOrder:
+				r1 := &pb.NotifyOrder{}
+				err := proto.Unmarshal(body, r1)
+				if err != nil {
+					f.emit(fmt.Errorf("%w", err))
+				} else {
+					f.emit(r1)
+				}
+			default:
+				// todo: 返回原始数据
+			}
 		}
 	}
 }

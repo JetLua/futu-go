@@ -8,9 +8,3 @@ var headerPool = sync.Pool{
 		return &b
 	},
 }
-
-var chanPool = sync.Pool{
-	New: func() any {
-		return make(chan []byte)
-	},
-}
