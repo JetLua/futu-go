@@ -5,6 +5,7 @@ import (
 	"crypto/sha1"
 	"encoding/binary"
 	"futu/pb"
+	"io"
 	"log"
 	"net"
 	"time"
@@ -17,14 +18,17 @@ type Config struct {
 }
 
 type Futu struct {
-	uid   uint64
-	c     net.Conn
-	end   chan struct{}
-	n     uint32
-	rsa   *RSA
-	aes   *AES
-	pool  bytes.Buffer
-	tasks map[uint32]chan []byte
+	uid    uint64
+	c      net.Conn
+	end    chan struct{}
+	n      uint32
+	rsa    *RSA
+	aes    *AES
+	pool   bytes.Buffer
+	tasks  map[uint32]chan []byte
+	err    chan error
+	msgFns []func(any)
+	errFns []func(error)
 }
 
 func New(cfg Config) (*Futu, error) {
@@ -39,11 +43,14 @@ func New(cfg Config) (*Futu, error) {
 	}
 
 	f := &Futu{
-		c:     c,
-		n:     1,
-		rsa:   rsa,
-		end:   make(chan struct{}),
-		tasks: make(map[uint32]chan []byte, 10),
+		c:      c,
+		n:      1,
+		rsa:    rsa,
+		end:    make(chan struct{}),
+		err:    make(chan error),
+		tasks:  make(map[uint32]chan []byte, 10),
+		msgFns: make([]func(any), 0),
+		errFns: make([]func(error), 0),
 	}
 
 	go f.loop()
@@ -95,28 +102,26 @@ func (f *Futu) ping(t time.Duration) {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		log.Println("ticker")
 		r1, err := proto.Marshal(&pb.Ping{
 			C2S: &pb.Ping_C2S{
 				Time: time.Now().Unix(),
 			},
 		})
 		if err != nil {
-			log.Println(err)
+			f.emit(err)
 			continue
 		}
 		r2, err := f.pack(ID.Ping, r1)
 		if err != nil {
-			log.Println(err)
+			f.emit(err)
 			continue
 		}
 		r3 := &pb.Pong{}
 		err = proto.Unmarshal(r2, r3)
 		if err != nil {
-			log.Println(err)
+			f.emit(err)
 			continue
 		}
-		log.Printf("%v\n", r3)
 	}
 }
 
@@ -137,6 +142,7 @@ func (f *Futu) pack(id uint32, raw []byte) ([]byte, error) {
 	defer headerPool.Put(p)
 
 	header := *p
+	clear(header)
 
 	copy(header[0:], "FT")
 	binary.LittleEndian.PutUint32(header[2:], id)
@@ -177,13 +183,62 @@ func (f *Futu) loop() {
 	}
 }
 
+func (f *Futu) SubAccPush(ids []uint64) (*pb.SubAccPushRes, error) {
+	r1, err := proto.Marshal(&pb.SubAccPushReq{
+		C2S: &pb.SubAccPushReq_C2S{
+			AccIDList: ids,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	r2, err := f.pack(ID.SubAccPush, r1)
+	if err != nil {
+		return nil, err
+	}
+
+	r3 := &pb.SubAccPushRes{}
+	err = proto.Unmarshal(r2, r3)
+	if err != nil {
+		return nil, err
+	}
+
+	return r3, nil
+}
+
+func (f *Futu) OnMsg(fn func(msg any)) {
+	f.msgFns = append(f.msgFns, fn)
+}
+
+func (f *Futu) OnErr(fn func(err error)) {
+	f.errFns = append(f.errFns, fn)
+}
+
+func (f *Futu) emit(raw any) {
+	switch v := raw.(type) {
+	case error:
+		for _, fn := range f.errFns {
+			fn(v)
+		}
+	default:
+		for _, fn := range f.msgFns {
+			fn(v)
+		}
+	}
+}
+
 func (f *Futu) handle() {
-	data := f.pool.Bytes()
+	data, err := io.ReadAll(&f.pool)
+	if err != nil {
+		f.emit(err)
+		return
+	}
+
 	for {
 		size := len(data)
 		// 数据长度小于协议头
 		if size < 44 {
-			f.pool.Reset()
 			f.pool.Write(data)
 			return
 		}
@@ -196,8 +251,8 @@ func (f *Futu) handle() {
 		l := int(binary.LittleEndian.Uint32(data[12:16]))
 		total := 44 + l
 
+		// 数据不够放弃解析
 		if size < total {
-			f.pool.Reset()
 			f.pool.Write(data)
 			return
 		}
@@ -205,17 +260,29 @@ func (f *Futu) handle() {
 		id := binary.LittleEndian.Uint32(data[2:6])
 		n := binary.LittleEndian.Uint32(data[8:12])
 
+		var body []byte
+		body = data[44:total]
+		if id == ID.Init {
+			body = f.rsa.Decrypt(body)
+		} else {
+			body = f.aes.Decrypt(body)
+		}
+		// 关联任务
 		task := f.tasks[n]
-		// 没有关联任务
+
 		if task != nil {
-			r := data[44:total]
-			log.Printf("n: %d\nid: %d\n", n, id)
-			if id == ID.Init {
-				r = f.rsa.Decrypt(r)
-				task <- r
+			task <- body
+		}
+
+		switch id {
+		case ID.NotifyOrder:
+			r1 := &pb.NotifyOrder{}
+			err := proto.Unmarshal(body, r1)
+			if err != nil {
+				f.emit(err)
 			} else {
-				r = f.aes.Decrypt(r)
-				task <- r
+				log.Println(id)
+				f.emit(r1)
 			}
 		}
 

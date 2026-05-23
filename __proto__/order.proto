@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+import "common.proto";
+
+option go_package = "futu/pb";
+
+/**订单费用请求*/
+message FeeReq {
+  message C2S {
+    common.TrdHeader header = 1; //交易公共参数头
+    repeated string orderIdExList = 2; // 服务器订单ID
+  }
+  C2S c2s = 1;
+}
+
+/**订单费用响应*/
+message FeeRes {
+  message S2C {
+    common.TrdHeader header = 1; //交易公共参数头
+    repeated common.OrderFee orderFeeList = 2; //订单费用列表
+  }
+  //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
+  int32 retType = 1;
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+
+  optional S2C s2c = 4;
+}
+
+/** 订单推送 */
+message NotifyOrder {
+  message S2C {
+    common.TrdHeader header = 1; //交易公共参数头
+    common.Order order = 2; //订单结构
+  }
+  //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
+  int32 retType = 1;
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}
