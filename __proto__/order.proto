@@ -39,3 +39,17 @@ message NotifyOrder {
   optional int32 errCode = 3;
   optional S2C s2c = 4;
 }
+
+/** 成交订单 */
+message NotifyOrderFill {
+  message S2C {
+    common.TrdHeader header = 1; //交易公共参数头
+    common.OrderFill order = 2; //成交结构
+  }
+  //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
+  int32 retType = 1;
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+
+  optional S2C s2c = 4;
+}

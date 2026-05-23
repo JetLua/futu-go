@@ -206,6 +206,76 @@ func (x *NotifyOrder) GetS2C() *NotifyOrder_S2C {
 	return nil
 }
 
+// * 成交订单
+type NotifyOrderFill struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
+	RetType       int32                `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"`
+	RetMsg        *string              `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
+	ErrCode       *int32               `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
+	S2C           *NotifyOrderFill_S2C `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NotifyOrderFill) Reset() {
+	*x = NotifyOrderFill{}
+	mi := &file_order_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NotifyOrderFill) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NotifyOrderFill) ProtoMessage() {}
+
+func (x *NotifyOrderFill) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NotifyOrderFill.ProtoReflect.Descriptor instead.
+func (*NotifyOrderFill) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *NotifyOrderFill) GetRetType() int32 {
+	if x != nil {
+		return x.RetType
+	}
+	return 0
+}
+
+func (x *NotifyOrderFill) GetRetMsg() string {
+	if x != nil && x.RetMsg != nil {
+		return *x.RetMsg
+	}
+	return ""
+}
+
+func (x *NotifyOrderFill) GetErrCode() int32 {
+	if x != nil && x.ErrCode != nil {
+		return *x.ErrCode
+	}
+	return 0
+}
+
+func (x *NotifyOrderFill) GetS2C() *NotifyOrderFill_S2C {
+	if x != nil {
+		return x.S2C
+	}
+	return nil
+}
+
 type FeeReq_C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Header        *TrdHeader             `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`               //交易公共参数头
@@ -216,7 +286,7 @@ type FeeReq_C2S struct {
 
 func (x *FeeReq_C2S) Reset() {
 	*x = FeeReq_C2S{}
-	mi := &file_order_proto_msgTypes[3]
+	mi := &file_order_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -228,7 +298,7 @@ func (x *FeeReq_C2S) String() string {
 func (*FeeReq_C2S) ProtoMessage() {}
 
 func (x *FeeReq_C2S) ProtoReflect() protoreflect.Message {
-	mi := &file_order_proto_msgTypes[3]
+	mi := &file_order_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -268,7 +338,7 @@ type FeeRes_S2C struct {
 
 func (x *FeeRes_S2C) Reset() {
 	*x = FeeRes_S2C{}
-	mi := &file_order_proto_msgTypes[4]
+	mi := &file_order_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -280,7 +350,7 @@ func (x *FeeRes_S2C) String() string {
 func (*FeeRes_S2C) ProtoMessage() {}
 
 func (x *FeeRes_S2C) ProtoReflect() protoreflect.Message {
-	mi := &file_order_proto_msgTypes[4]
+	mi := &file_order_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -320,7 +390,7 @@ type NotifyOrder_S2C struct {
 
 func (x *NotifyOrder_S2C) Reset() {
 	*x = NotifyOrder_S2C{}
-	mi := &file_order_proto_msgTypes[5]
+	mi := &file_order_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -332,7 +402,7 @@ func (x *NotifyOrder_S2C) String() string {
 func (*NotifyOrder_S2C) ProtoMessage() {}
 
 func (x *NotifyOrder_S2C) ProtoReflect() protoreflect.Message {
-	mi := &file_order_proto_msgTypes[5]
+	mi := &file_order_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -356,6 +426,58 @@ func (x *NotifyOrder_S2C) GetHeader() *TrdHeader {
 }
 
 func (x *NotifyOrder_S2C) GetOrder() *Order {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
+type NotifyOrderFill_S2C struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Header        *TrdHeader             `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"` //交易公共参数头
+	Order         *OrderFill             `protobuf:"bytes,2,opt,name=order,proto3" json:"order,omitempty"`   //成交结构
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NotifyOrderFill_S2C) Reset() {
+	*x = NotifyOrderFill_S2C{}
+	mi := &file_order_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NotifyOrderFill_S2C) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NotifyOrderFill_S2C) ProtoMessage() {}
+
+func (x *NotifyOrderFill_S2C) ProtoReflect() protoreflect.Message {
+	mi := &file_order_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NotifyOrderFill_S2C.ProtoReflect.Descriptor instead.
+func (*NotifyOrderFill_S2C) Descriptor() ([]byte, []int) {
+	return file_order_proto_rawDescGZIP(), []int{3, 0}
+}
+
+func (x *NotifyOrderFill_S2C) GetHeader() *TrdHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
+}
+
+func (x *NotifyOrderFill_S2C) GetOrder() *OrderFill {
 	if x != nil {
 		return x.Order
 	}
@@ -395,6 +517,18 @@ const file_order_proto_rawDesc = "" +
 	"\a_retMsgB\n" +
 	"\n" +
 	"\b_errCodeB\x06\n" +
+	"\x04_s2c\"\x8e\x02\n" +
+	"\x0fNotifyOrderFill\x12\x18\n" +
+	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
+	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12+\n" +
+	"\x03s2c\x18\x04 \x01(\v2\x14.NotifyOrderFill.S2CH\x02R\x03s2c\x88\x01\x01\x1aY\n" +
+	"\x03S2C\x12)\n" +
+	"\x06header\x18\x01 \x01(\v2\x11.common.TrdHeaderR\x06header\x12'\n" +
+	"\x05order\x18\x02 \x01(\v2\x11.common.OrderFillR\x05orderB\t\n" +
+	"\a_retMsgB\n" +
+	"\n" +
+	"\b_errCodeB\x06\n" +
 	"\x04_s2cB\tZ\afutu/pbb\x06proto3"
 
 var (
@@ -409,32 +543,38 @@ func file_order_proto_rawDescGZIP() []byte {
 	return file_order_proto_rawDescData
 }
 
-var file_order_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_order_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_order_proto_goTypes = []any{
-	(*FeeReq)(nil),          // 0: FeeReq
-	(*FeeRes)(nil),          // 1: FeeRes
-	(*NotifyOrder)(nil),     // 2: NotifyOrder
-	(*FeeReq_C2S)(nil),      // 3: FeeReq.C2S
-	(*FeeRes_S2C)(nil),      // 4: FeeRes.S2C
-	(*NotifyOrder_S2C)(nil), // 5: NotifyOrder.S2C
-	(*TrdHeader)(nil),       // 6: common.TrdHeader
-	(*OrderFee)(nil),        // 7: common.OrderFee
-	(*Order)(nil),           // 8: common.Order
+	(*FeeReq)(nil),              // 0: FeeReq
+	(*FeeRes)(nil),              // 1: FeeRes
+	(*NotifyOrder)(nil),         // 2: NotifyOrder
+	(*NotifyOrderFill)(nil),     // 3: NotifyOrderFill
+	(*FeeReq_C2S)(nil),          // 4: FeeReq.C2S
+	(*FeeRes_S2C)(nil),          // 5: FeeRes.S2C
+	(*NotifyOrder_S2C)(nil),     // 6: NotifyOrder.S2C
+	(*NotifyOrderFill_S2C)(nil), // 7: NotifyOrderFill.S2C
+	(*TrdHeader)(nil),           // 8: common.TrdHeader
+	(*OrderFee)(nil),            // 9: common.OrderFee
+	(*Order)(nil),               // 10: common.Order
+	(*OrderFill)(nil),           // 11: common.OrderFill
 }
 var file_order_proto_depIdxs = []int32{
-	3, // 0: FeeReq.c2s:type_name -> FeeReq.C2S
-	4, // 1: FeeRes.s2c:type_name -> FeeRes.S2C
-	5, // 2: NotifyOrder.s2c:type_name -> NotifyOrder.S2C
-	6, // 3: FeeReq.C2S.header:type_name -> common.TrdHeader
-	6, // 4: FeeRes.S2C.header:type_name -> common.TrdHeader
-	7, // 5: FeeRes.S2C.orderFeeList:type_name -> common.OrderFee
-	6, // 6: NotifyOrder.S2C.header:type_name -> common.TrdHeader
-	8, // 7: NotifyOrder.S2C.order:type_name -> common.Order
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	4,  // 0: FeeReq.c2s:type_name -> FeeReq.C2S
+	5,  // 1: FeeRes.s2c:type_name -> FeeRes.S2C
+	6,  // 2: NotifyOrder.s2c:type_name -> NotifyOrder.S2C
+	7,  // 3: NotifyOrderFill.s2c:type_name -> NotifyOrderFill.S2C
+	8,  // 4: FeeReq.C2S.header:type_name -> common.TrdHeader
+	8,  // 5: FeeRes.S2C.header:type_name -> common.TrdHeader
+	9,  // 6: FeeRes.S2C.orderFeeList:type_name -> common.OrderFee
+	8,  // 7: NotifyOrder.S2C.header:type_name -> common.TrdHeader
+	10, // 8: NotifyOrder.S2C.order:type_name -> common.Order
+	8,  // 9: NotifyOrderFill.S2C.header:type_name -> common.TrdHeader
+	11, // 10: NotifyOrderFill.S2C.order:type_name -> common.OrderFill
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_order_proto_init() }
@@ -445,13 +585,14 @@ func file_order_proto_init() {
 	file_common_proto_init()
 	file_order_proto_msgTypes[1].OneofWrappers = []any{}
 	file_order_proto_msgTypes[2].OneofWrappers = []any{}
+	file_order_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_order_proto_rawDesc), len(file_order_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

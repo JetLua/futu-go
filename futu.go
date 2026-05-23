@@ -299,6 +299,14 @@ func (f *Futu) handle() {
 				} else {
 					f.emit(r1)
 				}
+			case ID.NotifyOrderFill:
+				r1 := &pb.NotifyOrderFill{}
+				err := proto.Unmarshal(body, r1)
+				if err != nil {
+					f.emit(fmt.Errorf("%w", err))
+				} else {
+					f.emit(r1)
+				}
 			default:
 				// todo: 返回原始数据
 			}
