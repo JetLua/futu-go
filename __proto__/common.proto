@@ -1,0 +1,821 @@
+syntax = "proto3";
+
+option go_package = "futu/pb";
+
+enum PeriodType {
+  PeriodType_INTRADAY = 0; //实时
+  PeriodType_DAY = 1; //日
+  PeriodType_WEEK = 2; //周
+  PeriodType_MONTH = 3; //月
+}
+
+/** 美股支持盘前盘后数据
+
+  科创板仅支持盘后数据：成交量，成交额
+*/
+message PreAfterMarketData {
+  optional double price = 1;  // 盘前或盘后 - 价格
+  optional double highPrice = 2;  // 盘前或盘后 - 最高价
+  optional double lowPrice = 3;  // 盘前或盘后 - 最低价
+  optional int64 volume = 4;  // 盘前或盘后 - 成交量
+  optional double turnover = 5;  // 盘前或盘后 - 成交额
+  optional double changeVal = 6;  // 盘前或盘后 - 涨跌额
+  optional double changeRate = 7;  // 盘前或盘后 - 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+  optional double amplitude = 8;  // 盘前或盘后 - 振幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+}
+
+/** 订阅详情 */
+message SubInfo {
+  SubType subType = 1;  //Qot_Common.SubType,订阅类型
+  repeated Security securityList = 2; 	//订阅该类型行情的证券
+}
+
+/** 链接订阅信息 */
+message ConnSubInfo {
+  repeated SubInfo subInfoList = 1; //该连接订阅信息
+  int32 usedQuota = 2; //该连接已经使用的订阅额度
+  bool isOwnConnData = 3; //用于区分是否是自己连接的数据
+}
+
+enum TrdCategory {
+  TrdCategory_Unknown = 0; //未知品类
+  TrdCategory_Security = 1; //证券
+  TrdCategory_Future = 2; //期货
+}
+
+/** 系统通知类型*/
+enum NotifyType {
+	NotifyType_None = 0; //无
+	NotifyType_GtwEvent = 1; //OpenD运行事件通知
+	NotifyType_ProgramStatus = 2; //程序状态
+	NotifyType_ConnStatus = 3; //连接状态
+	NotifyType_QotRight = 4; //行情权限
+	NotifyType_APILevel = 5; //用户等级，已在2.10版本之后废弃
+	NotifyType_APIQuota = 6; //API额度
+	NotifyType_UsedQuota = 7; // 已使用额度
+}
+
+message TrdHeader {
+  TrdEnv trdEnv = 1; //交易环境, 参见 TrdEnv 的枚举定义
+  uint64 accID = 2; //业务账号, 业务账号与交易环境、市场权限需要匹配，否则会返回错误
+  TrdMarket trdMarket = 3; //交易市场, 参见 TrdMarket 的枚举定义
+}
+
+message TrdAcc {
+  TrdEnv trdEnv = 1; //交易环境，参见 TrdEnv 的枚举定义
+  uint64 accID = 2; //业务账号
+  repeated TrdMarket trdMarketAuthList = 3; //业务账户支持的交易市场权限，即此账户能交易那些市场, 可拥有多个交易市场权限，目前仅单个，取值参见 TrdMarket 的枚举定义
+  optional TrdAccType accType = 4;   //账户类型，取值见 TrdAccType
+  optional string cardNum = 5;  //卡号
+  optional SecurityFirm securityFirm = 6; //所属券商，取值见SecurityFirm
+  optional int32 simAccType = 7; //模拟交易账号类型，取值见SimAccType
+  optional string uniCardNum = 8;  //所属综合账户卡号
+  optional TrdAccStatus accStatus = 9; //账号状态，取值见TrdAccStatus
+}
+
+message Funds {
+  double power = 1; //最大购买力（此字段是按照 50% 的融资初始保证金率计算得到的 近似值。但事实上，每个标的的融资初始保证金率并不相同。我们建议您使用 查询最大可买可卖 接口返回的 最大可买 字段，来判断实际可买入的最大数量）
+  double totalAssets = 2; //资产净值
+  double cash = 3; //现金（仅单币种账户使用此字段，综合账户请使用 cashInfoList 获取分币种现金）
+  double marketVal = 4; //证券市值, 仅证券账户适用
+  double frozenCash = 5; //冻结资金
+  double debtCash = 6; //计息金额
+  double avlWithdrawalCash = 7; //现金可提（仅单币种账户使用此字段，综合账户请使用 cashInfoList 获取分币种现金可提）
+
+  optional Currency currency = 8;            //币种，本结构体资金相关的货币类型，取值参见 Currency，期货和综合证券账户适用
+  optional double availableFunds = 9;     //可用资金，期货适用
+  optional double unrealizedPL = 10;      //未实现盈亏，期货适用
+  optional double realizedPL = 11;        //已实现盈亏，期货适用
+  optional int32 riskLevel = 12;           //风控状态，参见 CltRiskLevel, 期货适用。建议统一使用 riskStatus 字段获取证券、期货账户的风险状态
+  optional double initialMargin = 13;      //初始保证金
+  optional double maintenanceMargin = 14;  //维持保证金
+  repeated AccCashInfo cashInfoList = 15;  //分币种的现金、现金可提和现金购买力（仅综合账户适用）
+  optional double maxPowerShort = 16; //卖空购买力（此字段是按照 60% 的融券保证金率计算得到的近似值。但事实上，每个标的的融券保证金率并不相同。我们建议您使用 查询最大可买可卖 接口返回的 可卖空 字段，来判断实际可卖空的最大数量。）
+  optional double netCashPower = 17;  //现金购买力（仅单币种账户使用此字段，综合账户请使用 cashInfoList 获取分币种现金购买力）
+  optional double longMv = 18;        //多头市值
+  optional double shortMv = 19;       //空头市值
+  optional double pendingAsset = 20;  //在途资产
+  optional double maxWithdrawal = 21;          //融资可提，仅证券账户适用
+  optional int32 riskStatus = 22;              //风险状态，参见 CltRiskStatus，共分 9 个等级，LEVEL1是最安全，LEVEL9是最危险
+  optional double marginCallMargin = 23;       //	Margin Call 保证金
+
+  optional bool isPdt = 24;				//是否PDT账户，仅moomoo证券(美国)账户适用
+  optional string pdtSeq = 25;			//剩余日内交易次数，仅被标记为 PDT 的moomoo证券(美国)账户适用
+  optional double beginningDTBP = 26;		//初始日内交易购买力，仅被标记为 PDT 的moomoo证券(美国)账户适用
+  optional double remainingDTBP = 27;		//剩余日内交易购买力，仅被标记为 PDT 的moomoo证券(美国)账户适用
+  optional double dtCallAmount = 28;		//日内交易待缴金额，仅被标记为 PDT 的moomoo证券(美国)账户适用
+  optional int32 dtStatus = 29;				//日内交易限制情况，取值见 DTStatus。仅被标记为 PDT 的moomoo证券(美国)账户适用
+
+  optional double securitiesAssets = 30; // 证券资产净值
+  optional double fundAssets = 31; // 基金资产净值
+  optional double bondAssets = 32; // 债券资产净值
+
+  repeated AccMarketInfo marketInfoList = 33; //分市场资产信息
+}
+
+message AccCashInfo {
+  optional Currency currency = 1;        // 货币类型，取值参考 Currency
+  optional double cash = 2;           // 现金结余
+  optional double availableBalance = 3;   // 现金可提金额
+  optional double netCashPower = 4;		// 现金购买力
+}
+
+message AccMarketInfo {
+  optional TrdMarket trdMarket = 1;        // 交易市场, 参见TrdMarket的枚举定义
+  optional double assets = 2;          // 分市场资产信息
+}
+
+enum GtwEventType {
+  GtwEventType_None = 0; //正常无错
+  GtwEventType_LocalCfgLoadFailed	= 1; //加载本地配置失败
+  GtwEventType_APISvrRunFailed = 2; //服务器启动失败
+  GtwEventType_ForceUpdate = 3; //客户端版本过低
+  GtwEventType_LoginFailed = 4; //登录失败
+  GtwEventType_UnAgreeDisclaimer = 5; //未同意免责声明
+  GtwEventType_NetCfgMissing = 6; //缺少必要网络配置信息;例如控制订阅额度 //已优化，不会再出现该情况
+  GtwEventType_KickedOut = 7; //牛牛帐号在别处登录
+  GtwEventType_LoginPwdChanged = 8; //登录密码被修改
+  GtwEventType_BanLogin = 9; //用户被禁止登录
+  GtwEventType_NeedPicVerifyCode = 10; //需要图形验证码
+  GtwEventType_NeedPhoneVerifyCode = 11; //需要手机验证码
+  GtwEventType_AppDataNotExist = 12; //程序自带数据不存在
+  GtwEventType_NessaryDataMissing = 13; //缺少必要数据
+  GtwEventType_TradePwdChanged = 14; //交易密码被修改
+  GtwEventType_EnableDeviceLock = 15; //启用设备锁
+}
+
+message GtwEvent {
+  GtwEventType eventType = 1; //GtwEventType,事件类型
+  string desc = 2; //事件描述
+}
+
+enum ProgramStatusType {
+  ProgramStatusType_None = 0;
+  ProgramStatusType_Loaded = 1; //已完成类似加载配置,启动服务器等操作,服务器启动之前的状态无需返回
+
+  ProgramStatusType_Loging = 2; //登录中
+  ProgramStatusType_NeedPicVerifyCode = 3; //需要图形验证码
+  ProgramStatusType_NeedPhoneVerifyCode = 4; //需要手机验证码
+  ProgramStatusType_LoginFailed = 5; //登录失败,详细原因在描述返回
+  ProgramStatusType_ForceUpdate = 6; //客户端版本过低
+
+  ProgramStatusType_NessaryDataPreparing = 7; //正在拉取类似免责声明等一些必要信息
+  ProgramStatusType_NessaryDataMissing = 8; //缺少必要信息
+  ProgramStatusType_UnAgreeDisclaimer = 9; //未同意免责声明
+  ProgramStatusType_Ready = 10; //可以接收业务协议收发,正常可用状态
+
+  //OpenD 登录后被强制退出登录，会导致连接全部断开,需要重连后才能得到以下该状态（并且需要在 ui 模式下）
+  ProgramStatusType_ForceLogout = 11; //被强制退出登录,例如修改了登录密码,中途打开设备锁等,详细原因在描述返回
+
+  ProgramStatusType_DisclaimerPullFailed = 12; //拉取免责声明标志失败
+}
+
+message ProgramStatus {
+  ProgramStatusType type = 1; //当前状态
+  optional string strExtDesc = 2; // 额外描述
+}
+
+message QotRight {
+  int32 hkQotRight = 4; //港股行情权限, QotRight
+  int32 usQotRight = 5; //美股行情权限, QotRight
+  int32 cnQotRight = 6; //A股行情权限, QotRight
+  optional int32 hkOptionQotRight = 7; //港股期权行情权限, Qot_Common.QotRight
+  optional bool hasUSOptionQotRight = 8; //是否有美股期权行情权限
+}
+
+message APILevel {
+  string apiLevel = 3; //api用户等级描述
+}
+
+message ConnectStatus {
+  bool qotLogined = 1; //是否登陆行情服务器
+  bool trdLogined = 2; //是否登陆交易服务器
+}
+
+message APIQuota {
+	int32 subQuota = 1; //订阅额度
+	int32 historyKLQuota = 2; //历史K线额度
+}
+
+/** 证券标识*/
+message Security {
+  /** QotMarket，行情市场*/
+  QotMarket market = 1;
+  /** 股票代码*/
+  string code = 2;
+}
+
+/** 行情市场*/
+enum QotMarket {
+  QotMarket_Unknown = 0; //未知市场
+  QotMarket_HK_Security = 1; //香港市场
+  QotMarket_HK_Future = 2; //港期货（已废弃，使用 QotMarket_HK_Security 即可）
+  QotMarket_US_Security = 11; //美国市场
+  QotMarket_CNSH_Security = 21; //沪股市场
+  QotMarket_CNSZ_Security = 22; //深股市场
+  QotMarket_SG_Security = 31; //新加坡市场
+  QotMarket_JP_Security = 41; //日本市场
+  QotMarket_AU_Security = 51; //澳大利亚市场
+  QotMarket_MY_Security = 61; //马来西亚市场
+  QotMarket_CA_Security = 71; //加拿大市场
+  QotMarket_FX_Security = 81; //外汇市场
+}
+
+enum SubType {
+  SubType_None = 0;
+  SubType_Basic = 1; //基础报价
+  SubType_OrderBook = 2; //摆盘
+  SubType_Ticker = 4; //逐笔
+  SubType_RT = 5; //分时
+  SubType_KL_Day = 6; //日 K
+  SubType_KL_5Min = 7; //5分 K
+  SubType_KL_15Min = 8; //15分 K
+  SubType_KL_30Min = 9; //30分 K
+  SubType_KL_60Min = 10; //60分 K
+  SubType_KL_1Min = 11; //1分 K
+  SubType_KL_Week = 12; //周 K
+  SubType_KL_Month = 13; //月 K
+  SubType_Broker = 14; //经纪队列
+  SubType_KL_Qurater = 15; //季 K
+  SubType_KL_Year = 16; //年 K
+  SubType_KL_3Min = 17; //3分 K
+}
+
+message FutureBasicQotExData {
+	double lastSettlePrice = 1; //昨结
+	int32 position = 2; //持仓量
+	int32 positionChange = 3; //日增仓
+	optional int32 expiryDateDistance = 4; //距离到期日天数
+}
+
+message WarrantBasicQotExData {
+  optional double delta = 1; //对冲值,仅认购认沽支持该字段
+  optional double impliedVolatility = 2; //引申波幅,仅认购认沽支持该字段
+  double premium = 3; //溢价（该字段为百分比字段，默认不展示%，如20实际对应20%）
+}
+
+message BasicQot {
+  Security security = 1; //股票
+  optional string name = 24; // 股票名称
+  bool isSuspended = 2; //是否停牌
+  string listTime = 3; //上市日期字符串（此字段停止维护，不建议使用，格式：yyyy-MM-dd）
+  double priceSpread = 4; //价差
+  string updateTime = 5; //最新价的更新时间字符串（格式：yyyy-MM-dd HH:mm:ss），对其他字段不适用
+  double highPrice = 6; //最高价
+  double openPrice = 7; //开盘价
+  double lowPrice = 8; //最低价
+  double curPrice = 9; //最新价
+  double lastClosePrice = 10; //昨收价
+  int64 volume = 11; //成交量
+  double turnover = 12; //成交额
+  double turnoverRate = 13; //换手率（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+  double amplitude = 14; //振幅（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+  optional int32 darkStatus = 15; //DarkStatus, 暗盘交易状态
+  optional OptionBasicQotExData optionExData = 16; //期权特有字段
+  optional double listTimestamp = 17; //上市日期时间戳（此字段停止维护，不建议使用）
+  optional double updateTimestamp = 18; //最新价的更新时间戳，对其他字段不适用
+  optional PreAfterMarketData preMarket = 19; //盘前数据
+	optional PreAfterMarketData afterMarket = 20; //盘后数据
+  optional int32 secStatus = 21; //SecurityStatus, 股票状态
+  optional FutureBasicQotExData futureExData = 22; //期货特有字段
+	optional WarrantBasicQotExData warrantExData = 23; //窝轮特有字段
+}
+
+message OptionBasicQotExData {
+  double strikePrice = 1; //行权价
+  int32 contractSize = 2; //每份合约数(整型数据)
+  optional double contractSizeFloat = 17; //每份合约数（浮点型数据）
+  int32 openInterest = 3; //未平仓合约数
+  double impliedVolatility = 4; //隐含波动率（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+  double premium = 5; //溢价（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+  double delta = 6; //希腊值 Delta
+  double gamma = 7; //希腊值 Gamma
+  double vega = 8; //希腊值 Vega
+  double theta = 9; //希腊值 Theta
+  double rho = 10; //希腊值 Rho
+  optional int32 netOpenInterest = 11; //净未平仓合约数，仅港股期权适用
+  optional int32 expiryDateDistance = 12; //距离到期日天数，负数表示已过期
+  optional double contractNominalValue = 13; //合约名义金额，仅港股期权适用
+  optional double ownerLotMultiplier = 14; //相等正股手数，指数期权无该字段，仅港股期权适用
+  optional int32 optionAreaType = 15; //OptionAreaType，期权类型（按行权时间）
+  optional double contractMultiplier = 16; //合约乘数
+  optional int32 indexOptionType = 18; //IndexOptionType，指数期权类型
+}
+
+message PacketID {
+  uint64 connID = 1; //当前 TCP 连接的连接 ID，一条连接的唯一标识，InitConnect 协议会返回
+  uint32 serialNo = 2; //自增序列号
+}
+
+/**
+  交易环境
+
+  TrdEnv_Simulate = 0; //模拟环境
+
+  TrdEnv_Real = 1; //真实环境
+*/
+enum TrdEnv {
+  TrdEnv_Simulate = 0; //模拟环境
+  TrdEnv_Real = 1; //真实环境
+}
+
+enum TrdSide {
+  //客户端下单只传 Buy 或 Sell 即可，SellShort 是美股订单时服务器返回有此方向，BuyBack 目前不存在，但也不排除服务器会传
+  TrdSide_Unknown = 0; //未知方向
+  TrdSide_Buy = 1; //买入
+  TrdSide_Sell = 2; //卖出
+  TrdSide_SellShort = 3; //卖空
+  TrdSide_BuyBack = 4; //买回
+}
+
+/** 订单类型 */
+enum OrderType {
+  OrderType_Unknown = 0;
+  /** 限价单 */
+  OrderType_Normal = 1;
+  /** 市价单 */
+  OrderType_Market = 2;
+  /** 绝对限价订单（仅港股），只有价格完全匹配才成交，否则下单失败。举例：下一笔价格为 5 元的绝对限价买单，卖方的价格必须也是5元才能成交，卖方即使低于 5 元也不能成交，下单失败。卖出同理*/
+  OrderType_AbsoluteLimit = 5;
+  /** 竞价订单（仅港股），仅港股早盘竞价和收盘竞价有效*/
+  OrderType_Auction = 6;
+  /** 竞价限价订单（仅港股），仅早盘竞价和收盘竞价有效，参与竞价，且要求满足指定价格才会成交*/
+  OrderType_AuctionLimit = 7;
+  /** 特别限价订单（仅港股），成交规则同增强限价订单，且部分成交后，交易所自动撤销订单*/
+  OrderType_SpecialLimit = 8;
+  /** 特别限价且要求全部成交订单（仅港股）。全部成交，否则自动撤单*/
+  OrderType_SpecialLimit_All = 9;
+  /** 止损市价单*/
+  OrderType_Stop = 10;
+  /** 止损限价单*/
+  OrderType_StopLimit = 11;
+  /** 触及市价单（止盈）*/
+  OrderType_MarketifTouched = 12;
+  /** 触及限价单（止盈）*/
+  OrderType_LimitifTouched = 13;
+  /** 跟踪止损市价单*/
+  OrderType_TrailingStop = 14;
+  /** 跟踪止损限价单*/
+  OrderType_TrailingStopLimit = 15;
+  /** 时间加权市价算法单（仅美股）*/
+  OrderType_TWAP  = 16;
+  /** 时间加权限价算法单 （港股和美股）*/
+  OrderType_TWAP_LIMIT = 17;
+  /** 成交量加权市价算法单（仅美股）*/
+  OrderType_VWAP  = 18;
+  /** 成交量加权限价算法单（港股和美股）*/
+  OrderType_VWAP_LIMIT  = 19;
+}
+
+/** 交易市场 */
+enum TrdMarket {
+  TrdMarket_Unknown = 0; //未知市场
+  TrdMarket_HK = 1; //香港市场（证券、期权）
+  TrdMarket_US = 2; //美国市场（证券、期权）
+  TrdMarket_CN = 3; //A 股市场（仅用于模拟交易）
+  TrdMarket_HKCC = 4; //A 股通市场（股票）
+  TrdMarket_Futures = 5; //期货市场（环球期货）
+  TrdMarket_SG = 6; //新加坡市场
+  TrdMarket_AU = 8; //澳洲市场
+  TrdMarket_Futures_Simulate_HK = 10; //香港期货模拟市场
+  TrdMarket_Futures_Simulate_US = 11; //美国期货模拟市场
+  TrdMarket_Futures_Simulate_SG = 12; //新加坡期货模拟市场
+  TrdMarket_Futures_Simulate_JP = 13; //日本期货模拟市场
+  TrdMarket_JP = 15; //日本市场
+  TrdMarket_MY = 111; //马来西亚市场
+  TrdMarket_CA = 112; //加拿大市场
+  TrdMarket_HK_Fund = 113; //香港基金市场
+  TrdMarket_US_Fund = 123; //美国基金市场
+}
+
+/** 订单有效期 */
+enum TimeInForce {
+  /** 当日有效*/
+  TimeInForce_DAY = 0;
+  /** 撤单前有效，最多持续90自然日*/
+  TimeInForce_GTC = 1;
+}
+
+/** 订单跟踪类型*/
+enum TrailType {
+	TrailType_Unknown = 0; //未知类型
+	TrailType_Ratio = 1; //比例
+	TrailType_Amount = 2; //金额
+}
+
+
+/** 交易证券市场 */
+enum TrdSecMarket {
+  TrdSecMarket_Unknown = 0; //未知市场
+  TrdSecMarket_HK = 1; //香港市场（股票、窝轮、牛熊、期权、期货等）
+  TrdSecMarket_US = 2; //美国市场（股票、期权、期货等）
+  TrdSecMarket_CN_SH = 31; //沪股市场（股票）
+  TrdSecMarket_CN_SZ = 32; //深股市场（股票）
+  TrdSecMarket_SG = 41;  //新加坡市场（期货）
+  TrdSecMarket_JP = 51;  //日本市场（期货）
+  TrdSecMarket_AU = 61; // 澳大利亚
+  TrdSecMarket_MY = 71; // 马来西亚
+  TrdSecMarket_CA = 81; // 加拿大
+  TrdSecMarket_FX = 91; // 外汇
+}
+
+enum TrdAccStatus {
+  TrdAccStatus_Active = 0; //生效账户
+  TrdAccStatus_Disabled = 1; //失效账户
+}
+
+enum TrdAccType {
+  TrdAccType_Unknown = 0; //未知类型
+  TrdAccType_Cash = 1;    //现金账户
+  TrdAccType_Margin = 2;  //保证金账户
+}
+
+enum SecurityFirm {
+  SecurityFirm_Unknown = 0;        //未知
+  SecurityFirm_FutuSecurities = 1; //富途证券（香港）
+  SecurityFirm_FutuInc = 2;        //moomoo证券(美国)
+  SecurityFirm_FutuSG = 3;        //moomoo证券(新加坡)
+	SecurityFirm_FutuAU = 4;         //moomoo证券(澳大利亚)
+}
+
+message Order {
+  TrdSide trdSide = 1; //交易方向, 参见 TrdSide 的枚举定义
+  OrderType orderType = 2; //订单类型, 参见 OrderType 的枚举定义
+  OrderStatus orderStatus = 3; //订单状态, 参见 OrderStatus 的枚举定义
+  uint64 orderID = 4; //订单号
+  string orderIDEx = 5; //扩展订单号(仅查问题时备用)
+  string code = 6; //代码
+  string name = 7; //名称
+  double qty = 8; //订单数量，2位精度，期权单位是"张"
+  optional double price = 9; //订单价格，3位精度
+  string createTime = 10; //创建时间，严格按 YYYY-MM-DD HH:MM:SS 或 YYYY-MM-DD HH:MM:SS.MS 格式传
+  string updateTime = 11; //最后更新时间，严格按 YYYY-MM-DD HH:MM:SS 或 YYYY-MM-DD HH:MM:SS.MS 格式传
+  optional double fillQty = 12; //成交数量，2位精度，期权单位是"张"
+  optional double fillAvgPrice = 13; //成交均价，无精度限制
+  optional string lastErrMsg = 14; //最后的错误描述，如果有错误，会有此描述最后一次错误的原因，无错误为空
+  optional TrdSecMarket secMarket = 15; //证券所属市场，参见 TrdSecMarket 的枚举定义
+  optional double createTimestamp = 16; //创建时间戳
+  optional double updateTimestamp = 17; //最后更新时间戳
+  optional string remark = 18; //用户备注字符串，最大长度64字节
+  optional double auxPrice = 21; //触发价格
+  optional TrailType trailType = 22; //跟踪类型, 参见Trd_Common.TrailType的枚举定义
+  optional double trailValue = 23; //跟踪金额/百分比
+  optional double trailSpread = 24; //指定价差
+  optional Currency currency = 25;        // 货币类型，取值参考 Currency
+  optional int32 trdMarket = 26;  //交易市场, 参见TrdMarket的枚举定义
+}
+
+enum OrderStatus {
+  OrderStatus_Unknown = 0; //未知状态
+  OrderStatus_WaitingSubmit = 1; //待提交
+  OrderStatus_Submitting = 2; //提交中
+  OrderStatus_Submitted = 5; //已提交，等待成交
+  OrderStatus_Filled_Part = 10; //部分成交
+  OrderStatus_Filled_All = 11; //全部已成
+  OrderStatus_Cancelled_Part = 14; //部分成交，剩余部分已撤单
+  OrderStatus_Cancelled_All = 15; //全部已撤单，无成交
+  OrderStatus_Failed = 21; //下单失败，服务拒绝
+  OrderStatus_Disabled = 22; //已失效
+  OrderStatus_Deleted = 23; //已删除，无成交的订单才能删除
+  OrderStatus_FillCancelled = 24; //成交被撤销（一般遇不到，意思是已经成交的订单被回滚撤销，成交无效变为废单）
+}
+
+message OrderFill {
+	TrdSide trdSide = 1; //交易方向, 参见 TrdSide 的枚举定义
+  uint64 fillID = 2; //成交号
+  string fillIDEx = 3; //扩展成交号(仅查问题时备用)
+  optional uint64 orderID = 4; //订单号
+  optional string orderIDEx = 5; //扩展订单号(仅查问题时备用)
+  string code = 6; //代码
+  string name = 7; //名称
+  double qty = 8; //成交数量，2位精度，期权单位是"张"
+  double price = 9; //成交价格，3位精度
+  string createTime = 10; //创建时间（成交时间），严格按 YYYY-MM-DD HH:MM:SS 或 YYYY-MM-DD HH:MM:SS.MS 格式传
+  optional int32 counterBrokerID = 11; //对手经纪号，港股有效
+  optional string counterBrokerName = 12; //对手经纪名称，港股有效
+  optional TrdSecMarket secMarket = 13; //证券所属市场，参见 TrdSecMarket 的枚举定义
+  optional double createTimestamp = 14; //创建时间戳
+  optional double updateTimestamp = 15; //最后更新时间戳
+  optional OrderFillStatus status = 16; //成交状态, 参见 OrderFillStatus 的枚举定义
+  optional TrdMarket trdMarket = 17;  //交易市场, 参见TrdMarket的枚举定义
+}
+
+enum OrderFillStatus {
+  OrderFillStatus_OK = 0; //正常
+  OrderFillStatus_Cancelled = 1; //成交被取消
+  OrderFillStatus_Changed = 2; //成交被更改
+}
+
+message OrderFee {
+  string orderIDEx = 1; //扩展订单号
+  optional double feeAmount = 2; //费用总额
+  repeated OrderFeeItem feeList = 3; //费用明细
+}
+
+message OrderFeeItem {
+  optional string title = 1; //费用名字
+  optional double value = 2; //费用金额
+}
+
+enum Currency {
+  Currency_Unknown = 0;  //未知货币
+  Currency_HKD = 1;   // 港元
+  Currency_USD = 2;   // 美元
+  Currency_CNH = 3;   // 离岸人民币
+  Currency_JPY = 4;   // 日元
+  Currency_SGD = 5;   // 新元
+  Currency_AUD = 6;   // 澳元
+  Currency_CAD = 7; // 加拿大元
+  Currency_MYR = 8; // 马来西亚林吉特
+}
+
+/** 快照基本数据*/
+message SnapshotBasicData {
+  Security security = 1; //证券
+  optional string name = 41; //股票名称
+  SecurityType type = 2; //Qot_Common.SecurityType，证券类型
+  bool isSuspend = 3; //是否停牌
+  string listTime = 4; //上市时间字符串（格式：yyyy-MM-dd）
+  /** 每手数量*/
+  int32 lotSize = 5;
+  double priceSpread = 6; //价差
+  string updateTime = 7; //更新时间字符串（格式：yyyy-MM-dd HH:mm:ss）
+  double highPrice = 8; //最高价
+  double openPrice = 9; //开盘价
+  double lowPrice = 10; //最低价
+  double lastClosePrice = 11; //昨收价
+  double curPrice = 12; //最新价
+  int64 volume = 13; //成交量
+  double turnover = 14; //成交额
+  /** 换手率（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）*/
+  double turnoverRate = 15;
+  optional double listTimestamp = 16; //上市时间戳
+  optional double updateTimestamp = 17; //更新时间戳
+  optional double askPrice = 18;//卖价
+  optional double bidPrice = 19;//买价
+  optional int64 askVol = 20;//卖量
+  optional int64 bidVol = 21;//买量
+  optional bool enableMargin = 22; // 是否可融资（已废弃，请使用 获取融资融券数据 接口获取）
+  optional double mortgageRatio = 23; // 股票抵押率（已废弃，请使用 获取融资融券数据 接口获取）
+  optional double longMarginInitialRatio = 24; // 融资初始保证金率（已废弃，请使用 获取融资融券数据 接口获取）
+  optional bool enableShortSell = 25; // 是否可卖空（已废弃，请使用 获取融资融券数据 接口获取）
+  optional double shortSellRate = 26; // 卖空参考利率（已废弃，请使用 获取融资融券数据 接口获取）
+  optional int64 shortAvailableVolume = 27; // 剩余可卖空数量（已废弃，请使用 获取融资融券数据 接口获取）
+  optional double shortMarginInitialRatio = 28; // 卖空（融券）初始保证金率（已废弃，请使用 获取融资融券数据 接口获取）
+  optional double amplitude = 29; // 振幅（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+  optional double avgPrice = 30; // 平均价
+  optional double bidAskRatio = 31; // 委比（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+  optional double volumeRatio = 32;  // 量比
+  optional double highest52WeeksPrice = 33;  // 52周最高价
+  optional double lowest52WeeksPrice = 34;  // 52周最低价
+  optional double highestHistoryPrice = 35;  // 历史最高价
+  optional double lowestHistoryPrice = 36;  // 历史最低价
+  optional PreAfterMarketData preMarket = 37; //Qot_Common::PreAfterMarketData 盘前数据
+  optional PreAfterMarketData afterMarket = 38; //Qot_Common::PreAfterMarketData 盘后数据
+  optional int32 secStatus = 39; //Qot_Common::SecurityStatus 股票状态
+  optional double closePrice5Minute = 40; //5分钟收盘价
+}
+
+/** 正股快照额外数据*/
+message EquitySnapshotExData {
+  int64 issuedShares = 1; // 发行股本,即总股本
+	double issuedMarketVal = 2; // 总市值 =总股本*当前价格（单位：元）
+  double netAsset = 3; // 资产净值
+  double netProfit = 4; // 盈利（亏损）
+  double earningsPershare = 5; // 每股盈利
+  int64 outstandingShares = 6; // 流通股本
+	double outstandingMarketVal = 7; // 流通市值 =流通股本*当前价格（单位：元）
+  double netAssetPershare = 8; // 每股净资产
+  double eyRate = 9; // 收益率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+  double peRate = 10; // 市盈率
+  double pbRate = 11; // 市净率
+	double peTTMRate = 12; // 市盈率TTM
+	optional double dividendTTM = 13; // 股息TTM，派息
+  optional double dividendRatioTTM = 14; // 股息率TTM（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	optional double dividendLFY = 15; // 股息LFY，上一年度派息
+  optional double dividendLFYRatio = 16; // 股息率LFY（该字段为百分比字段，默认不展示%，如20实际对应20%）
+}
+
+/** 期权类型额外数据*/
+message OptionSnapshotExData {
+	OptionType type = 1; //Qot_Common.OptionType,期权
+	Security owner = 2; //标的股
+	string strikeTime = 3; //行权日
+  double strikePrice = 4; //行权价
+	int32 contractSize = 5; //每份合约数(整型数据)
+	optional double contractSizeFloat = 22; //每份合约数（浮点型数据）
+	int32 openInterest = 6; //未平仓合约数
+	double impliedVolatility = 7; //隐含波动率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	double premium = 8; //溢价（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	double delta = 9; //希腊值 Delta
+  double gamma = 10; //希腊值 Gamma
+	double vega = 11; //希腊值 Vega
+  double theta = 12; //希腊值 Theta
+  double rho = 13; //希腊值 Rho
+	optional double strikeTimestamp = 14; //行权日时间戳
+	optional IndexOptionType indexOptionType = 15; //Qot_Common.IndexOptionType，指数期权类型
+	optional int32 netOpenInterest = 16; //净未平仓合约数，仅港股期权适用
+	optional int32 expiryDateDistance = 17; //距离到期日天数，负数表示已过期
+	optional double contractNominalValue = 18; //合约名义金额，仅港股期权适用
+	optional double ownerLotMultiplier = 19; //相等正股手数，指数期权无该字段，仅港股期权适用
+	optional OptionAreaType optionAreaType = 20; //Qot_Common.OptionAreaType，期权类型（按行权时间）
+	optional double contractMultiplier = 21; //合约乘数
+}
+
+/** 窝轮类型额外数据*/
+message WarrantSnapshotExData {
+  double conversionRate = 1; //换股比率
+  WarrantType warrantType = 2; //Qot_Common.WarrantType,窝轮类型
+  double strikePrice = 3; //行使价
+  string maturityTime = 4; //到期日时间字符串
+  string endTradeTime = 5; //最后交易日时间字符串
+  Security owner = 6; //所属正股
+  double recoveryPrice = 7; //收回价,仅牛熊证支持该字段
+  int64 streetVolumn = 8; //街货量
+  int64 issueVolumn = 9; //发行量
+  double streetRate = 10; //街货占比（该字段为百分比字段，默认不展示%，如20实际对应20%）
+  double delta = 11; //对冲值,仅认购认沽支持该字段
+  double impliedVolatility = 12; //引申波幅,仅认购认沽支持该字段
+  double premium = 13; //溢价（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	optional double maturityTimestamp = 14; //到期日时间戳
+	optional double endTradeTimestamp = 15; //最后交易日时间戳
+	optional double leverage = 16;  // 杠杆比率（倍）
+	optional double ipop = 17; // 价内/价外（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	optional double breakEvenPoint = 18; // 打和点
+	optional double conversionPrice = 19;  // 换股价
+	optional double priceRecoveryRatio = 20; // 正股距收回价（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	optional double score = 21; // 综合评分
+	optional double upperStrikePrice = 22; //上限价，仅界内证支持该字段
+	optional double lowerStrikePrice = 23; //下限价，仅界内证支持该字段
+	optional PriceType inLinePriceStatus = 24; //Qot_Common.PriceType, 界内界外，仅界内证支持该字段
+	optional string issuerCode = 25; //发行人代码
+}
+
+// 指数类型额外数据
+message IndexSnapshotExData {
+  int32 raiseCount = 1;  // 上涨支数
+  int32 fallCount = 2;  // 下跌支数
+  int32 equalCount = 3;  // 平盘支数
+}
+
+// 板块类型额外数据
+message PlateSnapshotExData {
+  int32 raiseCount = 1;  // 上涨支数
+  int32 fallCount = 2;  // 下跌支数
+  int32 equalCount = 3;  // 平盘支数
+}
+
+//期货类型额外数据
+message FutureSnapshotExData {
+	double lastSettlePrice = 1; //昨结
+	int32 position = 2; //持仓量
+	int32 positionChange = 3; //日增仓
+	string lastTradeTime = 4; //最后交易日，只有非主连期货合约才有该字段
+	optional double lastTradeTimestamp = 5; //最后交易日时间戳，只有非主连期货合约才有该字段
+	bool isMainContract = 6; //是否主连合约
+}
+
+//基金类型额外数据
+message TrustSnapshotExData {
+	double dividendYield = 1; //股息率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	double aum = 2; //资产规模（单位：元）
+	int64 outstandingUnits = 3; //总发行量
+	double netAssetValue = 4; //单位净值
+	double premium = 5; //溢价（该字段为百分比字段，默认不展示%，如20实际对应20%）
+	AssetClass assetClass = 6; //Qot_Common.AssetClass，资产类别
+}
+
+// 资产类别
+enum AssetClass {
+	AssetClass_Unknow = 0; //未知
+	AssetClass_Stock = 1; //股票
+	AssetClass_Bond = 2; //债券
+	AssetClass_Commodity = 3; //商品
+	AssetClass_CurrencyMarket = 4; //货币市场
+	AssetClass_Future = 5; //期货
+	AssetClass_Swap = 6; //掉期
+}
+
+enum SecurityType {
+	SecurityType_Unknown = 0; //未知
+  SecurityType_Bond = 1; //债券
+  SecurityType_Bwrt = 2; //一揽子权证
+  SecurityType_Eqty = 3; //正股
+  SecurityType_Trust = 4; //信托,基金
+  SecurityType_Warrant = 5; //窝轮
+  SecurityType_Index = 6; //指数
+  SecurityType_Plate = 7; //板块
+  SecurityType_Drvt = 8; //期权
+  SecurityType_PlateSet = 9; //板块集
+	SecurityType_Future = 10; //期货
+}
+
+
+enum OptionType {
+	OptionType_Unknown = 0; //未知
+	OptionType_Call = 1; //涨
+	OptionType_Put = 2; //跌
+}
+
+enum IndexOptionType {
+	IndexOptionType_Unknown = 0; //未知
+	IndexOptionType_Normal = 1; //正常普通的指数期权
+	IndexOptionType_Small = 2; //小型指数期权
+}
+
+enum OptionAreaType {
+	OptionAreaType_Unknown = 0; //未知
+	OptionAreaType_American = 1; //美式
+	OptionAreaType_European = 2; //欧式
+	OptionAreaType_Bermuda = 3; //百慕大
+}
+
+enum PlateSetType {
+	PlateSetType_All = 0; //所有板块
+	PlateSetType_Industry = 1; //行业板块
+	PlateSetType_Region = 2; //地域板块,港美股市场的地域分类数据暂为空
+	PlateSetType_Concept = 3; //概念板块
+	PlateSetType_Other = 4; //其他板块, 仅用于3207（获取股票所属板块）协议返回,不可作为其他协议的请求参数
+}
+
+enum WarrantType {
+	WarrantType_Unknown = 0; //未知
+	WarrantType_Buy = 1; //认购
+	WarrantType_Sell = 2; //认沽
+	WarrantType_Bull = 3; //牛
+	WarrantType_Bear = 4; //熊
+	WarrantType_InLine = 5; //界内证
+}
+
+//窝轮价外/内,界内证表示界内界外
+enum PriceType {
+	PriceType_Unknow = 0;
+	PriceType_Outside = 1; //价外，界内证表示界外
+	PriceType_WithIn = 2; //价内，界内证表示界内
+}
+
+//窝轮状态
+enum WarrantStatus {
+  WarrantStatus_Unknow = 0; //未知
+  WarrantStatus_Normal = 1; //正常状态
+	WarrantStatus_Suspend = 2; //停牌
+  WarrantStatus_StopTrade = 3; //终止交易
+  WarrantStatus_PendingListing = 4; //等待上市
+}
+
+/** 持仓过滤条件*/
+message TrdFilterConditions {
+  repeated string codeList = 1; //代码过滤，只返回包含这些代码的数据，没传不过滤
+  repeated uint64 idList = 2; //ID 主键过滤，只返回包含这些 ID 的数据，没传不过滤，订单是 orderID、成交是 fillID、持仓是 positionID
+  optional string beginTime = 3; //开始时间，严格按 YYYY-MM-DD HH:MM:SS 或 YYYY-MM-DD HH:MM:SS.MS 格式传，对持仓无效，拉历史数据必须填
+  optional string endTime = 4; //结束时间，严格按 YYYY-MM-DD HH:MM:SS 或 YYYY-MM-DD HH:MM:SS.MS 格式传，对持仓无效，拉历史数据必须填
+  repeated string orderIDExList = 5; // 服务器订单ID列表，可以用来替代orderID列表，二选一
+  optional int32 filterMarket = 6; //指定交易市场, 参见TrdMarket的枚举定义
+}
+
+/** 最大可交易数量*/
+message MaxTrdQtys {
+	//因目前服务器实现的问题，卖空需要先卖掉多头持仓才能再卖空，是分开两步卖的，买回来同样是逆向两步；而看多的买是可以现金加融资一起一步买的，请注意这个差异
+	double maxCashBuy = 1;             //现金可买（期权的单位是“张”，期货账户不适用）
+  optional double maxCashAndMarginBuy = 2;    //最大可买（期权的单位是“张”，期货账户不适用）
+  double maxPositionSell = 3;        //持仓可卖（期权的单位是“张”）
+  optional double maxSellShort = 4;           //可卖空（期权的单位是“张”，期货账户不适用）
+  optional double maxBuyBack = 5;             //平仓需买入（当持有净空仓时，必须先买回空头持仓的股数，才能再继续买多。期货、期权的单位是“张”）
+  optional double longRequiredIM = 6;         //买 1 张合约所带来的初始保证金变动。仅期货和期权适用。无持仓时，返回 买入 1 张的初始保证金占用（正数）。有多仓时，返回 买入1 张的初始保证金占用（正数）。有空仓时，返回 买回 1 张的初始保证金释放（负数）。
+  optional double shortRequiredIM = 7;        //卖 1 张合约所带来的初始保证金变动。仅期货和期权适用。无持仓时，返回 卖空 1 张的初始保证金占用（正数）。 有多仓时，返回卖出1 张的初始保证金占用（正数）。有空仓时，返回 卖空1 张的初始保证金释放（正数）。
+}
+
+/** 持仓*/
+message Position {
+	uint64 positionID = 1;     //持仓 ID，一条持仓的唯一标识
+  PositionSide positionSide = 2;    //持仓方向，参见 PositionSide 的枚举定义
+  string code = 3;           //代码
+  string name = 4;           //名称
+  double qty = 5;            //持有数量，2位精度，期权单位是"张"，下同
+  double canSellQty = 6;     //可用数量，是指持有的可平仓的数量。可用数量=持有数量-冻结数量。期权和期货的单位是“张”。
+  double price = 7;          //市价，3位精度，期货为2位精度
+  optional double costPrice = 8;      //摊薄成本价（证券账户），平均开仓价（期货账户）。证券无精度限制，期货为2位精度，如果没传，代表此时此值无效
+  double val = 9;            //市值，3位精度, 期货此字段值为0
+  double plVal = 10;         //盈亏金额，3位精度，期货为2位精度
+  optional double plRatio = 11;       //盈亏百分比(如 plRatio 等于0.088代表涨8.8%)，无精度限制，如果没传，代表此时此值无效
+  optional TrdSecMarket secMarket = 12;      //证券所属市场，参见 TrdSecMarket 的枚举定义
+
+  //以下是此持仓今日统计
+  optional double td_plVal = 21;      //今日盈亏金额，3位精度，下同, 期货为2位精度
+  optional double td_trdVal = 22;     //今日交易额，期货不适用
+  optional double td_buyVal = 23;     //今日买入总额，期货不适用
+  optional double td_buyQty = 24;     //今日买入总量，期货不适用
+  optional double td_sellVal = 25;    //今日卖出总额，期货不适用
+  optional double td_sellQty = 26;    //今日卖出总量，期货不适用
+
+  optional double unrealizedPL = 28;       //未实现盈亏（仅期货账户适用）
+  optional double realizedPL = 29;         //已实现盈亏（仅期货账户适用）
+  optional Currency currency = 30;        // 货币类型，取值参考 Currency
+  optional TrdMarket trdMarket = 31;  //交易市场, 参见 TrdMarket 的枚举定义
+}
+
+enum PositionSide {
+  PositionSide_Long = 0; //多仓，默认情况是多仓
+  PositionSide_Unknown = -1; //未知方向
+  PositionSide_Short = 1; //空仓
+}

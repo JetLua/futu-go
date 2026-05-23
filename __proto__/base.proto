@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option go_package = "futu/pb";
+
+/** 初始化请求 */
+message InitReq {
+  message C2S {
+    /** 客户端版本号，clientVer = "."以前的数 * 100 + "."以后的，举例：1.1版本的 clientVer 为1 * 100 + 1 = 101，2.21版本为2 * 100 + 21 = 221 */
+    int32 clientVer = 1;
+    /** 客户端唯一标识，无生具体生成规则，客户端自己保证唯一性即可 */
+    string clientID = 2;
+    /** 此连接是否接收市场状态、交易需要重新解锁等等事件通知，true 代表接收，OpenD 就会向此连接推送这些通知，反之 false 代表不接收不推送如果通信要加密，首先得在 OpenD 和客户端都配置 RSA 密钥，不配置始终不加密 */
+    optional bool recvNotify = 3;
+    /**
+      如果配置了 RSA 密钥且指定的加密算法不为 PacketEncAlgo_None 则加密(即便这里不设置，配置了 RSA 密钥，也会采用默认加密方式)，默认采用 FTAES_ECB 算法
+      指定包加密算法，参见 Common.PacketEncAlgo 的枚举定义
+    */
+    optional int32 packetEncAlgo = 4;
+    /**指定这条连接上的推送协议格式，若不指定则使用 push_proto_type 配置项*/
+    optional int32 pushProtoFmt = 5;
+  }
+  C2S c2s = 1;
+}
+
+/** 初始化响应 */
+message InitRes {
+  message S2C {
+    /** OpenD 的版本号 */
+    int32 serverVer = 1;
+    /** OpenD 登录的用户 ID */
+    uint64 loginUserID = 2;
+    /** 此连接的连接 ID，连接的唯一标识 */
+    uint64 connID = 3;
+    /** 此连接后续 AES 加密通信的 Key，固定为16字节长字符串 */
+    string connAESKey = 4;
+    /** 心跳保活间隔 */
+    int32 keepAliveInterval = 5;
+    /** AES 加密通信 CBC 加密模式的 iv，固定为16字节长字符串 */
+    optional string aesCBCiv = 6; //
+  }
+  int32 retType = 1;
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}
+
+/** 心跳检测：ping */
+message Ping {
+  message C2S {
+    int64 time = 1;
+  }
+  C2S c2s = 1;
+}
+
+/** 心跳响应 */
+message Pong {
+  message S2C {
+    int64 time = 1;
+  }
+  int32 retType = 1;
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}
