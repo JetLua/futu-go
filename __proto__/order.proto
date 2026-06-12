@@ -53,3 +53,45 @@ message NotifyOrderFill {
 
   optional S2C s2c = 4;
 }
+
+message CreateOrderReq {
+  message C2S {
+    common.PacketID packetID = 1; //交易写操作防重放攻击
+    common.TrdHeader header = 2; //交易公共参数头
+    int32 trdSide = 3; //交易方向，参见 Trd_Common.TrdSide 的枚举定义
+    int32 orderType = 4; //订单类型，参见 Trd_Common.OrderType 的枚举定义
+    string code = 5; //代码，港股必须是5位数字，A 股必须是6位数字，美股没限制
+    double qty = 6; //数量，期权单位是"张"（精确到小数点后 0 位，超出部分会被舍弃。期权期货单位是"张"）
+    optional double price = 7; //价格，（证券账户精确到小数点后 3 位，期货账户精确到小数点后 9 位，超出部分会被舍弃）
+    //以下2个为调整价格使用，都传才有效，对港、A 股有意义，因为港股有价位，A 股2位精度，美股可不传
+    optional bool adjustPrice = 8; //是否调整价格，如果价格不合法，是否调整到合法价位，true 调整，false 不调整。如果价格不合法又不允许调整，则会返回错误
+    optional double adjustSideAndLimit = 9; //调整方向和调整幅度百分比限制，正数代表向上调整，负数代表向下调整，具体值代表调整幅度限制，如：0.015代表向上调整且幅度不超过1.5%；-0.01代表向下调整且幅度不超过1%
+    optional int32 secMarket = 10; //证券所属市场，参见 TrdSecMarket 的枚举定义
+    optional string remark = 11; //用户备注字符串，最多只能传64字节。可用于标识订单唯一信息等，下单填上，订单结构就会带上。
+    optional int32 timeInForce = 12; //订单有效期限，参见 TrdCommon.TimeInForce 的枚举定义（香港市场、A 股市场和环球期货的市价单，仅支持当日有效）
+    optional bool fillOutsideRTH = 13; //是否允许盘前盘后成交（仅用于美股，且盘前盘后时段不支持市价单）。默认 false
+    optional double auxPrice = 14; //触发价格
+    optional int32 trailType = 15; //跟踪类型, 参见Trd_Common.TrailType的枚举定义
+    optional double trailValue = 16; //跟踪金额/百分比
+    optional double trailSpread = 17; //指定价差
+      optional int32 session = 18; //美股订单时段, 参见Common.Session的枚举定义
+    optional uint64 positionID = 19; //持仓ID，JP券商平仓时使用
+    optional string expireTime = 20; //订单到期时间，仅在timeInForce为GTD时有效
+  }
+
+  C2S c2s = 1;
+}
+
+message CreateOrderRes {
+  message S2C {
+    common.TrdHeader header = 1; //交易公共参数头
+    optional uint64 orderID = 2; //订单号
+    optional string orderIDEx = 3; //表示服务器订单id，可以用来代替orderID，和orderID二选一
+  }
+
+  //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
+  int32 retType = 1;
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional S2C s2c = 4;
+}

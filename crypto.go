@@ -54,3 +54,7 @@ func (a *AES) Encrypt(raw []byte) []byte {
 func (a *AES) Decrypt(raw []byte) []byte {
 	return dongle.Decrypt.FromRawBytes(raw).ByAes(a.c).ToBytes()
 }
+
+func md5(raw []byte) string {
+	return dongle.Hash.FromBytes(raw).ByMd5().ToHexString()
+}
