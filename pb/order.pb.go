@@ -70,7 +70,7 @@ func (x *FeeReq) GetC2S() *FeeReq_C2S {
 type FeeRes struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-	RetType       int32       `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"`
+	RetType       RetType     `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"`
 	RetMsg        *string     `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32      `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *FeeRes_S2C `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -108,11 +108,11 @@ func (*FeeRes) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *FeeRes) GetRetType() int32 {
+func (x *FeeRes) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *FeeRes) GetRetMsg() string {
@@ -140,7 +140,7 @@ func (x *FeeRes) GetS2C() *FeeRes_S2C {
 type NotifyOrder struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-	RetType       int32            `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"`
+	RetType       RetType          `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"`
 	RetMsg        *string          `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32           `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *NotifyOrder_S2C `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -178,11 +178,11 @@ func (*NotifyOrder) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *NotifyOrder) GetRetType() int32 {
+func (x *NotifyOrder) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *NotifyOrder) GetRetMsg() string {
@@ -210,7 +210,7 @@ func (x *NotifyOrder) GetS2C() *NotifyOrder_S2C {
 type NotifyOrderFill struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-	RetType       int32                `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"`
+	RetType       RetType              `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"`
 	RetMsg        *string              `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32               `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *NotifyOrderFill_S2C `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -248,11 +248,11 @@ func (*NotifyOrderFill) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *NotifyOrderFill) GetRetType() int32 {
+func (x *NotifyOrderFill) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *NotifyOrderFill) GetRetMsg() string {
@@ -323,7 +323,7 @@ func (x *CreateOrderReq) GetC2S() *CreateOrderReq_C2S {
 type CreateOrderRes struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-	RetType       int32               `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"`
+	RetType       RetType             `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"`
 	RetMsg        *string             `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32              `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *CreateOrderRes_S2C `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -361,11 +361,11 @@ func (*CreateOrderRes) Descriptor() ([]byte, []int) {
 	return file_order_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *CreateOrderRes) GetRetType() int32 {
+func (x *CreateOrderRes) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *CreateOrderRes) GetRetMsg() string {
@@ -607,19 +607,19 @@ type CreateOrderReq_C2S struct {
 	Qty       float64                `protobuf:"fixed64,6,opt,name=qty,proto3" json:"qty,omitempty"`            //数量，期权单位是"张"（精确到小数点后 0 位，超出部分会被舍弃。期权期货单位是"张"）
 	Price     *float64               `protobuf:"fixed64,7,opt,name=price,proto3,oneof" json:"price,omitempty"`  //价格，（证券账户精确到小数点后 3 位，期货账户精确到小数点后 9 位，超出部分会被舍弃）
 	// 以下2个为调整价格使用，都传才有效，对港、A 股有意义，因为港股有价位，A 股2位精度，美股可不传
-	AdjustPrice        *bool    `protobuf:"varint,8,opt,name=adjustPrice,proto3,oneof" json:"adjustPrice,omitempty"`                //是否调整价格，如果价格不合法，是否调整到合法价位，true 调整，false 不调整。如果价格不合法又不允许调整，则会返回错误
-	AdjustSideAndLimit *float64 `protobuf:"fixed64,9,opt,name=adjustSideAndLimit,proto3,oneof" json:"adjustSideAndLimit,omitempty"` //调整方向和调整幅度百分比限制，正数代表向上调整，负数代表向下调整，具体值代表调整幅度限制，如：0.015代表向上调整且幅度不超过1.5%；-0.01代表向下调整且幅度不超过1%
-	SecMarket          *int32   `protobuf:"varint,10,opt,name=secMarket,proto3,oneof" json:"secMarket,omitempty"`                   //证券所属市场，参见 TrdSecMarket 的枚举定义
-	Remark             *string  `protobuf:"bytes,11,opt,name=remark,proto3,oneof" json:"remark,omitempty"`                          //用户备注字符串，最多只能传64字节。可用于标识订单唯一信息等，下单填上，订单结构就会带上。
-	TimeInForce        *int32   `protobuf:"varint,12,opt,name=timeInForce,proto3,oneof" json:"timeInForce,omitempty"`               //订单有效期限，参见 TrdCommon.TimeInForce 的枚举定义（香港市场、A 股市场和环球期货的市价单，仅支持当日有效）
-	FillOutsideRTH     *bool    `protobuf:"varint,13,opt,name=fillOutsideRTH,proto3,oneof" json:"fillOutsideRTH,omitempty"`         //是否允许盘前盘后成交（仅用于美股，且盘前盘后时段不支持市价单）。默认 false
-	AuxPrice           *float64 `protobuf:"fixed64,14,opt,name=auxPrice,proto3,oneof" json:"auxPrice,omitempty"`                    //触发价格
-	TrailType          *int32   `protobuf:"varint,15,opt,name=trailType,proto3,oneof" json:"trailType,omitempty"`                   //跟踪类型, 参见Trd_Common.TrailType的枚举定义
-	TrailValue         *float64 `protobuf:"fixed64,16,opt,name=trailValue,proto3,oneof" json:"trailValue,omitempty"`                //跟踪金额/百分比
-	TrailSpread        *float64 `protobuf:"fixed64,17,opt,name=trailSpread,proto3,oneof" json:"trailSpread,omitempty"`              //指定价差
-	Session            *int32   `protobuf:"varint,18,opt,name=session,proto3,oneof" json:"session,omitempty"`                       //美股订单时段, 参见Common.Session的枚举定义
-	PositionID         *uint64  `protobuf:"varint,19,opt,name=positionID,proto3,oneof" json:"positionID,omitempty"`                 //持仓ID，JP券商平仓时使用
-	ExpireTime         *string  `protobuf:"bytes,20,opt,name=expireTime,proto3,oneof" json:"expireTime,omitempty"`                  //订单到期时间，仅在timeInForce为GTD时有效
+	AdjustPrice        *bool        `protobuf:"varint,8,opt,name=adjustPrice,proto3,oneof" json:"adjustPrice,omitempty"`                          //是否调整价格，如果价格不合法，是否调整到合法价位，true 调整，false 不调整。如果价格不合法又不允许调整，则会返回错误
+	AdjustSideAndLimit *float64     `protobuf:"fixed64,9,opt,name=adjustSideAndLimit,proto3,oneof" json:"adjustSideAndLimit,omitempty"`           //调整方向和调整幅度百分比限制，正数代表向上调整，负数代表向下调整，具体值代表调整幅度限制，如：0.015代表向上调整且幅度不超过1.5%；-0.01代表向下调整且幅度不超过1%
+	SecMarket          *int32       `protobuf:"varint,10,opt,name=secMarket,proto3,oneof" json:"secMarket,omitempty"`                             //证券所属市场，参见 TrdSecMarket 的枚举定义
+	Remark             *string      `protobuf:"bytes,11,opt,name=remark,proto3,oneof" json:"remark,omitempty"`                                    //用户备注字符串，最多只能传64字节。可用于标识订单唯一信息等，下单填上，订单结构就会带上。
+	TimeInForce        *TimeInForce `protobuf:"varint,12,opt,name=timeInForce,proto3,enum=common.TimeInForce,oneof" json:"timeInForce,omitempty"` //订单有效期限，参见 TrdCommon.TimeInForce 的枚举定义（香港市场、A 股市场和环球期货的市价单，仅支持当日有效）
+	FillOutsideRTH     *bool        `protobuf:"varint,13,opt,name=fillOutsideRTH,proto3,oneof" json:"fillOutsideRTH,omitempty"`                   //是否允许盘前盘后成交（仅用于美股，且盘前盘后时段不支持市价单）。默认 false
+	AuxPrice           *float64     `protobuf:"fixed64,14,opt,name=auxPrice,proto3,oneof" json:"auxPrice,omitempty"`                              //触发价格
+	TrailType          *int32       `protobuf:"varint,15,opt,name=trailType,proto3,oneof" json:"trailType,omitempty"`                             //跟踪类型, 参见Trd_Common.TrailType的枚举定义
+	TrailValue         *float64     `protobuf:"fixed64,16,opt,name=trailValue,proto3,oneof" json:"trailValue,omitempty"`                          //跟踪金额/百分比
+	TrailSpread        *float64     `protobuf:"fixed64,17,opt,name=trailSpread,proto3,oneof" json:"trailSpread,omitempty"`                        //指定价差
+	Session            *int32       `protobuf:"varint,18,opt,name=session,proto3,oneof" json:"session,omitempty"`                                 //美股订单时段, 参见Common.Session的枚举定义
+	PositionID         *uint64      `protobuf:"varint,19,opt,name=positionID,proto3,oneof" json:"positionID,omitempty"`                           //持仓ID，JP券商平仓时使用
+	ExpireTime         *string      `protobuf:"bytes,20,opt,name=expireTime,proto3,oneof" json:"expireTime,omitempty"`                            //订单到期时间，仅在timeInForce为GTD时有效
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -731,11 +731,11 @@ func (x *CreateOrderReq_C2S) GetRemark() string {
 	return ""
 }
 
-func (x *CreateOrderReq_C2S) GetTimeInForce() int32 {
+func (x *CreateOrderReq_C2S) GetTimeInForce() TimeInForce {
 	if x != nil && x.TimeInForce != nil {
 		return *x.TimeInForce
 	}
-	return 0
+	return TimeInForce_TimeInForce_DAY
 }
 
 func (x *CreateOrderReq_C2S) GetFillOutsideRTH() bool {
@@ -863,9 +863,9 @@ const file_order_proto_rawDesc = "" +
 	"\x03c2s\x18\x01 \x01(\v2\v.FeeReq.C2SR\x03c2s\x1aV\n" +
 	"\x03C2S\x12)\n" +
 	"\x06header\x18\x01 \x01(\v2\x11.common.TrdHeaderR\x06header\x12$\n" +
-	"\rorderIdExList\x18\x02 \x03(\tR\rorderIdExList\"\x89\x02\n" +
-	"\x06FeeRes\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\rorderIdExList\x18\x02 \x03(\tR\rorderIdExList\"\x9a\x02\n" +
+	"\x06FeeRes\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12\"\n" +
 	"\x03s2c\x18\x04 \x01(\v2\v.FeeRes.S2CH\x02R\x03s2c\x88\x01\x01\x1af\n" +
@@ -875,9 +875,9 @@ const file_order_proto_rawDesc = "" +
 	"\a_retMsgB\n" +
 	"\n" +
 	"\b_errCodeB\x06\n" +
-	"\x04_s2c\"\x82\x02\n" +
-	"\vNotifyOrder\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\x04_s2c\"\x93\x02\n" +
+	"\vNotifyOrder\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12'\n" +
 	"\x03s2c\x18\x04 \x01(\v2\x10.NotifyOrder.S2CH\x02R\x03s2c\x88\x01\x01\x1aU\n" +
@@ -887,9 +887,9 @@ const file_order_proto_rawDesc = "" +
 	"\a_retMsgB\n" +
 	"\n" +
 	"\b_errCodeB\x06\n" +
-	"\x04_s2c\"\x8e\x02\n" +
-	"\x0fNotifyOrderFill\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\x04_s2c\"\x9f\x02\n" +
+	"\x0fNotifyOrderFill\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12+\n" +
 	"\x03s2c\x18\x04 \x01(\v2\x14.NotifyOrderFill.S2CH\x02R\x03s2c\x88\x01\x01\x1aY\n" +
@@ -899,9 +899,9 @@ const file_order_proto_rawDesc = "" +
 	"\a_retMsgB\n" +
 	"\n" +
 	"\b_errCodeB\x06\n" +
-	"\x04_s2c\"\xcb\a\n" +
+	"\x04_s2c\"\xe0\a\n" +
 	"\x0eCreateOrderReq\x12%\n" +
-	"\x03c2s\x18\x01 \x01(\v2\x13.CreateOrderReq.C2SR\x03c2s\x1a\x91\a\n" +
+	"\x03c2s\x18\x01 \x01(\v2\x13.CreateOrderReq.C2SR\x03c2s\x1a\xa6\a\n" +
 	"\x03C2S\x12,\n" +
 	"\bpacketID\x18\x01 \x01(\v2\x10.common.PacketIDR\bpacketID\x12)\n" +
 	"\x06header\x18\x02 \x01(\v2\x11.common.TrdHeaderR\x06header\x12\x18\n" +
@@ -914,8 +914,8 @@ const file_order_proto_rawDesc = "" +
 	"\x12adjustSideAndLimit\x18\t \x01(\x01H\x02R\x12adjustSideAndLimit\x88\x01\x01\x12!\n" +
 	"\tsecMarket\x18\n" +
 	" \x01(\x05H\x03R\tsecMarket\x88\x01\x01\x12\x1b\n" +
-	"\x06remark\x18\v \x01(\tH\x04R\x06remark\x88\x01\x01\x12%\n" +
-	"\vtimeInForce\x18\f \x01(\x05H\x05R\vtimeInForce\x88\x01\x01\x12+\n" +
+	"\x06remark\x18\v \x01(\tH\x04R\x06remark\x88\x01\x01\x12:\n" +
+	"\vtimeInForce\x18\f \x01(\x0e2\x13.common.TimeInForceH\x05R\vtimeInForce\x88\x01\x01\x12+\n" +
 	"\x0efillOutsideRTH\x18\r \x01(\bH\x06R\x0efillOutsideRTH\x88\x01\x01\x12\x1f\n" +
 	"\bauxPrice\x18\x0e \x01(\x01H\aR\bauxPrice\x88\x01\x01\x12!\n" +
 	"\ttrailType\x18\x0f \x01(\x05H\bR\ttrailType\x88\x01\x01\x12#\n" +
@@ -947,9 +947,9 @@ const file_order_proto_rawDesc = "" +
 	"\n" +
 	"\b_sessionB\r\n" +
 	"\v_positionIDB\r\n" +
-	"\v_expireTime\"\xc0\x02\n" +
-	"\x0eCreateOrderRes\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\v_expireTime\"\xd1\x02\n" +
+	"\x0eCreateOrderRes\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12*\n" +
 	"\x03s2c\x18\x04 \x01(\v2\x13.CreateOrderRes.S2CH\x02R\x03s2c\x88\x01\x01\x1a\x8c\x01\n" +
@@ -992,34 +992,41 @@ var file_order_proto_goTypes = []any{
 	(*NotifyOrderFill_S2C)(nil), // 9: NotifyOrderFill.S2C
 	(*CreateOrderReq_C2S)(nil),  // 10: CreateOrderReq.C2S
 	(*CreateOrderRes_S2C)(nil),  // 11: CreateOrderRes.S2C
-	(*TrdHeader)(nil),           // 12: common.TrdHeader
-	(*OrderFee)(nil),            // 13: common.OrderFee
-	(*Order)(nil),               // 14: common.Order
-	(*OrderFill)(nil),           // 15: common.OrderFill
-	(*PacketID)(nil),            // 16: common.PacketID
+	(RetType)(0),                // 12: common.RetType
+	(*TrdHeader)(nil),           // 13: common.TrdHeader
+	(*OrderFee)(nil),            // 14: common.OrderFee
+	(*Order)(nil),               // 15: common.Order
+	(*OrderFill)(nil),           // 16: common.OrderFill
+	(*PacketID)(nil),            // 17: common.PacketID
+	(TimeInForce)(0),            // 18: common.TimeInForce
 }
 var file_order_proto_depIdxs = []int32{
 	6,  // 0: FeeReq.c2s:type_name -> FeeReq.C2S
-	7,  // 1: FeeRes.s2c:type_name -> FeeRes.S2C
-	8,  // 2: NotifyOrder.s2c:type_name -> NotifyOrder.S2C
-	9,  // 3: NotifyOrderFill.s2c:type_name -> NotifyOrderFill.S2C
-	10, // 4: CreateOrderReq.c2s:type_name -> CreateOrderReq.C2S
-	11, // 5: CreateOrderRes.s2c:type_name -> CreateOrderRes.S2C
-	12, // 6: FeeReq.C2S.header:type_name -> common.TrdHeader
-	12, // 7: FeeRes.S2C.header:type_name -> common.TrdHeader
-	13, // 8: FeeRes.S2C.orderFeeList:type_name -> common.OrderFee
-	12, // 9: NotifyOrder.S2C.header:type_name -> common.TrdHeader
-	14, // 10: NotifyOrder.S2C.order:type_name -> common.Order
-	12, // 11: NotifyOrderFill.S2C.header:type_name -> common.TrdHeader
-	15, // 12: NotifyOrderFill.S2C.order:type_name -> common.OrderFill
-	16, // 13: CreateOrderReq.C2S.packetID:type_name -> common.PacketID
-	12, // 14: CreateOrderReq.C2S.header:type_name -> common.TrdHeader
-	12, // 15: CreateOrderRes.S2C.header:type_name -> common.TrdHeader
-	16, // [16:16] is the sub-list for method output_type
-	16, // [16:16] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	12, // 1: FeeRes.retType:type_name -> common.RetType
+	7,  // 2: FeeRes.s2c:type_name -> FeeRes.S2C
+	12, // 3: NotifyOrder.retType:type_name -> common.RetType
+	8,  // 4: NotifyOrder.s2c:type_name -> NotifyOrder.S2C
+	12, // 5: NotifyOrderFill.retType:type_name -> common.RetType
+	9,  // 6: NotifyOrderFill.s2c:type_name -> NotifyOrderFill.S2C
+	10, // 7: CreateOrderReq.c2s:type_name -> CreateOrderReq.C2S
+	12, // 8: CreateOrderRes.retType:type_name -> common.RetType
+	11, // 9: CreateOrderRes.s2c:type_name -> CreateOrderRes.S2C
+	13, // 10: FeeReq.C2S.header:type_name -> common.TrdHeader
+	13, // 11: FeeRes.S2C.header:type_name -> common.TrdHeader
+	14, // 12: FeeRes.S2C.orderFeeList:type_name -> common.OrderFee
+	13, // 13: NotifyOrder.S2C.header:type_name -> common.TrdHeader
+	15, // 14: NotifyOrder.S2C.order:type_name -> common.Order
+	13, // 15: NotifyOrderFill.S2C.header:type_name -> common.TrdHeader
+	16, // 16: NotifyOrderFill.S2C.order:type_name -> common.OrderFill
+	17, // 17: CreateOrderReq.C2S.packetID:type_name -> common.PacketID
+	13, // 18: CreateOrderReq.C2S.header:type_name -> common.TrdHeader
+	18, // 19: CreateOrderReq.C2S.timeInForce:type_name -> common.TimeInForce
+	13, // 20: CreateOrderRes.S2C.header:type_name -> common.TrdHeader
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_order_proto_init() }

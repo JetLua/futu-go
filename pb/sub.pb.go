@@ -69,7 +69,7 @@ func (x *SubAccPushReq) GetC2S() *SubAccPushReq_C2S {
 // *订阅交易推送响应
 type SubAccPushRes struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RetType       int32                  `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"` //RetType,返回结果
+	RetType       RetType                `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"` //RetType,返回结果
 	RetMsg        *string                `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32                 `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *SubAccPushRes_S2C     `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -107,11 +107,11 @@ func (*SubAccPushRes) Descriptor() ([]byte, []int) {
 	return file_sub_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SubAccPushRes) GetRetType() int32 {
+func (x *SubAccPushRes) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *SubAccPushRes) GetRetMsg() string {
@@ -219,13 +219,13 @@ var File_sub_proto protoreflect.FileDescriptor
 
 const file_sub_proto_rawDesc = "" +
 	"\n" +
-	"\tsub.proto\"Z\n" +
+	"\tsub.proto\x1a\fcommon.proto\"Z\n" +
 	"\rSubAccPushReq\x12$\n" +
 	"\x03c2s\x18\x01 \x01(\v2\x12.SubAccPushReq.C2SR\x03c2s\x1a#\n" +
 	"\x03C2S\x12\x1c\n" +
-	"\taccIDList\x18\x01 \x03(\x04R\taccIDList\"\xb6\x01\n" +
-	"\rSubAccPushRes\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\taccIDList\x18\x01 \x03(\x04R\taccIDList\"\xc7\x01\n" +
+	"\rSubAccPushRes\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12)\n" +
 	"\x03s2c\x18\x04 \x01(\v2\x12.SubAccPushRes.S2CH\x02R\x03s2c\x88\x01\x01\x1a\x05\n" +
@@ -253,15 +253,17 @@ var file_sub_proto_goTypes = []any{
 	(*SubAccPushRes)(nil),     // 1: SubAccPushRes
 	(*SubAccPushReq_C2S)(nil), // 2: SubAccPushReq.C2S
 	(*SubAccPushRes_S2C)(nil), // 3: SubAccPushRes.S2C
+	(RetType)(0),              // 4: common.RetType
 }
 var file_sub_proto_depIdxs = []int32{
 	2, // 0: SubAccPushReq.c2s:type_name -> SubAccPushReq.C2S
-	3, // 1: SubAccPushRes.s2c:type_name -> SubAccPushRes.S2C
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4, // 1: SubAccPushRes.retType:type_name -> common.RetType
+	3, // 2: SubAccPushRes.s2c:type_name -> SubAccPushRes.S2C
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_sub_proto_init() }
@@ -269,6 +271,7 @@ func file_sub_proto_init() {
 	if File_sub_proto != nil {
 		return
 	}
+	file_common_proto_init()
 	file_sub_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

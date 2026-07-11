@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option go_package = "futu/pb";
 
+import "common.proto";
+
 /**订阅交易推送请求*/
 message SubAccPushReq {
   message C2S {
@@ -13,7 +15,7 @@ message SubAccPushReq {
 /**订阅交易推送响应*/
 message SubAccPushRes {
   message S2C {};
-  int32 retType = 1; //RetType,返回结果
+  common.RetType retType = 1; //RetType,返回结果
   optional string retMsg = 2;
   optional int32 errCode = 3;
   optional S2C s2c = 4;

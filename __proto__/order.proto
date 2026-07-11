@@ -20,7 +20,7 @@ message FeeRes {
     repeated common.OrderFee orderFeeList = 2; //订单费用列表
   }
   //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-  int32 retType = 1;
+  common.RetType retType = 1;
   optional string retMsg = 2;
   optional int32 errCode = 3;
 
@@ -34,7 +34,7 @@ message NotifyOrder {
     common.Order order = 2; //订单结构
   }
   //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-  int32 retType = 1;
+  common.RetType retType = 1;
   optional string retMsg = 2;
   optional int32 errCode = 3;
   optional S2C s2c = 4;
@@ -47,7 +47,7 @@ message NotifyOrderFill {
     common.OrderFill order = 2; //成交结构
   }
   //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-  int32 retType = 1;
+  common.RetType retType = 1;
   optional string retMsg = 2;
   optional int32 errCode = 3;
 
@@ -68,7 +68,7 @@ message CreateOrderReq {
     optional double adjustSideAndLimit = 9; //调整方向和调整幅度百分比限制，正数代表向上调整，负数代表向下调整，具体值代表调整幅度限制，如：0.015代表向上调整且幅度不超过1.5%；-0.01代表向下调整且幅度不超过1%
     optional int32 secMarket = 10; //证券所属市场，参见 TrdSecMarket 的枚举定义
     optional string remark = 11; //用户备注字符串，最多只能传64字节。可用于标识订单唯一信息等，下单填上，订单结构就会带上。
-    optional int32 timeInForce = 12; //订单有效期限，参见 TrdCommon.TimeInForce 的枚举定义（香港市场、A 股市场和环球期货的市价单，仅支持当日有效）
+    optional common.TimeInForce timeInForce = 12; //订单有效期限，参见 TrdCommon.TimeInForce 的枚举定义（香港市场、A 股市场和环球期货的市价单，仅支持当日有效）
     optional bool fillOutsideRTH = 13; //是否允许盘前盘后成交（仅用于美股，且盘前盘后时段不支持市价单）。默认 false
     optional double auxPrice = 14; //触发价格
     optional int32 trailType = 15; //跟踪类型, 参见Trd_Common.TrailType的枚举定义
@@ -90,7 +90,7 @@ message CreateOrderRes {
   }
 
   //以下3个字段每条协议都有，注释说明在 InitConnect.proto 中
-  int32 retType = 1;
+  common.RetType retType = 1;
   optional string retMsg = 2;
   optional int32 errCode = 3;
   optional S2C s2c = 4;

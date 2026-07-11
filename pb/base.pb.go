@@ -69,7 +69,7 @@ func (x *InitReq) GetC2S() *InitReq_C2S {
 // * 初始化响应
 type InitRes struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RetType       int32                  `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"`
+	RetType       RetType                `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"`
 	RetMsg        *string                `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32                 `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *InitRes_S2C           `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -107,11 +107,11 @@ func (*InitRes) Descriptor() ([]byte, []int) {
 	return file_base_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *InitRes) GetRetType() int32 {
+func (x *InitRes) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *InitRes) GetRetMsg() string {
@@ -180,10 +180,10 @@ func (x *Ping) GetC2S() *Ping_C2S {
 	return nil
 }
 
-// * 心跳响应
+// 心跳响应
 type Pong struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RetType       int32                  `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"`
+	RetType       RetType                `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"`
 	RetMsg        *string                `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32                 `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *Pong_S2C              `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -221,11 +221,11 @@ func (*Pong) Descriptor() ([]byte, []int) {
 	return file_base_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *Pong) GetRetType() int32 {
+func (x *Pong) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *Pong) GetRetMsg() string {
@@ -249,7 +249,7 @@ func (x *Pong) GetS2C() *Pong_S2C {
 	return nil
 }
 
-// * 交易解锁请求
+// 交易解锁请求
 type UnlockReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	C2S           *UnlockReq_C2S         `protobuf:"bytes,1,opt,name=c2s,proto3" json:"c2s,omitempty"`
@@ -294,10 +294,10 @@ func (x *UnlockReq) GetC2S() *UnlockReq_C2S {
 	return nil
 }
 
-// * 交易解锁响应
+// 交易解锁响应
 type UnlockRes struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RetType       int32                  `protobuf:"varint,1,opt,name=retType,proto3" json:"retType,omitempty"` //RetType，返回结果
+	RetType       RetType                `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"` //RetType，返回结果
 	RetMsg        *string                `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
 	ErrCode       *int32                 `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
 	S2C           *UnlockRes_S2C         `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
@@ -335,11 +335,11 @@ func (*UnlockRes) Descriptor() ([]byte, []int) {
 	return file_base_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *UnlockRes) GetRetType() int32 {
+func (x *UnlockRes) GetRetType() RetType {
 	if x != nil {
 		return x.RetType
 	}
-	return 0
+	return RetType_RetType_Succeed
 }
 
 func (x *UnlockRes) GetRetMsg() string {
@@ -357,6 +357,233 @@ func (x *UnlockRes) GetErrCode() int32 {
 }
 
 func (x *UnlockRes) GetS2C() *UnlockRes_S2C {
+	if x != nil {
+		return x.S2C
+	}
+	return nil
+}
+
+// 静态数据请求
+type StaticInfoReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	C2S           *StaticInfoReq_C2S     `protobuf:"bytes,1,opt,name=c2s,proto3" json:"c2s,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StaticInfoReq) Reset() {
+	*x = StaticInfoReq{}
+	mi := &file_base_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StaticInfoReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StaticInfoReq) ProtoMessage() {}
+
+func (x *StaticInfoReq) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StaticInfoReq.ProtoReflect.Descriptor instead.
+func (*StaticInfoReq) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *StaticInfoReq) GetC2S() *StaticInfoReq_C2S {
+	if x != nil {
+		return x.C2S
+	}
+	return nil
+}
+
+// 静态数据响应
+type StaticInfoRes struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RetType       RetType                `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"` //RetType，返回结果
+	RetMsg        *string                `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
+	ErrCode       *int32                 `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
+	S2C           *StaticInfoRes_S2C     `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StaticInfoRes) Reset() {
+	*x = StaticInfoRes{}
+	mi := &file_base_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StaticInfoRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StaticInfoRes) ProtoMessage() {}
+
+func (x *StaticInfoRes) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StaticInfoRes.ProtoReflect.Descriptor instead.
+func (*StaticInfoRes) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *StaticInfoRes) GetRetType() RetType {
+	if x != nil {
+		return x.RetType
+	}
+	return RetType_RetType_Succeed
+}
+
+func (x *StaticInfoRes) GetRetMsg() string {
+	if x != nil && x.RetMsg != nil {
+		return *x.RetMsg
+	}
+	return ""
+}
+
+func (x *StaticInfoRes) GetErrCode() int32 {
+	if x != nil && x.ErrCode != nil {
+		return *x.ErrCode
+	}
+	return 0
+}
+
+func (x *StaticInfoRes) GetS2C() *StaticInfoRes_S2C {
+	if x != nil {
+		return x.S2C
+	}
+	return nil
+}
+
+// 持仓列表请求
+type PositionListReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	C2S           *PositionListReq_C2S   `protobuf:"bytes,1,opt,name=c2s,proto3" json:"c2s,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PositionListReq) Reset() {
+	*x = PositionListReq{}
+	mi := &file_base_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PositionListReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PositionListReq) ProtoMessage() {}
+
+func (x *PositionListReq) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PositionListReq.ProtoReflect.Descriptor instead.
+func (*PositionListReq) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *PositionListReq) GetC2S() *PositionListReq_C2S {
+	if x != nil {
+		return x.C2S
+	}
+	return nil
+}
+
+type PositionListRes struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RetType       RetType                `protobuf:"varint,1,opt,name=retType,proto3,enum=common.RetType" json:"retType,omitempty"`
+	RetMsg        *string                `protobuf:"bytes,2,opt,name=retMsg,proto3,oneof" json:"retMsg,omitempty"`
+	ErrCode       *int32                 `protobuf:"varint,3,opt,name=errCode,proto3,oneof" json:"errCode,omitempty"`
+	S2C           *PositionListRes_S2C   `protobuf:"bytes,4,opt,name=s2c,proto3,oneof" json:"s2c,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PositionListRes) Reset() {
+	*x = PositionListRes{}
+	mi := &file_base_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PositionListRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PositionListRes) ProtoMessage() {}
+
+func (x *PositionListRes) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PositionListRes.ProtoReflect.Descriptor instead.
+func (*PositionListRes) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *PositionListRes) GetRetType() RetType {
+	if x != nil {
+		return x.RetType
+	}
+	return RetType_RetType_Succeed
+}
+
+func (x *PositionListRes) GetRetMsg() string {
+	if x != nil && x.RetMsg != nil {
+		return *x.RetMsg
+	}
+	return ""
+}
+
+func (x *PositionListRes) GetErrCode() int32 {
+	if x != nil && x.ErrCode != nil {
+		return *x.ErrCode
+	}
+	return 0
+}
+
+func (x *PositionListRes) GetS2C() *PositionListRes_S2C {
 	if x != nil {
 		return x.S2C
 	}
@@ -383,7 +610,7 @@ type InitReq_C2S struct {
 
 func (x *InitReq_C2S) Reset() {
 	*x = InitReq_C2S{}
-	mi := &file_base_proto_msgTypes[6]
+	mi := &file_base_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -395,7 +622,7 @@ func (x *InitReq_C2S) String() string {
 func (*InitReq_C2S) ProtoMessage() {}
 
 func (x *InitReq_C2S) ProtoReflect() protoreflect.Message {
-	mi := &file_base_proto_msgTypes[6]
+	mi := &file_base_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -466,7 +693,7 @@ type InitRes_S2C struct {
 
 func (x *InitRes_S2C) Reset() {
 	*x = InitRes_S2C{}
-	mi := &file_base_proto_msgTypes[7]
+	mi := &file_base_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -478,7 +705,7 @@ func (x *InitRes_S2C) String() string {
 func (*InitRes_S2C) ProtoMessage() {}
 
 func (x *InitRes_S2C) ProtoReflect() protoreflect.Message {
-	mi := &file_base_proto_msgTypes[7]
+	mi := &file_base_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -545,7 +772,7 @@ type Ping_C2S struct {
 
 func (x *Ping_C2S) Reset() {
 	*x = Ping_C2S{}
-	mi := &file_base_proto_msgTypes[8]
+	mi := &file_base_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -557,7 +784,7 @@ func (x *Ping_C2S) String() string {
 func (*Ping_C2S) ProtoMessage() {}
 
 func (x *Ping_C2S) ProtoReflect() protoreflect.Message {
-	mi := &file_base_proto_msgTypes[8]
+	mi := &file_base_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -589,7 +816,7 @@ type Pong_S2C struct {
 
 func (x *Pong_S2C) Reset() {
 	*x = Pong_S2C{}
-	mi := &file_base_proto_msgTypes[9]
+	mi := &file_base_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -601,7 +828,7 @@ func (x *Pong_S2C) String() string {
 func (*Pong_S2C) ProtoMessage() {}
 
 func (x *Pong_S2C) ProtoReflect() protoreflect.Message {
-	mi := &file_base_proto_msgTypes[9]
+	mi := &file_base_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -635,7 +862,7 @@ type UnlockReq_C2S struct {
 
 func (x *UnlockReq_C2S) Reset() {
 	*x = UnlockReq_C2S{}
-	mi := &file_base_proto_msgTypes[10]
+	mi := &file_base_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -647,7 +874,7 @@ func (x *UnlockReq_C2S) String() string {
 func (*UnlockReq_C2S) ProtoMessage() {}
 
 func (x *UnlockReq_C2S) ProtoReflect() protoreflect.Message {
-	mi := &file_base_proto_msgTypes[10]
+	mi := &file_base_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -692,7 +919,7 @@ type UnlockRes_S2C struct {
 
 func (x *UnlockRes_S2C) Reset() {
 	*x = UnlockRes_S2C{}
-	mi := &file_base_proto_msgTypes[11]
+	mi := &file_base_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -704,7 +931,7 @@ func (x *UnlockRes_S2C) String() string {
 func (*UnlockRes_S2C) ProtoMessage() {}
 
 func (x *UnlockRes_S2C) ProtoReflect() protoreflect.Message {
-	mi := &file_base_proto_msgTypes[11]
+	mi := &file_base_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -718,6 +945,264 @@ func (x *UnlockRes_S2C) ProtoReflect() protoreflect.Message {
 // Deprecated: Use UnlockRes_S2C.ProtoReflect.Descriptor instead.
 func (*UnlockRes_S2C) Descriptor() ([]byte, []int) {
 	return file_base_proto_rawDescGZIP(), []int{5, 0}
+}
+
+type StaticInfoReq_C2S struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Market        *int32                 `protobuf:"varint,1,opt,name=market,proto3,oneof" json:"market,omitempty"`
+	SecType       *int32                 `protobuf:"varint,2,opt,name=secType,proto3,oneof" json:"secType,omitempty"`
+	SecurityList  []*Security            `protobuf:"bytes,3,rep,name=securityList,proto3" json:"securityList,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StaticInfoReq_C2S) Reset() {
+	*x = StaticInfoReq_C2S{}
+	mi := &file_base_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StaticInfoReq_C2S) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StaticInfoReq_C2S) ProtoMessage() {}
+
+func (x *StaticInfoReq_C2S) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StaticInfoReq_C2S.ProtoReflect.Descriptor instead.
+func (*StaticInfoReq_C2S) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{6, 0}
+}
+
+func (x *StaticInfoReq_C2S) GetMarket() int32 {
+	if x != nil && x.Market != nil {
+		return *x.Market
+	}
+	return 0
+}
+
+func (x *StaticInfoReq_C2S) GetSecType() int32 {
+	if x != nil && x.SecType != nil {
+		return *x.SecType
+	}
+	return 0
+}
+
+func (x *StaticInfoReq_C2S) GetSecurityList() []*Security {
+	if x != nil {
+		return x.SecurityList
+	}
+	return nil
+}
+
+type StaticInfoRes_S2C struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	StaticInfoList []*SecurityStaticInfo  `protobuf:"bytes,1,rep,name=StaticInfoList,proto3" json:"StaticInfoList,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *StaticInfoRes_S2C) Reset() {
+	*x = StaticInfoRes_S2C{}
+	mi := &file_base_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StaticInfoRes_S2C) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StaticInfoRes_S2C) ProtoMessage() {}
+
+func (x *StaticInfoRes_S2C) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StaticInfoRes_S2C.ProtoReflect.Descriptor instead.
+func (*StaticInfoRes_S2C) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{7, 0}
+}
+
+func (x *StaticInfoRes_S2C) GetStaticInfoList() []*SecurityStaticInfo {
+	if x != nil {
+		return x.StaticInfoList
+	}
+	return nil
+}
+
+type PositionListReq_C2S struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Header           *TrdHeader             `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`                             //交易公共参数头
+	FilterConditions *TrdFilterConditions   `protobuf:"bytes,2,opt,name=filterConditions,proto3,oneof" json:"filterConditions,omitempty"`   //过滤条件
+	FilterPLRatioMin *float64               `protobuf:"fixed64,3,opt,name=filterPLRatioMin,proto3,oneof" json:"filterPLRatioMin,omitempty"` //过滤盈亏百分比下限，高于此比例的会返回。证券账户使用摊薄成本价的盈亏比例，期货账户使用平均成本价的盈亏比例
+	FilterPLRatioMax *float64               `protobuf:"fixed64,4,opt,name=filterPLRatioMax,proto3,oneof" json:"filterPLRatioMax,omitempty"` //过滤盈亏百分比上限，低于此比例的会返回。证券账户使用摊薄成本价的盈亏比例，期货账户使用平均成本价的盈亏比例
+	RefreshCache     *bool                  `protobuf:"varint,5,opt,name=refreshCache,proto3,oneof" json:"refreshCache,omitempty"`          //立即刷新 OpenD 缓存的此数据，默认不填。true 向服务器获取最新数据更新缓存并返回；flase 或没填则返回 OpenD 缓存的数据，不会向服务器请求。
+	// 正常情况下，服务器有更新就会立即推送到 OpenD，OpenD 缓存着数据，API 请求过来，返回同步的缓存数据，一般不需要指定刷新缓存，保证快速返回且减少对服务器的压力
+	// 如果遇到丢包等情况，可能出现缓存数据与服务器不一致，用户如果发现数据更新有异样，可指定刷新缓存，解决数据同步的问题。
+	AssetCategory          *int32 `protobuf:"varint,6,opt,name=assetCategory,proto3,oneof" json:"assetCategory,omitempty"` //账户资产类型，JP衍生品账户必填，参考 Trd_Common.TrdAssetCategory
+	Currency               *int32 `protobuf:"varint,7,opt,name=currency,proto3,oneof" json:"currency,omitempty"`           //货币种类，参见 Trd_Common.Currency。加密货币账户必填，其他账户忽略
+	ShowOptionStrategyView *bool  `protobuf:"varint,8,opt,name=showOptionStrategyView,proto3,oneof" json:"showOptionStrategyView,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *PositionListReq_C2S) Reset() {
+	*x = PositionListReq_C2S{}
+	mi := &file_base_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PositionListReq_C2S) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PositionListReq_C2S) ProtoMessage() {}
+
+func (x *PositionListReq_C2S) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PositionListReq_C2S.ProtoReflect.Descriptor instead.
+func (*PositionListReq_C2S) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{8, 0}
+}
+
+func (x *PositionListReq_C2S) GetHeader() *TrdHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
+}
+
+func (x *PositionListReq_C2S) GetFilterConditions() *TrdFilterConditions {
+	if x != nil {
+		return x.FilterConditions
+	}
+	return nil
+}
+
+func (x *PositionListReq_C2S) GetFilterPLRatioMin() float64 {
+	if x != nil && x.FilterPLRatioMin != nil {
+		return *x.FilterPLRatioMin
+	}
+	return 0
+}
+
+func (x *PositionListReq_C2S) GetFilterPLRatioMax() float64 {
+	if x != nil && x.FilterPLRatioMax != nil {
+		return *x.FilterPLRatioMax
+	}
+	return 0
+}
+
+func (x *PositionListReq_C2S) GetRefreshCache() bool {
+	if x != nil && x.RefreshCache != nil {
+		return *x.RefreshCache
+	}
+	return false
+}
+
+func (x *PositionListReq_C2S) GetAssetCategory() int32 {
+	if x != nil && x.AssetCategory != nil {
+		return *x.AssetCategory
+	}
+	return 0
+}
+
+func (x *PositionListReq_C2S) GetCurrency() int32 {
+	if x != nil && x.Currency != nil {
+		return *x.Currency
+	}
+	return 0
+}
+
+func (x *PositionListReq_C2S) GetShowOptionStrategyView() bool {
+	if x != nil && x.ShowOptionStrategyView != nil {
+		return *x.ShowOptionStrategyView
+	}
+	return false
+}
+
+type PositionListRes_S2C struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Header        *TrdHeader             `protobuf:"bytes,1,opt,name=header,proto3" json:"header,omitempty"`             //交易公共参数头
+	PositionList  []*Position            `protobuf:"bytes,2,rep,name=positionList,proto3" json:"positionList,omitempty"` //持仓列表
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PositionListRes_S2C) Reset() {
+	*x = PositionListRes_S2C{}
+	mi := &file_base_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PositionListRes_S2C) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PositionListRes_S2C) ProtoMessage() {}
+
+func (x *PositionListRes_S2C) ProtoReflect() protoreflect.Message {
+	mi := &file_base_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PositionListRes_S2C.ProtoReflect.Descriptor instead.
+func (*PositionListRes_S2C) Descriptor() ([]byte, []int) {
+	return file_base_proto_rawDescGZIP(), []int{9, 0}
+}
+
+func (x *PositionListRes_S2C) GetHeader() *TrdHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
+}
+
+func (x *PositionListRes_S2C) GetPositionList() []*Position {
+	if x != nil {
+		return x.PositionList
+	}
+	return nil
 }
 
 var File_base_proto protoreflect.FileDescriptor
@@ -738,9 +1223,9 @@ const file_base_proto_rawDesc = "" +
 	"\fpushProtoFmt\x18\x05 \x01(\x05H\x02R\fpushProtoFmt\x88\x01\x01B\r\n" +
 	"\v_recvNotifyB\x10\n" +
 	"\x0e_packetEncAlgoB\x0f\n" +
-	"\r_pushProtoFmt\"\xff\x02\n" +
-	"\aInitRes\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\r_pushProtoFmt\"\x90\x03\n" +
+	"\aInitRes\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12#\n" +
 	"\x03s2c\x18\x04 \x01(\v2\f.InitRes.S2CH\x02R\x03s2c\x88\x01\x01\x1a\xd9\x01\n" +
@@ -761,9 +1246,9 @@ const file_base_proto_rawDesc = "" +
 	"\x04Ping\x12\x1b\n" +
 	"\x03c2s\x18\x01 \x01(\v2\t.Ping.C2SR\x03c2s\x1a\x19\n" +
 	"\x03C2S\x12\x12\n" +
-	"\x04time\x18\x01 \x01(\x03R\x04time\"\xb8\x01\n" +
-	"\x04Pong\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\x04time\x18\x01 \x01(\x03R\x04time\"\xc9\x01\n" +
+	"\x04Pong\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12 \n" +
 	"\x03s2c\x18\x04 \x01(\v2\t.Pong.S2CH\x02R\x03s2c\x88\x01\x01\x1a\x19\n" +
@@ -780,13 +1265,63 @@ const file_base_proto_rawDesc = "" +
 	"\x06pwdMD5\x18\x02 \x01(\tH\x00R\x06pwdMD5\x88\x01\x01\x12=\n" +
 	"\fsecurityFirm\x18\x03 \x01(\x0e2\x14.common.SecurityFirmH\x01R\fsecurityFirm\x88\x01\x01B\t\n" +
 	"\a_pwdMD5B\x0f\n" +
-	"\r_securityFirm\"\xae\x01\n" +
-	"\tUnlockRes\x12\x18\n" +
-	"\aretType\x18\x01 \x01(\x05R\aretType\x12\x1b\n" +
+	"\r_securityFirm\"\xbf\x01\n" +
+	"\tUnlockRes\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
 	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
 	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12%\n" +
 	"\x03s2c\x18\x04 \x01(\v2\x0e.UnlockRes.S2CH\x02R\x03s2c\x88\x01\x01\x1a\x05\n" +
 	"\x03S2CB\t\n" +
+	"\a_retMsgB\n" +
+	"\n" +
+	"\b_errCodeB\x06\n" +
+	"\x04_s2c\"\xc6\x01\n" +
+	"\rStaticInfoReq\x12$\n" +
+	"\x03c2s\x18\x01 \x01(\v2\x12.StaticInfoReq.C2SR\x03c2s\x1a\x8e\x01\n" +
+	"\x03C2S\x12\x1b\n" +
+	"\x06market\x18\x01 \x01(\x05H\x00R\x06market\x88\x01\x01\x12\x1d\n" +
+	"\asecType\x18\x02 \x01(\x05H\x01R\asecType\x88\x01\x01\x124\n" +
+	"\fsecurityList\x18\x03 \x03(\v2\x10.common.SecurityR\fsecurityListB\t\n" +
+	"\a_marketB\n" +
+	"\n" +
+	"\b_secType\"\x8b\x02\n" +
+	"\rStaticInfoRes\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
+	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
+	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12)\n" +
+	"\x03s2c\x18\x04 \x01(\v2\x12.StaticInfoRes.S2CH\x02R\x03s2c\x88\x01\x01\x1aI\n" +
+	"\x03S2C\x12B\n" +
+	"\x0eStaticInfoList\x18\x01 \x03(\v2\x1a.common.SecurityStaticInfoR\x0eStaticInfoListB\t\n" +
+	"\a_retMsgB\n" +
+	"\n" +
+	"\b_errCodeB\x06\n" +
+	"\x04_s2c\"\xd8\x04\n" +
+	"\x0fPositionListReq\x12&\n" +
+	"\x03c2s\x18\x01 \x01(\v2\x14.PositionListReq.C2SR\x03c2s\x1a\x9c\x04\n" +
+	"\x03C2S\x12)\n" +
+	"\x06header\x18\x01 \x01(\v2\x11.common.TrdHeaderR\x06header\x12L\n" +
+	"\x10filterConditions\x18\x02 \x01(\v2\x1b.common.TrdFilterConditionsH\x00R\x10filterConditions\x88\x01\x01\x12/\n" +
+	"\x10filterPLRatioMin\x18\x03 \x01(\x01H\x01R\x10filterPLRatioMin\x88\x01\x01\x12/\n" +
+	"\x10filterPLRatioMax\x18\x04 \x01(\x01H\x02R\x10filterPLRatioMax\x88\x01\x01\x12'\n" +
+	"\frefreshCache\x18\x05 \x01(\bH\x03R\frefreshCache\x88\x01\x01\x12)\n" +
+	"\rassetCategory\x18\x06 \x01(\x05H\x04R\rassetCategory\x88\x01\x01\x12\x1f\n" +
+	"\bcurrency\x18\a \x01(\x05H\x05R\bcurrency\x88\x01\x01\x12;\n" +
+	"\x16showOptionStrategyView\x18\b \x01(\bH\x06R\x16showOptionStrategyView\x88\x01\x01B\x13\n" +
+	"\x11_filterConditionsB\x13\n" +
+	"\x11_filterPLRatioMinB\x13\n" +
+	"\x11_filterPLRatioMaxB\x0f\n" +
+	"\r_refreshCacheB\x10\n" +
+	"\x0e_assetCategoryB\v\n" +
+	"\t_currencyB\x19\n" +
+	"\x17_showOptionStrategyView\"\xac\x02\n" +
+	"\x0fPositionListRes\x12)\n" +
+	"\aretType\x18\x01 \x01(\x0e2\x0f.common.RetTypeR\aretType\x12\x1b\n" +
+	"\x06retMsg\x18\x02 \x01(\tH\x00R\x06retMsg\x88\x01\x01\x12\x1d\n" +
+	"\aerrCode\x18\x03 \x01(\x05H\x01R\aerrCode\x88\x01\x01\x12+\n" +
+	"\x03s2c\x18\x04 \x01(\v2\x14.PositionListRes.S2CH\x02R\x03s2c\x88\x01\x01\x1af\n" +
+	"\x03S2C\x12)\n" +
+	"\x06header\x18\x01 \x01(\v2\x11.common.TrdHeaderR\x06header\x124\n" +
+	"\fpositionList\x18\x02 \x03(\v2\x10.common.PositionR\fpositionListB\t\n" +
 	"\a_retMsgB\n" +
 	"\n" +
 	"\b_errCodeB\x06\n" +
@@ -804,35 +1339,64 @@ func file_base_proto_rawDescGZIP() []byte {
 	return file_base_proto_rawDescData
 }
 
-var file_base_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_base_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_base_proto_goTypes = []any{
-	(*InitReq)(nil),       // 0: InitReq
-	(*InitRes)(nil),       // 1: InitRes
-	(*Ping)(nil),          // 2: Ping
-	(*Pong)(nil),          // 3: Pong
-	(*UnlockReq)(nil),     // 4: UnlockReq
-	(*UnlockRes)(nil),     // 5: UnlockRes
-	(*InitReq_C2S)(nil),   // 6: InitReq.C2S
-	(*InitRes_S2C)(nil),   // 7: InitRes.S2C
-	(*Ping_C2S)(nil),      // 8: Ping.C2S
-	(*Pong_S2C)(nil),      // 9: Pong.S2C
-	(*UnlockReq_C2S)(nil), // 10: UnlockReq.C2S
-	(*UnlockRes_S2C)(nil), // 11: UnlockRes.S2C
-	(SecurityFirm)(0),     // 12: common.SecurityFirm
+	(*InitReq)(nil),             // 0: InitReq
+	(*InitRes)(nil),             // 1: InitRes
+	(*Ping)(nil),                // 2: Ping
+	(*Pong)(nil),                // 3: Pong
+	(*UnlockReq)(nil),           // 4: UnlockReq
+	(*UnlockRes)(nil),           // 5: UnlockRes
+	(*StaticInfoReq)(nil),       // 6: StaticInfoReq
+	(*StaticInfoRes)(nil),       // 7: StaticInfoRes
+	(*PositionListReq)(nil),     // 8: PositionListReq
+	(*PositionListRes)(nil),     // 9: PositionListRes
+	(*InitReq_C2S)(nil),         // 10: InitReq.C2S
+	(*InitRes_S2C)(nil),         // 11: InitRes.S2C
+	(*Ping_C2S)(nil),            // 12: Ping.C2S
+	(*Pong_S2C)(nil),            // 13: Pong.S2C
+	(*UnlockReq_C2S)(nil),       // 14: UnlockReq.C2S
+	(*UnlockRes_S2C)(nil),       // 15: UnlockRes.S2C
+	(*StaticInfoReq_C2S)(nil),   // 16: StaticInfoReq.C2S
+	(*StaticInfoRes_S2C)(nil),   // 17: StaticInfoRes.S2C
+	(*PositionListReq_C2S)(nil), // 18: PositionListReq.C2S
+	(*PositionListRes_S2C)(nil), // 19: PositionListRes.S2C
+	(RetType)(0),                // 20: common.RetType
+	(SecurityFirm)(0),           // 21: common.SecurityFirm
+	(*Security)(nil),            // 22: common.Security
+	(*SecurityStaticInfo)(nil),  // 23: common.SecurityStaticInfo
+	(*TrdHeader)(nil),           // 24: common.TrdHeader
+	(*TrdFilterConditions)(nil), // 25: common.TrdFilterConditions
+	(*Position)(nil),            // 26: common.Position
 }
 var file_base_proto_depIdxs = []int32{
-	6,  // 0: InitReq.c2s:type_name -> InitReq.C2S
-	7,  // 1: InitRes.s2c:type_name -> InitRes.S2C
-	8,  // 2: Ping.c2s:type_name -> Ping.C2S
-	9,  // 3: Pong.s2c:type_name -> Pong.S2C
-	10, // 4: UnlockReq.c2s:type_name -> UnlockReq.C2S
-	11, // 5: UnlockRes.s2c:type_name -> UnlockRes.S2C
-	12, // 6: UnlockReq.C2S.securityFirm:type_name -> common.SecurityFirm
-	7,  // [7:7] is the sub-list for method output_type
-	7,  // [7:7] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	10, // 0: InitReq.c2s:type_name -> InitReq.C2S
+	20, // 1: InitRes.retType:type_name -> common.RetType
+	11, // 2: InitRes.s2c:type_name -> InitRes.S2C
+	12, // 3: Ping.c2s:type_name -> Ping.C2S
+	20, // 4: Pong.retType:type_name -> common.RetType
+	13, // 5: Pong.s2c:type_name -> Pong.S2C
+	14, // 6: UnlockReq.c2s:type_name -> UnlockReq.C2S
+	20, // 7: UnlockRes.retType:type_name -> common.RetType
+	15, // 8: UnlockRes.s2c:type_name -> UnlockRes.S2C
+	16, // 9: StaticInfoReq.c2s:type_name -> StaticInfoReq.C2S
+	20, // 10: StaticInfoRes.retType:type_name -> common.RetType
+	17, // 11: StaticInfoRes.s2c:type_name -> StaticInfoRes.S2C
+	18, // 12: PositionListReq.c2s:type_name -> PositionListReq.C2S
+	20, // 13: PositionListRes.retType:type_name -> common.RetType
+	19, // 14: PositionListRes.s2c:type_name -> PositionListRes.S2C
+	21, // 15: UnlockReq.C2S.securityFirm:type_name -> common.SecurityFirm
+	22, // 16: StaticInfoReq.C2S.securityList:type_name -> common.Security
+	23, // 17: StaticInfoRes.S2C.StaticInfoList:type_name -> common.SecurityStaticInfo
+	24, // 18: PositionListReq.C2S.header:type_name -> common.TrdHeader
+	25, // 19: PositionListReq.C2S.filterConditions:type_name -> common.TrdFilterConditions
+	24, // 20: PositionListRes.S2C.header:type_name -> common.TrdHeader
+	26, // 21: PositionListRes.S2C.positionList:type_name -> common.Position
+	22, // [22:22] is the sub-list for method output_type
+	22, // [22:22] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_base_proto_init() }
@@ -844,16 +1408,20 @@ func file_base_proto_init() {
 	file_base_proto_msgTypes[1].OneofWrappers = []any{}
 	file_base_proto_msgTypes[3].OneofWrappers = []any{}
 	file_base_proto_msgTypes[5].OneofWrappers = []any{}
-	file_base_proto_msgTypes[6].OneofWrappers = []any{}
 	file_base_proto_msgTypes[7].OneofWrappers = []any{}
+	file_base_proto_msgTypes[9].OneofWrappers = []any{}
 	file_base_proto_msgTypes[10].OneofWrappers = []any{}
+	file_base_proto_msgTypes[11].OneofWrappers = []any{}
+	file_base_proto_msgTypes[14].OneofWrappers = []any{}
+	file_base_proto_msgTypes[16].OneofWrappers = []any{}
+	file_base_proto_msgTypes[18].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_base_proto_rawDesc), len(file_base_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

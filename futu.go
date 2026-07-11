@@ -189,20 +189,6 @@ func (f *Futu) pack(id uint32, raw []byte) ([]byte, error) {
 	return <-c, nil
 }
 
-// func (f *Futu) loop() {
-// 	data := make([]byte, 2048)
-
-//		for {
-//			n, err := f.c.Read(data)
-//			if err != nil {
-//				f.emit(err)
-//				f.end <- struct{}{}
-//				break
-//			}
-//			f.pool.Write(data[:n])
-//			f.handle()
-//		}
-//	}
 func (f *Futu) loop() {
 	reader := bufio.NewReaderSize(f.c, MAX_PACKET_SIZE)
 
@@ -348,6 +334,57 @@ func (f *Futu) Unlock(pwd string, firm pb.SecurityFirm) error {
 		return fmt.Errorf("%s", *r3.RetMsg)
 	}
 	return nil
+}
+
+func (f *Futu) GetStaticInfo(code string, market pb.QotMarket) (*pb.StaticInfoRes, error) {
+	r1, err := proto.Marshal(&pb.StaticInfoReq{
+		C2S: &pb.StaticInfoReq_C2S{
+			SecurityList: []*pb.Security{
+				{Code: code, Market: market},
+			},
+		},
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	r2, err := f.pack(ID.StaticInfo, r1)
+	if err != nil {
+		return nil, err
+	}
+	r3 := &pb.StaticInfoRes{}
+	err = proto.Unmarshal(r2, r3)
+	if err != nil {
+		return nil, err
+	}
+	return r3, nil
+}
+
+func (f *Futu) GetPostion(accId uint64) (*pb.PositionListRes, error) {
+	r1, err := proto.Marshal(&pb.PositionListReq{
+		C2S: &pb.PositionListReq_C2S{
+			Header: &pb.TrdHeader{
+				TrdEnv:    pb.TrdEnv_TrdEnv_Real,
+				AccID:     accId,
+				TrdMarket: pb.TrdMarket_TrdMarket_US,
+			},
+		},
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	r2, err := f.pack(ID.Position, r1)
+	if err != nil {
+		return nil, err
+	}
+	r3 := &pb.PositionListRes{}
+	err = proto.Unmarshal(r2, r3)
+	if err != nil {
+		return nil, err
+	}
+	return r3, nil
 }
 
 func (f *Futu) Wait() {

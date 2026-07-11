@@ -187,6 +187,58 @@ func (NotifyType) EnumDescriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{2}
 }
 
+type RetType int32
+
+const (
+	RetType_RetType_Succeed RetType = 0    //成功
+	RetType_RetType_Failed  RetType = -1   //失败
+	RetType_RetType_TimeOut RetType = -100 //超时
+	RetType_RetType_Unknown RetType = -400 //未知结果
+)
+
+// Enum value maps for RetType.
+var (
+	RetType_name = map[int32]string{
+		0:    "RetType_Succeed",
+		-1:   "RetType_Failed",
+		-100: "RetType_TimeOut",
+		-400: "RetType_Unknown",
+	}
+	RetType_value = map[string]int32{
+		"RetType_Succeed": 0,
+		"RetType_Failed":  -1,
+		"RetType_TimeOut": -100,
+		"RetType_Unknown": -400,
+	}
+)
+
+func (x RetType) Enum() *RetType {
+	p := new(RetType)
+	*p = x
+	return p
+}
+
+func (x RetType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RetType) Descriptor() protoreflect.EnumDescriptor {
+	return file_common_proto_enumTypes[3].Descriptor()
+}
+
+func (RetType) Type() protoreflect.EnumType {
+	return &file_common_proto_enumTypes[3]
+}
+
+func (x RetType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RetType.Descriptor instead.
+func (RetType) EnumDescriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{3}
+}
+
 type GtwEventType int32
 
 const (
@@ -259,11 +311,11 @@ func (x GtwEventType) String() string {
 }
 
 func (GtwEventType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[3].Descriptor()
+	return file_common_proto_enumTypes[4].Descriptor()
 }
 
 func (GtwEventType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[3]
+	return &file_common_proto_enumTypes[4]
 }
 
 func (x GtwEventType) Number() protoreflect.EnumNumber {
@@ -272,7 +324,7 @@ func (x GtwEventType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use GtwEventType.Descriptor instead.
 func (GtwEventType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{3}
+	return file_common_proto_rawDescGZIP(), []int{4}
 }
 
 type ProgramStatusType int32
@@ -339,11 +391,11 @@ func (x ProgramStatusType) String() string {
 }
 
 func (ProgramStatusType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[4].Descriptor()
+	return file_common_proto_enumTypes[5].Descriptor()
 }
 
 func (ProgramStatusType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[4]
+	return &file_common_proto_enumTypes[5]
 }
 
 func (x ProgramStatusType) Number() protoreflect.EnumNumber {
@@ -352,7 +404,7 @@ func (x ProgramStatusType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ProgramStatusType.Descriptor instead.
 func (ProgramStatusType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{4}
+	return file_common_proto_rawDescGZIP(), []int{5}
 }
 
 // * 行情市场
@@ -416,11 +468,11 @@ func (x QotMarket) String() string {
 }
 
 func (QotMarket) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[5].Descriptor()
+	return file_common_proto_enumTypes[6].Descriptor()
 }
 
 func (QotMarket) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[5]
+	return &file_common_proto_enumTypes[6]
 }
 
 func (x QotMarket) Number() protoreflect.EnumNumber {
@@ -429,7 +481,7 @@ func (x QotMarket) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use QotMarket.Descriptor instead.
 func (QotMarket) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{5}
+	return file_common_proto_rawDescGZIP(), []int{6}
 }
 
 type SubType int32
@@ -507,11 +559,11 @@ func (x SubType) String() string {
 }
 
 func (SubType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[6].Descriptor()
+	return file_common_proto_enumTypes[7].Descriptor()
 }
 
 func (SubType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[6]
+	return &file_common_proto_enumTypes[7]
 }
 
 func (x SubType) Number() protoreflect.EnumNumber {
@@ -520,7 +572,60 @@ func (x SubType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SubType.Descriptor instead.
 func (SubType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{6}
+	return file_common_proto_rawDescGZIP(), []int{7}
+}
+
+// 订单有效期
+type TimeInForce int32
+
+const (
+	TimeInForce_TimeInForce_DAY TimeInForce = 0 // 当日有效
+	TimeInForce_TimeInForce_GTC TimeInForce = 1 // 撤单前有效，最多持续90自然日。
+	TimeInForce_TimeInForce_IOC TimeInForce = 2 // 立即成交或取消（仅适用于加密货币市价单）
+	TimeInForce_TimeInForce_GTD TimeInForce = 3 // 指定日期前有效
+)
+
+// Enum value maps for TimeInForce.
+var (
+	TimeInForce_name = map[int32]string{
+		0: "TimeInForce_DAY",
+		1: "TimeInForce_GTC",
+		2: "TimeInForce_IOC",
+		3: "TimeInForce_GTD",
+	}
+	TimeInForce_value = map[string]int32{
+		"TimeInForce_DAY": 0,
+		"TimeInForce_GTC": 1,
+		"TimeInForce_IOC": 2,
+		"TimeInForce_GTD": 3,
+	}
+)
+
+func (x TimeInForce) Enum() *TimeInForce {
+	p := new(TimeInForce)
+	*p = x
+	return p
+}
+
+func (x TimeInForce) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TimeInForce) Descriptor() protoreflect.EnumDescriptor {
+	return file_common_proto_enumTypes[8].Descriptor()
+}
+
+func (TimeInForce) Type() protoreflect.EnumType {
+	return &file_common_proto_enumTypes[8]
+}
+
+func (x TimeInForce) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TimeInForce.Descriptor instead.
+func (TimeInForce) EnumDescriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{8}
 }
 
 // *
@@ -559,11 +664,11 @@ func (x TrdEnv) String() string {
 }
 
 func (TrdEnv) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[7].Descriptor()
+	return file_common_proto_enumTypes[9].Descriptor()
 }
 
 func (TrdEnv) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[7]
+	return &file_common_proto_enumTypes[9]
 }
 
 func (x TrdEnv) Number() protoreflect.EnumNumber {
@@ -572,7 +677,7 @@ func (x TrdEnv) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrdEnv.Descriptor instead.
 func (TrdEnv) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{7}
+	return file_common_proto_rawDescGZIP(), []int{9}
 }
 
 type TrdSide int32
@@ -615,11 +720,11 @@ func (x TrdSide) String() string {
 }
 
 func (TrdSide) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[8].Descriptor()
+	return file_common_proto_enumTypes[10].Descriptor()
 }
 
 func (TrdSide) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[8]
+	return &file_common_proto_enumTypes[10]
 }
 
 func (x TrdSide) Number() protoreflect.EnumNumber {
@@ -628,7 +733,7 @@ func (x TrdSide) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrdSide.Descriptor instead.
 func (TrdSide) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{8}
+	return file_common_proto_rawDescGZIP(), []int{10}
 }
 
 // * 订单类型
@@ -727,11 +832,11 @@ func (x OrderType) String() string {
 }
 
 func (OrderType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[9].Descriptor()
+	return file_common_proto_enumTypes[11].Descriptor()
 }
 
 func (OrderType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[9]
+	return &file_common_proto_enumTypes[11]
 }
 
 func (x OrderType) Number() protoreflect.EnumNumber {
@@ -740,7 +845,7 @@ func (x OrderType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OrderType.Descriptor instead.
 func (OrderType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{9}
+	return file_common_proto_rawDescGZIP(), []int{11}
 }
 
 // * 交易市场
@@ -819,11 +924,11 @@ func (x TrdMarket) String() string {
 }
 
 func (TrdMarket) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[10].Descriptor()
+	return file_common_proto_enumTypes[12].Descriptor()
 }
 
 func (TrdMarket) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[10]
+	return &file_common_proto_enumTypes[12]
 }
 
 func (x TrdMarket) Number() protoreflect.EnumNumber {
@@ -832,56 +937,7 @@ func (x TrdMarket) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrdMarket.Descriptor instead.
 func (TrdMarket) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{10}
-}
-
-// * 订单有效期
-type TimeInForce int32
-
-const (
-	// * 当日有效
-	TimeInForce_TimeInForce_DAY TimeInForce = 0
-	// * 撤单前有效，最多持续90自然日
-	TimeInForce_TimeInForce_GTC TimeInForce = 1
-)
-
-// Enum value maps for TimeInForce.
-var (
-	TimeInForce_name = map[int32]string{
-		0: "TimeInForce_DAY",
-		1: "TimeInForce_GTC",
-	}
-	TimeInForce_value = map[string]int32{
-		"TimeInForce_DAY": 0,
-		"TimeInForce_GTC": 1,
-	}
-)
-
-func (x TimeInForce) Enum() *TimeInForce {
-	p := new(TimeInForce)
-	*p = x
-	return p
-}
-
-func (x TimeInForce) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (TimeInForce) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[11].Descriptor()
-}
-
-func (TimeInForce) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[11]
-}
-
-func (x TimeInForce) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use TimeInForce.Descriptor instead.
-func (TimeInForce) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{11}
+	return file_common_proto_rawDescGZIP(), []int{12}
 }
 
 // * 订单跟踪类型
@@ -918,11 +974,11 @@ func (x TrailType) String() string {
 }
 
 func (TrailType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[12].Descriptor()
+	return file_common_proto_enumTypes[13].Descriptor()
 }
 
 func (TrailType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[12]
+	return &file_common_proto_enumTypes[13]
 }
 
 func (x TrailType) Number() protoreflect.EnumNumber {
@@ -931,7 +987,7 @@ func (x TrailType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrailType.Descriptor instead.
 func (TrailType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{12}
+	return file_common_proto_rawDescGZIP(), []int{13}
 }
 
 // * 交易证券市场
@@ -992,11 +1048,11 @@ func (x TrdSecMarket) String() string {
 }
 
 func (TrdSecMarket) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[13].Descriptor()
+	return file_common_proto_enumTypes[14].Descriptor()
 }
 
 func (TrdSecMarket) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[13]
+	return &file_common_proto_enumTypes[14]
 }
 
 func (x TrdSecMarket) Number() protoreflect.EnumNumber {
@@ -1005,7 +1061,7 @@ func (x TrdSecMarket) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrdSecMarket.Descriptor instead.
 func (TrdSecMarket) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{13}
+	return file_common_proto_rawDescGZIP(), []int{14}
 }
 
 type TrdAccStatus int32
@@ -1038,11 +1094,11 @@ func (x TrdAccStatus) String() string {
 }
 
 func (TrdAccStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[14].Descriptor()
+	return file_common_proto_enumTypes[15].Descriptor()
 }
 
 func (TrdAccStatus) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[14]
+	return &file_common_proto_enumTypes[15]
 }
 
 func (x TrdAccStatus) Number() protoreflect.EnumNumber {
@@ -1051,7 +1107,7 @@ func (x TrdAccStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrdAccStatus.Descriptor instead.
 func (TrdAccStatus) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{14}
+	return file_common_proto_rawDescGZIP(), []int{15}
 }
 
 type TrdAccType int32
@@ -1087,11 +1143,11 @@ func (x TrdAccType) String() string {
 }
 
 func (TrdAccType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[15].Descriptor()
+	return file_common_proto_enumTypes[16].Descriptor()
 }
 
 func (TrdAccType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[15]
+	return &file_common_proto_enumTypes[16]
 }
 
 func (x TrdAccType) Number() protoreflect.EnumNumber {
@@ -1100,7 +1156,7 @@ func (x TrdAccType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TrdAccType.Descriptor instead.
 func (TrdAccType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{15}
+	return file_common_proto_rawDescGZIP(), []int{16}
 }
 
 type SecurityFirm int32
@@ -1142,11 +1198,11 @@ func (x SecurityFirm) String() string {
 }
 
 func (SecurityFirm) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[16].Descriptor()
+	return file_common_proto_enumTypes[17].Descriptor()
 }
 
 func (SecurityFirm) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[16]
+	return &file_common_proto_enumTypes[17]
 }
 
 func (x SecurityFirm) Number() protoreflect.EnumNumber {
@@ -1155,7 +1211,7 @@ func (x SecurityFirm) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SecurityFirm.Descriptor instead.
 func (SecurityFirm) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{16}
+	return file_common_proto_rawDescGZIP(), []int{17}
 }
 
 type OrderStatus int32
@@ -1218,11 +1274,11 @@ func (x OrderStatus) String() string {
 }
 
 func (OrderStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[17].Descriptor()
+	return file_common_proto_enumTypes[18].Descriptor()
 }
 
 func (OrderStatus) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[17]
+	return &file_common_proto_enumTypes[18]
 }
 
 func (x OrderStatus) Number() protoreflect.EnumNumber {
@@ -1231,7 +1287,7 @@ func (x OrderStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OrderStatus.Descriptor instead.
 func (OrderStatus) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{17}
+	return file_common_proto_rawDescGZIP(), []int{18}
 }
 
 type OrderFillStatus int32
@@ -1267,11 +1323,11 @@ func (x OrderFillStatus) String() string {
 }
 
 func (OrderFillStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[18].Descriptor()
+	return file_common_proto_enumTypes[19].Descriptor()
 }
 
 func (OrderFillStatus) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[18]
+	return &file_common_proto_enumTypes[19]
 }
 
 func (x OrderFillStatus) Number() protoreflect.EnumNumber {
@@ -1280,7 +1336,7 @@ func (x OrderFillStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OrderFillStatus.Descriptor instead.
 func (OrderFillStatus) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{18}
+	return file_common_proto_rawDescGZIP(), []int{19}
 }
 
 type Currency int32
@@ -1334,11 +1390,11 @@ func (x Currency) String() string {
 }
 
 func (Currency) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[19].Descriptor()
+	return file_common_proto_enumTypes[20].Descriptor()
 }
 
 func (Currency) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[19]
+	return &file_common_proto_enumTypes[20]
 }
 
 func (x Currency) Number() protoreflect.EnumNumber {
@@ -1347,7 +1403,7 @@ func (x Currency) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Currency.Descriptor instead.
 func (Currency) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{19}
+	return file_common_proto_rawDescGZIP(), []int{20}
 }
 
 // 资产类别
@@ -1396,11 +1452,11 @@ func (x AssetClass) String() string {
 }
 
 func (AssetClass) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[20].Descriptor()
+	return file_common_proto_enumTypes[21].Descriptor()
 }
 
 func (AssetClass) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[20]
+	return &file_common_proto_enumTypes[21]
 }
 
 func (x AssetClass) Number() protoreflect.EnumNumber {
@@ -1409,7 +1465,7 @@ func (x AssetClass) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AssetClass.Descriptor instead.
 func (AssetClass) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{20}
+	return file_common_proto_rawDescGZIP(), []int{21}
 }
 
 type SecurityType int32
@@ -1469,11 +1525,11 @@ func (x SecurityType) String() string {
 }
 
 func (SecurityType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[21].Descriptor()
+	return file_common_proto_enumTypes[22].Descriptor()
 }
 
 func (SecurityType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[21]
+	return &file_common_proto_enumTypes[22]
 }
 
 func (x SecurityType) Number() protoreflect.EnumNumber {
@@ -1482,7 +1538,7 @@ func (x SecurityType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SecurityType.Descriptor instead.
 func (SecurityType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{21}
+	return file_common_proto_rawDescGZIP(), []int{22}
 }
 
 type OptionType int32
@@ -1518,11 +1574,11 @@ func (x OptionType) String() string {
 }
 
 func (OptionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[22].Descriptor()
+	return file_common_proto_enumTypes[23].Descriptor()
 }
 
 func (OptionType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[22]
+	return &file_common_proto_enumTypes[23]
 }
 
 func (x OptionType) Number() protoreflect.EnumNumber {
@@ -1531,7 +1587,7 @@ func (x OptionType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OptionType.Descriptor instead.
 func (OptionType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{22}
+	return file_common_proto_rawDescGZIP(), []int{23}
 }
 
 type IndexOptionType int32
@@ -1567,11 +1623,11 @@ func (x IndexOptionType) String() string {
 }
 
 func (IndexOptionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[23].Descriptor()
+	return file_common_proto_enumTypes[24].Descriptor()
 }
 
 func (IndexOptionType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[23]
+	return &file_common_proto_enumTypes[24]
 }
 
 func (x IndexOptionType) Number() protoreflect.EnumNumber {
@@ -1580,7 +1636,7 @@ func (x IndexOptionType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use IndexOptionType.Descriptor instead.
 func (IndexOptionType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{23}
+	return file_common_proto_rawDescGZIP(), []int{24}
 }
 
 type OptionAreaType int32
@@ -1619,11 +1675,11 @@ func (x OptionAreaType) String() string {
 }
 
 func (OptionAreaType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[24].Descriptor()
+	return file_common_proto_enumTypes[25].Descriptor()
 }
 
 func (OptionAreaType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[24]
+	return &file_common_proto_enumTypes[25]
 }
 
 func (x OptionAreaType) Number() protoreflect.EnumNumber {
@@ -1632,7 +1688,7 @@ func (x OptionAreaType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use OptionAreaType.Descriptor instead.
 func (OptionAreaType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{24}
+	return file_common_proto_rawDescGZIP(), []int{25}
 }
 
 type PlateSetType int32
@@ -1674,11 +1730,11 @@ func (x PlateSetType) String() string {
 }
 
 func (PlateSetType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[25].Descriptor()
+	return file_common_proto_enumTypes[26].Descriptor()
 }
 
 func (PlateSetType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[25]
+	return &file_common_proto_enumTypes[26]
 }
 
 func (x PlateSetType) Number() protoreflect.EnumNumber {
@@ -1687,7 +1743,7 @@ func (x PlateSetType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PlateSetType.Descriptor instead.
 func (PlateSetType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{25}
+	return file_common_proto_rawDescGZIP(), []int{26}
 }
 
 type WarrantType int32
@@ -1732,11 +1788,11 @@ func (x WarrantType) String() string {
 }
 
 func (WarrantType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[26].Descriptor()
+	return file_common_proto_enumTypes[27].Descriptor()
 }
 
 func (WarrantType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[26]
+	return &file_common_proto_enumTypes[27]
 }
 
 func (x WarrantType) Number() protoreflect.EnumNumber {
@@ -1745,7 +1801,7 @@ func (x WarrantType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use WarrantType.Descriptor instead.
 func (WarrantType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{26}
+	return file_common_proto_rawDescGZIP(), []int{27}
 }
 
 // 窝轮价外/内,界内证表示界内界外
@@ -1782,11 +1838,11 @@ func (x PriceType) String() string {
 }
 
 func (PriceType) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[27].Descriptor()
+	return file_common_proto_enumTypes[28].Descriptor()
 }
 
 func (PriceType) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[27]
+	return &file_common_proto_enumTypes[28]
 }
 
 func (x PriceType) Number() protoreflect.EnumNumber {
@@ -1795,7 +1851,7 @@ func (x PriceType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PriceType.Descriptor instead.
 func (PriceType) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{27}
+	return file_common_proto_rawDescGZIP(), []int{28}
 }
 
 // 窝轮状态
@@ -1838,11 +1894,11 @@ func (x WarrantStatus) String() string {
 }
 
 func (WarrantStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[28].Descriptor()
+	return file_common_proto_enumTypes[29].Descriptor()
 }
 
 func (WarrantStatus) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[28]
+	return &file_common_proto_enumTypes[29]
 }
 
 func (x WarrantStatus) Number() protoreflect.EnumNumber {
@@ -1851,7 +1907,7 @@ func (x WarrantStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use WarrantStatus.Descriptor instead.
 func (WarrantStatus) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{28}
+	return file_common_proto_rawDescGZIP(), []int{29}
 }
 
 type PositionSide int32
@@ -1887,11 +1943,11 @@ func (x PositionSide) String() string {
 }
 
 func (PositionSide) Descriptor() protoreflect.EnumDescriptor {
-	return file_common_proto_enumTypes[29].Descriptor()
+	return file_common_proto_enumTypes[30].Descriptor()
 }
 
 func (PositionSide) Type() protoreflect.EnumType {
-	return &file_common_proto_enumTypes[29]
+	return &file_common_proto_enumTypes[30]
 }
 
 func (x PositionSide) Number() protoreflect.EnumNumber {
@@ -1900,7 +1956,419 @@ func (x PositionSide) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PositionSide.Descriptor instead.
 func (PositionSide) EnumDescriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{29}
+	return file_common_proto_rawDescGZIP(), []int{30}
+}
+
+type SecurityStaticInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Basic         *SecurityStaticBasic   `protobuf:"bytes,1,opt,name=basic,proto3" json:"basic,omitempty"`
+	WarrantExData *WarrantStaticExData   `protobuf:"bytes,2,opt,name=warrantExData,proto3,oneof" json:"warrantExData,omitempty"` //窝轮额外静态信息
+	OptionExData  *OptionStaticExData    `protobuf:"bytes,3,opt,name=optionExData,proto3,oneof" json:"optionExData,omitempty"`   //期权额外静态信息
+	FutureExData  *FutureStaticExData    `protobuf:"bytes,4,opt,name=futureExData,proto3,oneof" json:"futureExData,omitempty"`   //期货额外静态信息
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SecurityStaticInfo) Reset() {
+	*x = SecurityStaticInfo{}
+	mi := &file_common_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SecurityStaticInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SecurityStaticInfo) ProtoMessage() {}
+
+func (x *SecurityStaticInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SecurityStaticInfo.ProtoReflect.Descriptor instead.
+func (*SecurityStaticInfo) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *SecurityStaticInfo) GetBasic() *SecurityStaticBasic {
+	if x != nil {
+		return x.Basic
+	}
+	return nil
+}
+
+func (x *SecurityStaticInfo) GetWarrantExData() *WarrantStaticExData {
+	if x != nil {
+		return x.WarrantExData
+	}
+	return nil
+}
+
+func (x *SecurityStaticInfo) GetOptionExData() *OptionStaticExData {
+	if x != nil {
+		return x.OptionExData
+	}
+	return nil
+}
+
+func (x *SecurityStaticInfo) GetFutureExData() *FutureStaticExData {
+	if x != nil {
+		return x.FutureExData
+	}
+	return nil
+}
+
+type WarrantStaticExData struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Type          int32                  `protobuf:"varint,1,opt,name=type,proto3" json:"type,omitempty"`  //Qot_Common.WarrantType,窝轮类型
+	Owner         *Security              `protobuf:"bytes,2,opt,name=owner,proto3" json:"owner,omitempty"` //所属正股
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WarrantStaticExData) Reset() {
+	*x = WarrantStaticExData{}
+	mi := &file_common_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WarrantStaticExData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WarrantStaticExData) ProtoMessage() {}
+
+func (x *WarrantStaticExData) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WarrantStaticExData.ProtoReflect.Descriptor instead.
+func (*WarrantStaticExData) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *WarrantStaticExData) GetType() int32 {
+	if x != nil {
+		return x.Type
+	}
+	return 0
+}
+
+func (x *WarrantStaticExData) GetOwner() *Security {
+	if x != nil {
+		return x.Owner
+	}
+	return nil
+}
+
+type OptionStaticExData struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	Type                 OptionType             `protobuf:"varint,1,opt,name=type,proto3,enum=common.OptionType" json:"type,omitempty"`                 //Qot_Common.OptionType,期权
+	Owner                *Security              `protobuf:"bytes,2,opt,name=owner,proto3" json:"owner,omitempty"`                                       //标的股
+	StrikeTime           string                 `protobuf:"bytes,3,opt,name=strikeTime,proto3" json:"strikeTime,omitempty"`                             //行权日（格式：yyyy-MM-dd）
+	StrikePrice          float64                `protobuf:"fixed64,4,opt,name=strikePrice,proto3" json:"strikePrice,omitempty"`                         //行权价
+	Suspend              bool                   `protobuf:"varint,5,opt,name=suspend,proto3" json:"suspend,omitempty"`                                  //是否停牌
+	Market               string                 `protobuf:"bytes,6,opt,name=market,proto3" json:"market,omitempty"`                                     //发行市场名字
+	StrikeTimestamp      *float64               `protobuf:"fixed64,7,opt,name=strikeTimestamp,proto3,oneof" json:"strikeTimestamp,omitempty"`           //行权日时间戳
+	IndexOptionType      *int32                 `protobuf:"varint,8,opt,name=indexOptionType,proto3,oneof" json:"indexOptionType,omitempty"`            //Qot_Common.IndexOptionType, 指数期权的类型，仅在指数期权有效
+	ExpirationCycle      *int32                 `protobuf:"varint,9,opt,name=expirationCycle,proto3,oneof" json:"expirationCycle,omitempty"`            // ExpirationCycle，交割周期
+	OptionStandardType   *int32                 `protobuf:"varint,10,opt,name=optionStandardType,proto3,oneof" json:"optionStandardType,omitempty"`     // OptionStandardType，标准期权
+	OptionSettlementMode *int32                 `protobuf:"varint,11,opt,name=optionSettlementMode,proto3,oneof" json:"optionSettlementMode,omitempty"` // OptionSettlementMode，结算方式
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *OptionStaticExData) Reset() {
+	*x = OptionStaticExData{}
+	mi := &file_common_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OptionStaticExData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OptionStaticExData) ProtoMessage() {}
+
+func (x *OptionStaticExData) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OptionStaticExData.ProtoReflect.Descriptor instead.
+func (*OptionStaticExData) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *OptionStaticExData) GetType() OptionType {
+	if x != nil {
+		return x.Type
+	}
+	return OptionType_OptionType_Unknown
+}
+
+func (x *OptionStaticExData) GetOwner() *Security {
+	if x != nil {
+		return x.Owner
+	}
+	return nil
+}
+
+func (x *OptionStaticExData) GetStrikeTime() string {
+	if x != nil {
+		return x.StrikeTime
+	}
+	return ""
+}
+
+func (x *OptionStaticExData) GetStrikePrice() float64 {
+	if x != nil {
+		return x.StrikePrice
+	}
+	return 0
+}
+
+func (x *OptionStaticExData) GetSuspend() bool {
+	if x != nil {
+		return x.Suspend
+	}
+	return false
+}
+
+func (x *OptionStaticExData) GetMarket() string {
+	if x != nil {
+		return x.Market
+	}
+	return ""
+}
+
+func (x *OptionStaticExData) GetStrikeTimestamp() float64 {
+	if x != nil && x.StrikeTimestamp != nil {
+		return *x.StrikeTimestamp
+	}
+	return 0
+}
+
+func (x *OptionStaticExData) GetIndexOptionType() int32 {
+	if x != nil && x.IndexOptionType != nil {
+		return *x.IndexOptionType
+	}
+	return 0
+}
+
+func (x *OptionStaticExData) GetExpirationCycle() int32 {
+	if x != nil && x.ExpirationCycle != nil {
+		return *x.ExpirationCycle
+	}
+	return 0
+}
+
+func (x *OptionStaticExData) GetOptionStandardType() int32 {
+	if x != nil && x.OptionStandardType != nil {
+		return *x.OptionStandardType
+	}
+	return 0
+}
+
+func (x *OptionStaticExData) GetOptionSettlementMode() int32 {
+	if x != nil && x.OptionSettlementMode != nil {
+		return *x.OptionSettlementMode
+	}
+	return 0
+}
+
+type FutureStaticExData struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	LastTradeTime      string                 `protobuf:"bytes,1,opt,name=lastTradeTime,proto3" json:"lastTradeTime,omitempty"`                   //最后交易日，只有非主连期货合约才有该字段
+	LastTradeTimestamp *float64               `protobuf:"fixed64,2,opt,name=lastTradeTimestamp,proto3,oneof" json:"lastTradeTimestamp,omitempty"` //最后交易日时间戳，只有非主连期货合约才有该字段
+	IsMainContract     bool                   `protobuf:"varint,3,opt,name=isMainContract,proto3" json:"isMainContract,omitempty"`                //是否主连合约
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *FutureStaticExData) Reset() {
+	*x = FutureStaticExData{}
+	mi := &file_common_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FutureStaticExData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FutureStaticExData) ProtoMessage() {}
+
+func (x *FutureStaticExData) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FutureStaticExData.ProtoReflect.Descriptor instead.
+func (*FutureStaticExData) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *FutureStaticExData) GetLastTradeTime() string {
+	if x != nil {
+		return x.LastTradeTime
+	}
+	return ""
+}
+
+func (x *FutureStaticExData) GetLastTradeTimestamp() float64 {
+	if x != nil && x.LastTradeTimestamp != nil {
+		return *x.LastTradeTimestamp
+	}
+	return 0
+}
+
+func (x *FutureStaticExData) GetIsMainContract() bool {
+	if x != nil {
+		return x.IsMainContract
+	}
+	return false
+}
+
+type SecurityStaticBasic struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Security      *Security              `protobuf:"bytes,1,opt,name=security,proto3" json:"security,omitempty"`                         //股票
+	Id            int64                  `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`                                    //股票 ID
+	LotSize       int32                  `protobuf:"varint,3,opt,name=lotSize,proto3" json:"lotSize,omitempty"`                          //每手数量,期权类型表示一份合约的股数
+	SecType       SecurityType           `protobuf:"varint,4,opt,name=secType,proto3,enum=common.SecurityType" json:"secType,omitempty"` //Qot_Common.SecurityType,股票类型
+	Name          string                 `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`                                 //股票名字
+	ListTime      string                 `protobuf:"bytes,6,opt,name=listTime,proto3" json:"listTime,omitempty"`                         //上市时间字符串（此字段停止维护，不建议使用，格式：yyyy-MM-dd）
+	Delisting     *bool                  `protobuf:"varint,7,opt,name=delisting,proto3,oneof" json:"delisting,omitempty"`                //是否退市
+	ListTimestamp *float64               `protobuf:"fixed64,8,opt,name=listTimestamp,proto3,oneof" json:"listTimestamp,omitempty"`       //上市时间戳（此字段停止维护，不建议使用）
+	ExchType      *int32                 `protobuf:"varint,9,opt,name=exchType,proto3,oneof" json:"exchType,omitempty"`                  //Qot_Common.ExchType,所属交易所
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SecurityStaticBasic) Reset() {
+	*x = SecurityStaticBasic{}
+	mi := &file_common_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SecurityStaticBasic) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SecurityStaticBasic) ProtoMessage() {}
+
+func (x *SecurityStaticBasic) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SecurityStaticBasic.ProtoReflect.Descriptor instead.
+func (*SecurityStaticBasic) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SecurityStaticBasic) GetSecurity() *Security {
+	if x != nil {
+		return x.Security
+	}
+	return nil
+}
+
+func (x *SecurityStaticBasic) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *SecurityStaticBasic) GetLotSize() int32 {
+	if x != nil {
+		return x.LotSize
+	}
+	return 0
+}
+
+func (x *SecurityStaticBasic) GetSecType() SecurityType {
+	if x != nil {
+		return x.SecType
+	}
+	return SecurityType_SecurityType_Unknown
+}
+
+func (x *SecurityStaticBasic) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SecurityStaticBasic) GetListTime() string {
+	if x != nil {
+		return x.ListTime
+	}
+	return ""
+}
+
+func (x *SecurityStaticBasic) GetDelisting() bool {
+	if x != nil && x.Delisting != nil {
+		return *x.Delisting
+	}
+	return false
+}
+
+func (x *SecurityStaticBasic) GetListTimestamp() float64 {
+	if x != nil && x.ListTimestamp != nil {
+		return *x.ListTimestamp
+	}
+	return 0
+}
+
+func (x *SecurityStaticBasic) GetExchType() int32 {
+	if x != nil && x.ExchType != nil {
+		return *x.ExchType
+	}
+	return 0
 }
 
 // * 美股支持盘前盘后数据
@@ -1922,7 +2390,7 @@ type PreAfterMarketData struct {
 
 func (x *PreAfterMarketData) Reset() {
 	*x = PreAfterMarketData{}
-	mi := &file_common_proto_msgTypes[0]
+	mi := &file_common_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1934,7 +2402,7 @@ func (x *PreAfterMarketData) String() string {
 func (*PreAfterMarketData) ProtoMessage() {}
 
 func (x *PreAfterMarketData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[0]
+	mi := &file_common_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1947,7 +2415,7 @@ func (x *PreAfterMarketData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreAfterMarketData.ProtoReflect.Descriptor instead.
 func (*PreAfterMarketData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{0}
+	return file_common_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PreAfterMarketData) GetPrice() float64 {
@@ -2017,7 +2485,7 @@ type SubInfo struct {
 
 func (x *SubInfo) Reset() {
 	*x = SubInfo{}
-	mi := &file_common_proto_msgTypes[1]
+	mi := &file_common_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2029,7 +2497,7 @@ func (x *SubInfo) String() string {
 func (*SubInfo) ProtoMessage() {}
 
 func (x *SubInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[1]
+	mi := &file_common_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2042,7 +2510,7 @@ func (x *SubInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubInfo.ProtoReflect.Descriptor instead.
 func (*SubInfo) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{1}
+	return file_common_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SubInfo) GetSubType() SubType {
@@ -2071,7 +2539,7 @@ type ConnSubInfo struct {
 
 func (x *ConnSubInfo) Reset() {
 	*x = ConnSubInfo{}
-	mi := &file_common_proto_msgTypes[2]
+	mi := &file_common_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2083,7 +2551,7 @@ func (x *ConnSubInfo) String() string {
 func (*ConnSubInfo) ProtoMessage() {}
 
 func (x *ConnSubInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[2]
+	mi := &file_common_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2096,7 +2564,7 @@ func (x *ConnSubInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnSubInfo.ProtoReflect.Descriptor instead.
 func (*ConnSubInfo) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{2}
+	return file_common_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ConnSubInfo) GetSubInfoList() []*SubInfo {
@@ -2131,7 +2599,7 @@ type TrdHeader struct {
 
 func (x *TrdHeader) Reset() {
 	*x = TrdHeader{}
-	mi := &file_common_proto_msgTypes[3]
+	mi := &file_common_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2143,7 +2611,7 @@ func (x *TrdHeader) String() string {
 func (*TrdHeader) ProtoMessage() {}
 
 func (x *TrdHeader) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[3]
+	mi := &file_common_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2156,7 +2624,7 @@ func (x *TrdHeader) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrdHeader.ProtoReflect.Descriptor instead.
 func (*TrdHeader) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{3}
+	return file_common_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TrdHeader) GetTrdEnv() TrdEnv {
@@ -2197,7 +2665,7 @@ type TrdAcc struct {
 
 func (x *TrdAcc) Reset() {
 	*x = TrdAcc{}
-	mi := &file_common_proto_msgTypes[4]
+	mi := &file_common_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2209,7 +2677,7 @@ func (x *TrdAcc) String() string {
 func (*TrdAcc) ProtoMessage() {}
 
 func (x *TrdAcc) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[4]
+	mi := &file_common_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2222,7 +2690,7 @@ func (x *TrdAcc) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrdAcc.ProtoReflect.Descriptor instead.
 func (*TrdAcc) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{4}
+	return file_common_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *TrdAcc) GetTrdEnv() TrdEnv {
@@ -2329,7 +2797,7 @@ type Funds struct {
 
 func (x *Funds) Reset() {
 	*x = Funds{}
-	mi := &file_common_proto_msgTypes[5]
+	mi := &file_common_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2341,7 +2809,7 @@ func (x *Funds) String() string {
 func (*Funds) ProtoMessage() {}
 
 func (x *Funds) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[5]
+	mi := &file_common_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2354,7 +2822,7 @@ func (x *Funds) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Funds.ProtoReflect.Descriptor instead.
 func (*Funds) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{5}
+	return file_common_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Funds) GetPower() float64 {
@@ -2600,7 +3068,7 @@ type AccCashInfo struct {
 
 func (x *AccCashInfo) Reset() {
 	*x = AccCashInfo{}
-	mi := &file_common_proto_msgTypes[6]
+	mi := &file_common_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2612,7 +3080,7 @@ func (x *AccCashInfo) String() string {
 func (*AccCashInfo) ProtoMessage() {}
 
 func (x *AccCashInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[6]
+	mi := &file_common_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2625,7 +3093,7 @@ func (x *AccCashInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccCashInfo.ProtoReflect.Descriptor instead.
 func (*AccCashInfo) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{6}
+	return file_common_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *AccCashInfo) GetCurrency() Currency {
@@ -2666,7 +3134,7 @@ type AccMarketInfo struct {
 
 func (x *AccMarketInfo) Reset() {
 	*x = AccMarketInfo{}
-	mi := &file_common_proto_msgTypes[7]
+	mi := &file_common_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2678,7 +3146,7 @@ func (x *AccMarketInfo) String() string {
 func (*AccMarketInfo) ProtoMessage() {}
 
 func (x *AccMarketInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[7]
+	mi := &file_common_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2691,7 +3159,7 @@ func (x *AccMarketInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccMarketInfo.ProtoReflect.Descriptor instead.
 func (*AccMarketInfo) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{7}
+	return file_common_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *AccMarketInfo) GetTrdMarket() TrdMarket {
@@ -2718,7 +3186,7 @@ type GtwEvent struct {
 
 func (x *GtwEvent) Reset() {
 	*x = GtwEvent{}
-	mi := &file_common_proto_msgTypes[8]
+	mi := &file_common_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2730,7 +3198,7 @@ func (x *GtwEvent) String() string {
 func (*GtwEvent) ProtoMessage() {}
 
 func (x *GtwEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[8]
+	mi := &file_common_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2743,7 +3211,7 @@ func (x *GtwEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GtwEvent.ProtoReflect.Descriptor instead.
 func (*GtwEvent) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{8}
+	return file_common_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GtwEvent) GetEventType() GtwEventType {
@@ -2770,7 +3238,7 @@ type ProgramStatus struct {
 
 func (x *ProgramStatus) Reset() {
 	*x = ProgramStatus{}
-	mi := &file_common_proto_msgTypes[9]
+	mi := &file_common_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2782,7 +3250,7 @@ func (x *ProgramStatus) String() string {
 func (*ProgramStatus) ProtoMessage() {}
 
 func (x *ProgramStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[9]
+	mi := &file_common_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2795,7 +3263,7 @@ func (x *ProgramStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProgramStatus.ProtoReflect.Descriptor instead.
 func (*ProgramStatus) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{9}
+	return file_common_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ProgramStatus) GetType() ProgramStatusType {
@@ -2825,7 +3293,7 @@ type QotRight struct {
 
 func (x *QotRight) Reset() {
 	*x = QotRight{}
-	mi := &file_common_proto_msgTypes[10]
+	mi := &file_common_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2837,7 +3305,7 @@ func (x *QotRight) String() string {
 func (*QotRight) ProtoMessage() {}
 
 func (x *QotRight) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[10]
+	mi := &file_common_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2850,7 +3318,7 @@ func (x *QotRight) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QotRight.ProtoReflect.Descriptor instead.
 func (*QotRight) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{10}
+	return file_common_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *QotRight) GetHkQotRight() int32 {
@@ -2897,7 +3365,7 @@ type APILevel struct {
 
 func (x *APILevel) Reset() {
 	*x = APILevel{}
-	mi := &file_common_proto_msgTypes[11]
+	mi := &file_common_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2909,7 +3377,7 @@ func (x *APILevel) String() string {
 func (*APILevel) ProtoMessage() {}
 
 func (x *APILevel) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[11]
+	mi := &file_common_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2922,7 +3390,7 @@ func (x *APILevel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use APILevel.ProtoReflect.Descriptor instead.
 func (*APILevel) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{11}
+	return file_common_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *APILevel) GetApiLevel() string {
@@ -2942,7 +3410,7 @@ type ConnectStatus struct {
 
 func (x *ConnectStatus) Reset() {
 	*x = ConnectStatus{}
-	mi := &file_common_proto_msgTypes[12]
+	mi := &file_common_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2954,7 +3422,7 @@ func (x *ConnectStatus) String() string {
 func (*ConnectStatus) ProtoMessage() {}
 
 func (x *ConnectStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[12]
+	mi := &file_common_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2967,7 +3435,7 @@ func (x *ConnectStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectStatus.ProtoReflect.Descriptor instead.
 func (*ConnectStatus) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{12}
+	return file_common_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ConnectStatus) GetQotLogined() bool {
@@ -2994,7 +3462,7 @@ type APIQuota struct {
 
 func (x *APIQuota) Reset() {
 	*x = APIQuota{}
-	mi := &file_common_proto_msgTypes[13]
+	mi := &file_common_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3006,7 +3474,7 @@ func (x *APIQuota) String() string {
 func (*APIQuota) ProtoMessage() {}
 
 func (x *APIQuota) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[13]
+	mi := &file_common_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3019,7 +3487,7 @@ func (x *APIQuota) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use APIQuota.ProtoReflect.Descriptor instead.
 func (*APIQuota) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{13}
+	return file_common_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *APIQuota) GetSubQuota() int32 {
@@ -3049,7 +3517,7 @@ type Security struct {
 
 func (x *Security) Reset() {
 	*x = Security{}
-	mi := &file_common_proto_msgTypes[14]
+	mi := &file_common_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3061,7 +3529,7 @@ func (x *Security) String() string {
 func (*Security) ProtoMessage() {}
 
 func (x *Security) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[14]
+	mi := &file_common_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3074,7 +3542,7 @@ func (x *Security) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Security.ProtoReflect.Descriptor instead.
 func (*Security) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{14}
+	return file_common_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *Security) GetMarket() QotMarket {
@@ -3103,7 +3571,7 @@ type FutureBasicQotExData struct {
 
 func (x *FutureBasicQotExData) Reset() {
 	*x = FutureBasicQotExData{}
-	mi := &file_common_proto_msgTypes[15]
+	mi := &file_common_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3115,7 +3583,7 @@ func (x *FutureBasicQotExData) String() string {
 func (*FutureBasicQotExData) ProtoMessage() {}
 
 func (x *FutureBasicQotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[15]
+	mi := &file_common_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3128,7 +3596,7 @@ func (x *FutureBasicQotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FutureBasicQotExData.ProtoReflect.Descriptor instead.
 func (*FutureBasicQotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{15}
+	return file_common_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *FutureBasicQotExData) GetLastSettlePrice() float64 {
@@ -3170,7 +3638,7 @@ type WarrantBasicQotExData struct {
 
 func (x *WarrantBasicQotExData) Reset() {
 	*x = WarrantBasicQotExData{}
-	mi := &file_common_proto_msgTypes[16]
+	mi := &file_common_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3182,7 +3650,7 @@ func (x *WarrantBasicQotExData) String() string {
 func (*WarrantBasicQotExData) ProtoMessage() {}
 
 func (x *WarrantBasicQotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[16]
+	mi := &file_common_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3195,7 +3663,7 @@ func (x *WarrantBasicQotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WarrantBasicQotExData.ProtoReflect.Descriptor instead.
 func (*WarrantBasicQotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{16}
+	return file_common_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *WarrantBasicQotExData) GetDelta() float64 {
@@ -3251,7 +3719,7 @@ type BasicQot struct {
 
 func (x *BasicQot) Reset() {
 	*x = BasicQot{}
-	mi := &file_common_proto_msgTypes[17]
+	mi := &file_common_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3263,7 +3731,7 @@ func (x *BasicQot) String() string {
 func (*BasicQot) ProtoMessage() {}
 
 func (x *BasicQot) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[17]
+	mi := &file_common_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3276,7 +3744,7 @@ func (x *BasicQot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BasicQot.ProtoReflect.Descriptor instead.
 func (*BasicQot) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{17}
+	return file_common_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *BasicQot) GetSecurity() *Security {
@@ -3473,7 +3941,7 @@ type OptionBasicQotExData struct {
 
 func (x *OptionBasicQotExData) Reset() {
 	*x = OptionBasicQotExData{}
-	mi := &file_common_proto_msgTypes[18]
+	mi := &file_common_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3485,7 +3953,7 @@ func (x *OptionBasicQotExData) String() string {
 func (*OptionBasicQotExData) ProtoMessage() {}
 
 func (x *OptionBasicQotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[18]
+	mi := &file_common_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3498,7 +3966,7 @@ func (x *OptionBasicQotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OptionBasicQotExData.ProtoReflect.Descriptor instead.
 func (*OptionBasicQotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{18}
+	return file_common_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *OptionBasicQotExData) GetStrikePrice() float64 {
@@ -3637,7 +4105,7 @@ type PacketID struct {
 
 func (x *PacketID) Reset() {
 	*x = PacketID{}
-	mi := &file_common_proto_msgTypes[19]
+	mi := &file_common_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3649,7 +4117,7 @@ func (x *PacketID) String() string {
 func (*PacketID) ProtoMessage() {}
 
 func (x *PacketID) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[19]
+	mi := &file_common_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3662,7 +4130,7 @@ func (x *PacketID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PacketID.ProtoReflect.Descriptor instead.
 func (*PacketID) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{19}
+	return file_common_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *PacketID) GetConnID() uint64 {
@@ -3711,7 +4179,7 @@ type Order struct {
 
 func (x *Order) Reset() {
 	*x = Order{}
-	mi := &file_common_proto_msgTypes[20]
+	mi := &file_common_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3723,7 +4191,7 @@ func (x *Order) String() string {
 func (*Order) ProtoMessage() {}
 
 func (x *Order) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[20]
+	mi := &file_common_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3736,7 +4204,7 @@ func (x *Order) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Order.ProtoReflect.Descriptor instead.
 func (*Order) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{20}
+	return file_common_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *Order) GetTrdSide() TrdSide {
@@ -3932,7 +4400,7 @@ type OrderFill struct {
 
 func (x *OrderFill) Reset() {
 	*x = OrderFill{}
-	mi := &file_common_proto_msgTypes[21]
+	mi := &file_common_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3944,7 +4412,7 @@ func (x *OrderFill) String() string {
 func (*OrderFill) ProtoMessage() {}
 
 func (x *OrderFill) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[21]
+	mi := &file_common_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3957,7 +4425,7 @@ func (x *OrderFill) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderFill.ProtoReflect.Descriptor instead.
 func (*OrderFill) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{21}
+	return file_common_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *OrderFill) GetTrdSide() TrdSide {
@@ -4090,7 +4558,7 @@ type OrderFee struct {
 
 func (x *OrderFee) Reset() {
 	*x = OrderFee{}
-	mi := &file_common_proto_msgTypes[22]
+	mi := &file_common_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4102,7 +4570,7 @@ func (x *OrderFee) String() string {
 func (*OrderFee) ProtoMessage() {}
 
 func (x *OrderFee) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[22]
+	mi := &file_common_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4115,7 +4583,7 @@ func (x *OrderFee) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderFee.ProtoReflect.Descriptor instead.
 func (*OrderFee) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{22}
+	return file_common_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *OrderFee) GetOrderIDEx() string {
@@ -4149,7 +4617,7 @@ type OrderFeeItem struct {
 
 func (x *OrderFeeItem) Reset() {
 	*x = OrderFeeItem{}
-	mi := &file_common_proto_msgTypes[23]
+	mi := &file_common_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4161,7 +4629,7 @@ func (x *OrderFeeItem) String() string {
 func (*OrderFeeItem) ProtoMessage() {}
 
 func (x *OrderFeeItem) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[23]
+	mi := &file_common_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4174,7 +4642,7 @@ func (x *OrderFeeItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderFeeItem.ProtoReflect.Descriptor instead.
 func (*OrderFeeItem) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{23}
+	return file_common_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *OrderFeeItem) GetTitle() string {
@@ -4243,7 +4711,7 @@ type SnapshotBasicData struct {
 
 func (x *SnapshotBasicData) Reset() {
 	*x = SnapshotBasicData{}
-	mi := &file_common_proto_msgTypes[24]
+	mi := &file_common_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4255,7 +4723,7 @@ func (x *SnapshotBasicData) String() string {
 func (*SnapshotBasicData) ProtoMessage() {}
 
 func (x *SnapshotBasicData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[24]
+	mi := &file_common_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4268,7 +4736,7 @@ func (x *SnapshotBasicData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SnapshotBasicData.ProtoReflect.Descriptor instead.
 func (*SnapshotBasicData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{24}
+	return file_common_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *SnapshotBasicData) GetSecurity() *Security {
@@ -4583,7 +5051,7 @@ type EquitySnapshotExData struct {
 
 func (x *EquitySnapshotExData) Reset() {
 	*x = EquitySnapshotExData{}
-	mi := &file_common_proto_msgTypes[25]
+	mi := &file_common_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4595,7 +5063,7 @@ func (x *EquitySnapshotExData) String() string {
 func (*EquitySnapshotExData) ProtoMessage() {}
 
 func (x *EquitySnapshotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[25]
+	mi := &file_common_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4608,7 +5076,7 @@ func (x *EquitySnapshotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EquitySnapshotExData.ProtoReflect.Descriptor instead.
 func (*EquitySnapshotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{25}
+	return file_common_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *EquitySnapshotExData) GetIssuedShares() int64 {
@@ -4754,7 +5222,7 @@ type OptionSnapshotExData struct {
 
 func (x *OptionSnapshotExData) Reset() {
 	*x = OptionSnapshotExData{}
-	mi := &file_common_proto_msgTypes[26]
+	mi := &file_common_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4766,7 +5234,7 @@ func (x *OptionSnapshotExData) String() string {
 func (*OptionSnapshotExData) ProtoMessage() {}
 
 func (x *OptionSnapshotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[26]
+	mi := &file_common_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4779,7 +5247,7 @@ func (x *OptionSnapshotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OptionSnapshotExData.ProtoReflect.Descriptor instead.
 func (*OptionSnapshotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{26}
+	return file_common_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *OptionSnapshotExData) GetType() OptionType {
@@ -4970,7 +5438,7 @@ type WarrantSnapshotExData struct {
 
 func (x *WarrantSnapshotExData) Reset() {
 	*x = WarrantSnapshotExData{}
-	mi := &file_common_proto_msgTypes[27]
+	mi := &file_common_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4982,7 +5450,7 @@ func (x *WarrantSnapshotExData) String() string {
 func (*WarrantSnapshotExData) ProtoMessage() {}
 
 func (x *WarrantSnapshotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[27]
+	mi := &file_common_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4995,7 +5463,7 @@ func (x *WarrantSnapshotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WarrantSnapshotExData.ProtoReflect.Descriptor instead.
 func (*WarrantSnapshotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{27}
+	return file_common_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *WarrantSnapshotExData) GetConversionRate() float64 {
@@ -5185,7 +5653,7 @@ type IndexSnapshotExData struct {
 
 func (x *IndexSnapshotExData) Reset() {
 	*x = IndexSnapshotExData{}
-	mi := &file_common_proto_msgTypes[28]
+	mi := &file_common_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5197,7 +5665,7 @@ func (x *IndexSnapshotExData) String() string {
 func (*IndexSnapshotExData) ProtoMessage() {}
 
 func (x *IndexSnapshotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[28]
+	mi := &file_common_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5210,7 +5678,7 @@ func (x *IndexSnapshotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IndexSnapshotExData.ProtoReflect.Descriptor instead.
 func (*IndexSnapshotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{28}
+	return file_common_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *IndexSnapshotExData) GetRaiseCount() int32 {
@@ -5246,7 +5714,7 @@ type PlateSnapshotExData struct {
 
 func (x *PlateSnapshotExData) Reset() {
 	*x = PlateSnapshotExData{}
-	mi := &file_common_proto_msgTypes[29]
+	mi := &file_common_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5258,7 +5726,7 @@ func (x *PlateSnapshotExData) String() string {
 func (*PlateSnapshotExData) ProtoMessage() {}
 
 func (x *PlateSnapshotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[29]
+	mi := &file_common_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5271,7 +5739,7 @@ func (x *PlateSnapshotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlateSnapshotExData.ProtoReflect.Descriptor instead.
 func (*PlateSnapshotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{29}
+	return file_common_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *PlateSnapshotExData) GetRaiseCount() int32 {
@@ -5310,7 +5778,7 @@ type FutureSnapshotExData struct {
 
 func (x *FutureSnapshotExData) Reset() {
 	*x = FutureSnapshotExData{}
-	mi := &file_common_proto_msgTypes[30]
+	mi := &file_common_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5322,7 +5790,7 @@ func (x *FutureSnapshotExData) String() string {
 func (*FutureSnapshotExData) ProtoMessage() {}
 
 func (x *FutureSnapshotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[30]
+	mi := &file_common_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5335,7 +5803,7 @@ func (x *FutureSnapshotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FutureSnapshotExData.ProtoReflect.Descriptor instead.
 func (*FutureSnapshotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{30}
+	return file_common_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *FutureSnapshotExData) GetLastSettlePrice() float64 {
@@ -5395,7 +5863,7 @@ type TrustSnapshotExData struct {
 
 func (x *TrustSnapshotExData) Reset() {
 	*x = TrustSnapshotExData{}
-	mi := &file_common_proto_msgTypes[31]
+	mi := &file_common_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5407,7 +5875,7 @@ func (x *TrustSnapshotExData) String() string {
 func (*TrustSnapshotExData) ProtoMessage() {}
 
 func (x *TrustSnapshotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[31]
+	mi := &file_common_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5420,7 +5888,7 @@ func (x *TrustSnapshotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrustSnapshotExData.ProtoReflect.Descriptor instead.
 func (*TrustSnapshotExData) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{31}
+	return file_common_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *TrustSnapshotExData) GetDividendYield() float64 {
@@ -5480,7 +5948,7 @@ type TrdFilterConditions struct {
 
 func (x *TrdFilterConditions) Reset() {
 	*x = TrdFilterConditions{}
-	mi := &file_common_proto_msgTypes[32]
+	mi := &file_common_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5492,7 +5960,7 @@ func (x *TrdFilterConditions) String() string {
 func (*TrdFilterConditions) ProtoMessage() {}
 
 func (x *TrdFilterConditions) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[32]
+	mi := &file_common_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5505,7 +5973,7 @@ func (x *TrdFilterConditions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TrdFilterConditions.ProtoReflect.Descriptor instead.
 func (*TrdFilterConditions) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{32}
+	return file_common_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *TrdFilterConditions) GetCodeList() []string {
@@ -5567,7 +6035,7 @@ type MaxTrdQtys struct {
 
 func (x *MaxTrdQtys) Reset() {
 	*x = MaxTrdQtys{}
-	mi := &file_common_proto_msgTypes[33]
+	mi := &file_common_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5579,7 +6047,7 @@ func (x *MaxTrdQtys) String() string {
 func (*MaxTrdQtys) ProtoMessage() {}
 
 func (x *MaxTrdQtys) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[33]
+	mi := &file_common_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5592,7 +6060,7 @@ func (x *MaxTrdQtys) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MaxTrdQtys.ProtoReflect.Descriptor instead.
 func (*MaxTrdQtys) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{33}
+	return file_common_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *MaxTrdQtys) GetMaxCashBuy() float64 {
@@ -5676,7 +6144,7 @@ type Position struct {
 
 func (x *Position) Reset() {
 	*x = Position{}
-	mi := &file_common_proto_msgTypes[34]
+	mi := &file_common_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5688,7 +6156,7 @@ func (x *Position) String() string {
 func (*Position) ProtoMessage() {}
 
 func (x *Position) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[34]
+	mi := &file_common_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5701,7 +6169,7 @@ func (x *Position) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Position.ProtoReflect.Descriptor instead.
 func (*Position) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{34}
+	return file_common_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *Position) GetPositionID() uint64 {
@@ -5862,7 +6330,57 @@ var File_common_proto protoreflect.FileDescriptor
 
 const file_common_proto_rawDesc = "" +
 	"\n" +
-	"\fcommon.proto\x12\x06common\"\x84\x03\n" +
+	"\fcommon.proto\x12\x06common\"\xcd\x02\n" +
+	"\x12SecurityStaticInfo\x121\n" +
+	"\x05basic\x18\x01 \x01(\v2\x1b.common.SecurityStaticBasicR\x05basic\x12F\n" +
+	"\rwarrantExData\x18\x02 \x01(\v2\x1b.common.WarrantStaticExDataH\x00R\rwarrantExData\x88\x01\x01\x12C\n" +
+	"\foptionExData\x18\x03 \x01(\v2\x1a.common.OptionStaticExDataH\x01R\foptionExData\x88\x01\x01\x12C\n" +
+	"\ffutureExData\x18\x04 \x01(\v2\x1a.common.FutureStaticExDataH\x02R\ffutureExData\x88\x01\x01B\x10\n" +
+	"\x0e_warrantExDataB\x0f\n" +
+	"\r_optionExDataB\x0f\n" +
+	"\r_futureExData\"Q\n" +
+	"\x13WarrantStaticExData\x12\x12\n" +
+	"\x04type\x18\x01 \x01(\x05R\x04type\x12&\n" +
+	"\x05owner\x18\x02 \x01(\v2\x10.common.SecurityR\x05owner\"\xbf\x04\n" +
+	"\x12OptionStaticExData\x12&\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x12.common.OptionTypeR\x04type\x12&\n" +
+	"\x05owner\x18\x02 \x01(\v2\x10.common.SecurityR\x05owner\x12\x1e\n" +
+	"\n" +
+	"strikeTime\x18\x03 \x01(\tR\n" +
+	"strikeTime\x12 \n" +
+	"\vstrikePrice\x18\x04 \x01(\x01R\vstrikePrice\x12\x18\n" +
+	"\asuspend\x18\x05 \x01(\bR\asuspend\x12\x16\n" +
+	"\x06market\x18\x06 \x01(\tR\x06market\x12-\n" +
+	"\x0fstrikeTimestamp\x18\a \x01(\x01H\x00R\x0fstrikeTimestamp\x88\x01\x01\x12-\n" +
+	"\x0findexOptionType\x18\b \x01(\x05H\x01R\x0findexOptionType\x88\x01\x01\x12-\n" +
+	"\x0fexpirationCycle\x18\t \x01(\x05H\x02R\x0fexpirationCycle\x88\x01\x01\x123\n" +
+	"\x12optionStandardType\x18\n" +
+	" \x01(\x05H\x03R\x12optionStandardType\x88\x01\x01\x127\n" +
+	"\x14optionSettlementMode\x18\v \x01(\x05H\x04R\x14optionSettlementMode\x88\x01\x01B\x12\n" +
+	"\x10_strikeTimestampB\x12\n" +
+	"\x10_indexOptionTypeB\x12\n" +
+	"\x10_expirationCycleB\x15\n" +
+	"\x13_optionStandardTypeB\x17\n" +
+	"\x15_optionSettlementMode\"\xae\x01\n" +
+	"\x12FutureStaticExData\x12$\n" +
+	"\rlastTradeTime\x18\x01 \x01(\tR\rlastTradeTime\x123\n" +
+	"\x12lastTradeTimestamp\x18\x02 \x01(\x01H\x00R\x12lastTradeTimestamp\x88\x01\x01\x12&\n" +
+	"\x0eisMainContract\x18\x03 \x01(\bR\x0eisMainContractB\x15\n" +
+	"\x13_lastTradeTimestamp\"\xe9\x02\n" +
+	"\x13SecurityStaticBasic\x12,\n" +
+	"\bsecurity\x18\x01 \x01(\v2\x10.common.SecurityR\bsecurity\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\x03R\x02id\x12\x18\n" +
+	"\alotSize\x18\x03 \x01(\x05R\alotSize\x12.\n" +
+	"\asecType\x18\x04 \x01(\x0e2\x14.common.SecurityTypeR\asecType\x12\x12\n" +
+	"\x04name\x18\x05 \x01(\tR\x04name\x12\x1a\n" +
+	"\blistTime\x18\x06 \x01(\tR\blistTime\x12!\n" +
+	"\tdelisting\x18\a \x01(\bH\x00R\tdelisting\x88\x01\x01\x12)\n" +
+	"\rlistTimestamp\x18\b \x01(\x01H\x01R\rlistTimestamp\x88\x01\x01\x12\x1f\n" +
+	"\bexchType\x18\t \x01(\x05H\x02R\bexchType\x88\x01\x01B\f\n" +
+	"\n" +
+	"_delistingB\x10\n" +
+	"\x0e_listTimestampB\v\n" +
+	"\t_exchType\"\x84\x03\n" +
 	"\x12PreAfterMarketData\x12\x19\n" +
 	"\x05price\x18\x01 \x01(\x01H\x00R\x05price\x88\x01\x01\x12!\n" +
 	"\thighPrice\x18\x02 \x01(\x01H\x01R\thighPrice\x88\x01\x01\x12\x1f\n" +
@@ -6538,7 +7056,12 @@ const file_common_proto_rawDesc = "" +
 	"\x13NotifyType_QotRight\x10\x04\x12\x17\n" +
 	"\x13NotifyType_APILevel\x10\x05\x12\x17\n" +
 	"\x13NotifyType_APIQuota\x10\x06\x12\x18\n" +
-	"\x14NotifyType_UsedQuota\x10\a*\x9b\x04\n" +
+	"\x14NotifyType_UsedQuota\x10\a*w\n" +
+	"\aRetType\x12\x13\n" +
+	"\x0fRetType_Succeed\x10\x00\x12\x1b\n" +
+	"\x0eRetType_Failed\x10\xff\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x1c\n" +
+	"\x0fRetType_TimeOut\x10\x9c\xff\xff\xff\xff\xff\xff\xff\xff\x01\x12\x1c\n" +
+	"\x0fRetType_Unknown\x10\xf0\xfc\xff\xff\xff\xff\xff\xff\xff\x01*\x9b\x04\n" +
 	"\fGtwEventType\x12\x15\n" +
 	"\x11GtwEventType_None\x10\x00\x12#\n" +
 	"\x1fGtwEventType_LocalCfgLoadFailed\x10\x01\x12 \n" +
@@ -6604,7 +7127,12 @@ const file_common_proto_rawDesc = "" +
 	"\x0eSubType_Broker\x10\x0e\x12\x16\n" +
 	"\x12SubType_KL_Qurater\x10\x0f\x12\x13\n" +
 	"\x0fSubType_KL_Year\x10\x10\x12\x13\n" +
-	"\x0fSubType_KL_3Min\x10\x11*.\n" +
+	"\x0fSubType_KL_3Min\x10\x11*a\n" +
+	"\vTimeInForce\x12\x13\n" +
+	"\x0fTimeInForce_DAY\x10\x00\x12\x13\n" +
+	"\x0fTimeInForce_GTC\x10\x01\x12\x13\n" +
+	"\x0fTimeInForce_IOC\x10\x02\x12\x13\n" +
+	"\x0fTimeInForce_GTD\x10\x03*.\n" +
 	"\x06TrdEnv\x12\x13\n" +
 	"\x0fTrdEnv_Simulate\x10\x00\x12\x0f\n" +
 	"\vTrdEnv_Real\x10\x01*m\n" +
@@ -6652,10 +7180,7 @@ const file_common_proto_rawDesc = "" +
 	"\fTrdMarket_MY\x10o\x12\x10\n" +
 	"\fTrdMarket_CA\x10p\x12\x15\n" +
 	"\x11TrdMarket_HK_Fund\x10q\x12\x15\n" +
-	"\x11TrdMarket_US_Fund\x10{*7\n" +
-	"\vTimeInForce\x12\x13\n" +
-	"\x0fTimeInForce_DAY\x10\x00\x12\x13\n" +
-	"\x0fTimeInForce_GTC\x10\x01*M\n" +
+	"\x11TrdMarket_US_Fund\x10{*M\n" +
 	"\tTrailType\x12\x15\n" +
 	"\x11TrailType_Unknown\x10\x00\x12\x13\n" +
 	"\x0fTrailType_Ratio\x10\x01\x12\x14\n" +
@@ -6790,132 +7315,147 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 30)
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
+var file_common_proto_enumTypes = make([]protoimpl.EnumInfo, 31)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_common_proto_goTypes = []any{
 	(PeriodType)(0),               // 0: common.PeriodType
 	(TrdCategory)(0),              // 1: common.TrdCategory
 	(NotifyType)(0),               // 2: common.NotifyType
-	(GtwEventType)(0),             // 3: common.GtwEventType
-	(ProgramStatusType)(0),        // 4: common.ProgramStatusType
-	(QotMarket)(0),                // 5: common.QotMarket
-	(SubType)(0),                  // 6: common.SubType
-	(TrdEnv)(0),                   // 7: common.TrdEnv
-	(TrdSide)(0),                  // 8: common.TrdSide
-	(OrderType)(0),                // 9: common.OrderType
-	(TrdMarket)(0),                // 10: common.TrdMarket
-	(TimeInForce)(0),              // 11: common.TimeInForce
-	(TrailType)(0),                // 12: common.TrailType
-	(TrdSecMarket)(0),             // 13: common.TrdSecMarket
-	(TrdAccStatus)(0),             // 14: common.TrdAccStatus
-	(TrdAccType)(0),               // 15: common.TrdAccType
-	(SecurityFirm)(0),             // 16: common.SecurityFirm
-	(OrderStatus)(0),              // 17: common.OrderStatus
-	(OrderFillStatus)(0),          // 18: common.OrderFillStatus
-	(Currency)(0),                 // 19: common.Currency
-	(AssetClass)(0),               // 20: common.AssetClass
-	(SecurityType)(0),             // 21: common.SecurityType
-	(OptionType)(0),               // 22: common.OptionType
-	(IndexOptionType)(0),          // 23: common.IndexOptionType
-	(OptionAreaType)(0),           // 24: common.OptionAreaType
-	(PlateSetType)(0),             // 25: common.PlateSetType
-	(WarrantType)(0),              // 26: common.WarrantType
-	(PriceType)(0),                // 27: common.PriceType
-	(WarrantStatus)(0),            // 28: common.WarrantStatus
-	(PositionSide)(0),             // 29: common.PositionSide
-	(*PreAfterMarketData)(nil),    // 30: common.PreAfterMarketData
-	(*SubInfo)(nil),               // 31: common.SubInfo
-	(*ConnSubInfo)(nil),           // 32: common.ConnSubInfo
-	(*TrdHeader)(nil),             // 33: common.TrdHeader
-	(*TrdAcc)(nil),                // 34: common.TrdAcc
-	(*Funds)(nil),                 // 35: common.Funds
-	(*AccCashInfo)(nil),           // 36: common.AccCashInfo
-	(*AccMarketInfo)(nil),         // 37: common.AccMarketInfo
-	(*GtwEvent)(nil),              // 38: common.GtwEvent
-	(*ProgramStatus)(nil),         // 39: common.ProgramStatus
-	(*QotRight)(nil),              // 40: common.QotRight
-	(*APILevel)(nil),              // 41: common.APILevel
-	(*ConnectStatus)(nil),         // 42: common.ConnectStatus
-	(*APIQuota)(nil),              // 43: common.APIQuota
-	(*Security)(nil),              // 44: common.Security
-	(*FutureBasicQotExData)(nil),  // 45: common.FutureBasicQotExData
-	(*WarrantBasicQotExData)(nil), // 46: common.WarrantBasicQotExData
-	(*BasicQot)(nil),              // 47: common.BasicQot
-	(*OptionBasicQotExData)(nil),  // 48: common.OptionBasicQotExData
-	(*PacketID)(nil),              // 49: common.PacketID
-	(*Order)(nil),                 // 50: common.Order
-	(*OrderFill)(nil),             // 51: common.OrderFill
-	(*OrderFee)(nil),              // 52: common.OrderFee
-	(*OrderFeeItem)(nil),          // 53: common.OrderFeeItem
-	(*SnapshotBasicData)(nil),     // 54: common.SnapshotBasicData
-	(*EquitySnapshotExData)(nil),  // 55: common.EquitySnapshotExData
-	(*OptionSnapshotExData)(nil),  // 56: common.OptionSnapshotExData
-	(*WarrantSnapshotExData)(nil), // 57: common.WarrantSnapshotExData
-	(*IndexSnapshotExData)(nil),   // 58: common.IndexSnapshotExData
-	(*PlateSnapshotExData)(nil),   // 59: common.PlateSnapshotExData
-	(*FutureSnapshotExData)(nil),  // 60: common.FutureSnapshotExData
-	(*TrustSnapshotExData)(nil),   // 61: common.TrustSnapshotExData
-	(*TrdFilterConditions)(nil),   // 62: common.TrdFilterConditions
-	(*MaxTrdQtys)(nil),            // 63: common.MaxTrdQtys
-	(*Position)(nil),              // 64: common.Position
+	(RetType)(0),                  // 3: common.RetType
+	(GtwEventType)(0),             // 4: common.GtwEventType
+	(ProgramStatusType)(0),        // 5: common.ProgramStatusType
+	(QotMarket)(0),                // 6: common.QotMarket
+	(SubType)(0),                  // 7: common.SubType
+	(TimeInForce)(0),              // 8: common.TimeInForce
+	(TrdEnv)(0),                   // 9: common.TrdEnv
+	(TrdSide)(0),                  // 10: common.TrdSide
+	(OrderType)(0),                // 11: common.OrderType
+	(TrdMarket)(0),                // 12: common.TrdMarket
+	(TrailType)(0),                // 13: common.TrailType
+	(TrdSecMarket)(0),             // 14: common.TrdSecMarket
+	(TrdAccStatus)(0),             // 15: common.TrdAccStatus
+	(TrdAccType)(0),               // 16: common.TrdAccType
+	(SecurityFirm)(0),             // 17: common.SecurityFirm
+	(OrderStatus)(0),              // 18: common.OrderStatus
+	(OrderFillStatus)(0),          // 19: common.OrderFillStatus
+	(Currency)(0),                 // 20: common.Currency
+	(AssetClass)(0),               // 21: common.AssetClass
+	(SecurityType)(0),             // 22: common.SecurityType
+	(OptionType)(0),               // 23: common.OptionType
+	(IndexOptionType)(0),          // 24: common.IndexOptionType
+	(OptionAreaType)(0),           // 25: common.OptionAreaType
+	(PlateSetType)(0),             // 26: common.PlateSetType
+	(WarrantType)(0),              // 27: common.WarrantType
+	(PriceType)(0),                // 28: common.PriceType
+	(WarrantStatus)(0),            // 29: common.WarrantStatus
+	(PositionSide)(0),             // 30: common.PositionSide
+	(*SecurityStaticInfo)(nil),    // 31: common.SecurityStaticInfo
+	(*WarrantStaticExData)(nil),   // 32: common.WarrantStaticExData
+	(*OptionStaticExData)(nil),    // 33: common.OptionStaticExData
+	(*FutureStaticExData)(nil),    // 34: common.FutureStaticExData
+	(*SecurityStaticBasic)(nil),   // 35: common.SecurityStaticBasic
+	(*PreAfterMarketData)(nil),    // 36: common.PreAfterMarketData
+	(*SubInfo)(nil),               // 37: common.SubInfo
+	(*ConnSubInfo)(nil),           // 38: common.ConnSubInfo
+	(*TrdHeader)(nil),             // 39: common.TrdHeader
+	(*TrdAcc)(nil),                // 40: common.TrdAcc
+	(*Funds)(nil),                 // 41: common.Funds
+	(*AccCashInfo)(nil),           // 42: common.AccCashInfo
+	(*AccMarketInfo)(nil),         // 43: common.AccMarketInfo
+	(*GtwEvent)(nil),              // 44: common.GtwEvent
+	(*ProgramStatus)(nil),         // 45: common.ProgramStatus
+	(*QotRight)(nil),              // 46: common.QotRight
+	(*APILevel)(nil),              // 47: common.APILevel
+	(*ConnectStatus)(nil),         // 48: common.ConnectStatus
+	(*APIQuota)(nil),              // 49: common.APIQuota
+	(*Security)(nil),              // 50: common.Security
+	(*FutureBasicQotExData)(nil),  // 51: common.FutureBasicQotExData
+	(*WarrantBasicQotExData)(nil), // 52: common.WarrantBasicQotExData
+	(*BasicQot)(nil),              // 53: common.BasicQot
+	(*OptionBasicQotExData)(nil),  // 54: common.OptionBasicQotExData
+	(*PacketID)(nil),              // 55: common.PacketID
+	(*Order)(nil),                 // 56: common.Order
+	(*OrderFill)(nil),             // 57: common.OrderFill
+	(*OrderFee)(nil),              // 58: common.OrderFee
+	(*OrderFeeItem)(nil),          // 59: common.OrderFeeItem
+	(*SnapshotBasicData)(nil),     // 60: common.SnapshotBasicData
+	(*EquitySnapshotExData)(nil),  // 61: common.EquitySnapshotExData
+	(*OptionSnapshotExData)(nil),  // 62: common.OptionSnapshotExData
+	(*WarrantSnapshotExData)(nil), // 63: common.WarrantSnapshotExData
+	(*IndexSnapshotExData)(nil),   // 64: common.IndexSnapshotExData
+	(*PlateSnapshotExData)(nil),   // 65: common.PlateSnapshotExData
+	(*FutureSnapshotExData)(nil),  // 66: common.FutureSnapshotExData
+	(*TrustSnapshotExData)(nil),   // 67: common.TrustSnapshotExData
+	(*TrdFilterConditions)(nil),   // 68: common.TrdFilterConditions
+	(*MaxTrdQtys)(nil),            // 69: common.MaxTrdQtys
+	(*Position)(nil),              // 70: common.Position
 }
 var file_common_proto_depIdxs = []int32{
-	6,  // 0: common.SubInfo.subType:type_name -> common.SubType
-	44, // 1: common.SubInfo.securityList:type_name -> common.Security
-	31, // 2: common.ConnSubInfo.subInfoList:type_name -> common.SubInfo
-	7,  // 3: common.TrdHeader.trdEnv:type_name -> common.TrdEnv
-	10, // 4: common.TrdHeader.trdMarket:type_name -> common.TrdMarket
-	7,  // 5: common.TrdAcc.trdEnv:type_name -> common.TrdEnv
-	10, // 6: common.TrdAcc.trdMarketAuthList:type_name -> common.TrdMarket
-	15, // 7: common.TrdAcc.accType:type_name -> common.TrdAccType
-	16, // 8: common.TrdAcc.securityFirm:type_name -> common.SecurityFirm
-	14, // 9: common.TrdAcc.accStatus:type_name -> common.TrdAccStatus
-	19, // 10: common.Funds.currency:type_name -> common.Currency
-	36, // 11: common.Funds.cashInfoList:type_name -> common.AccCashInfo
-	37, // 12: common.Funds.marketInfoList:type_name -> common.AccMarketInfo
-	19, // 13: common.AccCashInfo.currency:type_name -> common.Currency
-	10, // 14: common.AccMarketInfo.trdMarket:type_name -> common.TrdMarket
-	3,  // 15: common.GtwEvent.eventType:type_name -> common.GtwEventType
-	4,  // 16: common.ProgramStatus.type:type_name -> common.ProgramStatusType
-	5,  // 17: common.Security.market:type_name -> common.QotMarket
-	44, // 18: common.BasicQot.security:type_name -> common.Security
-	48, // 19: common.BasicQot.optionExData:type_name -> common.OptionBasicQotExData
-	30, // 20: common.BasicQot.preMarket:type_name -> common.PreAfterMarketData
-	30, // 21: common.BasicQot.afterMarket:type_name -> common.PreAfterMarketData
-	45, // 22: common.BasicQot.futureExData:type_name -> common.FutureBasicQotExData
-	46, // 23: common.BasicQot.warrantExData:type_name -> common.WarrantBasicQotExData
-	8,  // 24: common.Order.trdSide:type_name -> common.TrdSide
-	9,  // 25: common.Order.orderType:type_name -> common.OrderType
-	17, // 26: common.Order.orderStatus:type_name -> common.OrderStatus
-	13, // 27: common.Order.secMarket:type_name -> common.TrdSecMarket
-	12, // 28: common.Order.trailType:type_name -> common.TrailType
-	19, // 29: common.Order.currency:type_name -> common.Currency
-	8,  // 30: common.OrderFill.trdSide:type_name -> common.TrdSide
-	13, // 31: common.OrderFill.secMarket:type_name -> common.TrdSecMarket
-	18, // 32: common.OrderFill.status:type_name -> common.OrderFillStatus
-	10, // 33: common.OrderFill.trdMarket:type_name -> common.TrdMarket
-	53, // 34: common.OrderFee.feeList:type_name -> common.OrderFeeItem
-	44, // 35: common.SnapshotBasicData.security:type_name -> common.Security
-	21, // 36: common.SnapshotBasicData.type:type_name -> common.SecurityType
-	30, // 37: common.SnapshotBasicData.preMarket:type_name -> common.PreAfterMarketData
-	30, // 38: common.SnapshotBasicData.afterMarket:type_name -> common.PreAfterMarketData
-	22, // 39: common.OptionSnapshotExData.type:type_name -> common.OptionType
-	44, // 40: common.OptionSnapshotExData.owner:type_name -> common.Security
-	23, // 41: common.OptionSnapshotExData.indexOptionType:type_name -> common.IndexOptionType
-	24, // 42: common.OptionSnapshotExData.optionAreaType:type_name -> common.OptionAreaType
-	26, // 43: common.WarrantSnapshotExData.warrantType:type_name -> common.WarrantType
-	44, // 44: common.WarrantSnapshotExData.owner:type_name -> common.Security
-	27, // 45: common.WarrantSnapshotExData.inLinePriceStatus:type_name -> common.PriceType
-	20, // 46: common.TrustSnapshotExData.assetClass:type_name -> common.AssetClass
-	29, // 47: common.Position.positionSide:type_name -> common.PositionSide
-	13, // 48: common.Position.secMarket:type_name -> common.TrdSecMarket
-	19, // 49: common.Position.currency:type_name -> common.Currency
-	10, // 50: common.Position.trdMarket:type_name -> common.TrdMarket
-	51, // [51:51] is the sub-list for method output_type
-	51, // [51:51] is the sub-list for method input_type
-	51, // [51:51] is the sub-list for extension type_name
-	51, // [51:51] is the sub-list for extension extendee
-	0,  // [0:51] is the sub-list for field type_name
+	35, // 0: common.SecurityStaticInfo.basic:type_name -> common.SecurityStaticBasic
+	32, // 1: common.SecurityStaticInfo.warrantExData:type_name -> common.WarrantStaticExData
+	33, // 2: common.SecurityStaticInfo.optionExData:type_name -> common.OptionStaticExData
+	34, // 3: common.SecurityStaticInfo.futureExData:type_name -> common.FutureStaticExData
+	50, // 4: common.WarrantStaticExData.owner:type_name -> common.Security
+	23, // 5: common.OptionStaticExData.type:type_name -> common.OptionType
+	50, // 6: common.OptionStaticExData.owner:type_name -> common.Security
+	50, // 7: common.SecurityStaticBasic.security:type_name -> common.Security
+	22, // 8: common.SecurityStaticBasic.secType:type_name -> common.SecurityType
+	7,  // 9: common.SubInfo.subType:type_name -> common.SubType
+	50, // 10: common.SubInfo.securityList:type_name -> common.Security
+	37, // 11: common.ConnSubInfo.subInfoList:type_name -> common.SubInfo
+	9,  // 12: common.TrdHeader.trdEnv:type_name -> common.TrdEnv
+	12, // 13: common.TrdHeader.trdMarket:type_name -> common.TrdMarket
+	9,  // 14: common.TrdAcc.trdEnv:type_name -> common.TrdEnv
+	12, // 15: common.TrdAcc.trdMarketAuthList:type_name -> common.TrdMarket
+	16, // 16: common.TrdAcc.accType:type_name -> common.TrdAccType
+	17, // 17: common.TrdAcc.securityFirm:type_name -> common.SecurityFirm
+	15, // 18: common.TrdAcc.accStatus:type_name -> common.TrdAccStatus
+	20, // 19: common.Funds.currency:type_name -> common.Currency
+	42, // 20: common.Funds.cashInfoList:type_name -> common.AccCashInfo
+	43, // 21: common.Funds.marketInfoList:type_name -> common.AccMarketInfo
+	20, // 22: common.AccCashInfo.currency:type_name -> common.Currency
+	12, // 23: common.AccMarketInfo.trdMarket:type_name -> common.TrdMarket
+	4,  // 24: common.GtwEvent.eventType:type_name -> common.GtwEventType
+	5,  // 25: common.ProgramStatus.type:type_name -> common.ProgramStatusType
+	6,  // 26: common.Security.market:type_name -> common.QotMarket
+	50, // 27: common.BasicQot.security:type_name -> common.Security
+	54, // 28: common.BasicQot.optionExData:type_name -> common.OptionBasicQotExData
+	36, // 29: common.BasicQot.preMarket:type_name -> common.PreAfterMarketData
+	36, // 30: common.BasicQot.afterMarket:type_name -> common.PreAfterMarketData
+	51, // 31: common.BasicQot.futureExData:type_name -> common.FutureBasicQotExData
+	52, // 32: common.BasicQot.warrantExData:type_name -> common.WarrantBasicQotExData
+	10, // 33: common.Order.trdSide:type_name -> common.TrdSide
+	11, // 34: common.Order.orderType:type_name -> common.OrderType
+	18, // 35: common.Order.orderStatus:type_name -> common.OrderStatus
+	14, // 36: common.Order.secMarket:type_name -> common.TrdSecMarket
+	13, // 37: common.Order.trailType:type_name -> common.TrailType
+	20, // 38: common.Order.currency:type_name -> common.Currency
+	10, // 39: common.OrderFill.trdSide:type_name -> common.TrdSide
+	14, // 40: common.OrderFill.secMarket:type_name -> common.TrdSecMarket
+	19, // 41: common.OrderFill.status:type_name -> common.OrderFillStatus
+	12, // 42: common.OrderFill.trdMarket:type_name -> common.TrdMarket
+	59, // 43: common.OrderFee.feeList:type_name -> common.OrderFeeItem
+	50, // 44: common.SnapshotBasicData.security:type_name -> common.Security
+	22, // 45: common.SnapshotBasicData.type:type_name -> common.SecurityType
+	36, // 46: common.SnapshotBasicData.preMarket:type_name -> common.PreAfterMarketData
+	36, // 47: common.SnapshotBasicData.afterMarket:type_name -> common.PreAfterMarketData
+	23, // 48: common.OptionSnapshotExData.type:type_name -> common.OptionType
+	50, // 49: common.OptionSnapshotExData.owner:type_name -> common.Security
+	24, // 50: common.OptionSnapshotExData.indexOptionType:type_name -> common.IndexOptionType
+	25, // 51: common.OptionSnapshotExData.optionAreaType:type_name -> common.OptionAreaType
+	27, // 52: common.WarrantSnapshotExData.warrantType:type_name -> common.WarrantType
+	50, // 53: common.WarrantSnapshotExData.owner:type_name -> common.Security
+	28, // 54: common.WarrantSnapshotExData.inLinePriceStatus:type_name -> common.PriceType
+	21, // 55: common.TrustSnapshotExData.assetClass:type_name -> common.AssetClass
+	30, // 56: common.Position.positionSide:type_name -> common.PositionSide
+	14, // 57: common.Position.secMarket:type_name -> common.TrdSecMarket
+	20, // 58: common.Position.currency:type_name -> common.Currency
+	12, // 59: common.Position.trdMarket:type_name -> common.TrdMarket
+	60, // [60:60] is the sub-list for method output_type
+	60, // [60:60] is the sub-list for method input_type
+	60, // [60:60] is the sub-list for extension type_name
+	60, // [60:60] is the sub-list for extension extendee
+	0,  // [0:60] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -6924,35 +7464,39 @@ func file_common_proto_init() {
 		return
 	}
 	file_common_proto_msgTypes[0].OneofWrappers = []any{}
+	file_common_proto_msgTypes[2].OneofWrappers = []any{}
+	file_common_proto_msgTypes[3].OneofWrappers = []any{}
 	file_common_proto_msgTypes[4].OneofWrappers = []any{}
 	file_common_proto_msgTypes[5].OneofWrappers = []any{}
-	file_common_proto_msgTypes[6].OneofWrappers = []any{}
-	file_common_proto_msgTypes[7].OneofWrappers = []any{}
 	file_common_proto_msgTypes[9].OneofWrappers = []any{}
 	file_common_proto_msgTypes[10].OneofWrappers = []any{}
+	file_common_proto_msgTypes[11].OneofWrappers = []any{}
+	file_common_proto_msgTypes[12].OneofWrappers = []any{}
+	file_common_proto_msgTypes[14].OneofWrappers = []any{}
 	file_common_proto_msgTypes[15].OneofWrappers = []any{}
-	file_common_proto_msgTypes[16].OneofWrappers = []any{}
-	file_common_proto_msgTypes[17].OneofWrappers = []any{}
-	file_common_proto_msgTypes[18].OneofWrappers = []any{}
 	file_common_proto_msgTypes[20].OneofWrappers = []any{}
 	file_common_proto_msgTypes[21].OneofWrappers = []any{}
 	file_common_proto_msgTypes[22].OneofWrappers = []any{}
 	file_common_proto_msgTypes[23].OneofWrappers = []any{}
-	file_common_proto_msgTypes[24].OneofWrappers = []any{}
 	file_common_proto_msgTypes[25].OneofWrappers = []any{}
 	file_common_proto_msgTypes[26].OneofWrappers = []any{}
 	file_common_proto_msgTypes[27].OneofWrappers = []any{}
+	file_common_proto_msgTypes[28].OneofWrappers = []any{}
+	file_common_proto_msgTypes[29].OneofWrappers = []any{}
 	file_common_proto_msgTypes[30].OneofWrappers = []any{}
+	file_common_proto_msgTypes[31].OneofWrappers = []any{}
 	file_common_proto_msgTypes[32].OneofWrappers = []any{}
-	file_common_proto_msgTypes[33].OneofWrappers = []any{}
-	file_common_proto_msgTypes[34].OneofWrappers = []any{}
+	file_common_proto_msgTypes[35].OneofWrappers = []any{}
+	file_common_proto_msgTypes[37].OneofWrappers = []any{}
+	file_common_proto_msgTypes[38].OneofWrappers = []any{}
+	file_common_proto_msgTypes[39].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_common_proto_rawDesc), len(file_common_proto_rawDesc)),
-			NumEnums:      30,
-			NumMessages:   35,
+			NumEnums:      31,
+			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

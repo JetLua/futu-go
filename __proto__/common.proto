@@ -4,6 +4,51 @@ package common;
 
 option go_package = "futu/pb";
 
+
+message SecurityStaticInfo {
+  SecurityStaticBasic basic = 1;
+  optional WarrantStaticExData warrantExData = 2; //窝轮额外静态信息
+  optional OptionStaticExData optionExData = 3; //期权额外静态信息
+  optional FutureStaticExData futureExData = 4; //期货额外静态信息
+}
+
+message WarrantStaticExData {
+  int32 type = 1; //Qot_Common.WarrantType,窝轮类型
+  Security owner = 2; //所属正股
+}
+
+message OptionStaticExData {
+  OptionType type = 1; //Qot_Common.OptionType,期权
+  Security owner = 2; //标的股
+  string strikeTime = 3; //行权日（格式：yyyy-MM-dd）
+  double strikePrice = 4; //行权价
+  bool suspend = 5; //是否停牌
+  string market = 6; //发行市场名字
+  optional double strikeTimestamp = 7; //行权日时间戳
+  optional int32 indexOptionType = 8; //Qot_Common.IndexOptionType, 指数期权的类型，仅在指数期权有效
+  optional int32 expirationCycle = 9; // ExpirationCycle，交割周期
+  optional int32 optionStandardType = 10; // OptionStandardType，标准期权
+  optional int32 optionSettlementMode = 11; // OptionSettlementMode，结算方式
+}
+
+message FutureStaticExData {
+  string lastTradeTime = 1; //最后交易日，只有非主连期货合约才有该字段
+  optional double lastTradeTimestamp = 2; //最后交易日时间戳，只有非主连期货合约才有该字段
+  bool isMainContract = 3; //是否主连合约
+}
+
+message SecurityStaticBasic {
+  Security security = 1; //股票
+  int64 id = 2; //股票 ID
+  int32 lotSize = 3; //每手数量,期权类型表示一份合约的股数
+  SecurityType secType = 4; //Qot_Common.SecurityType,股票类型
+  string name = 5; //股票名字
+  string listTime = 6; //上市时间字符串（此字段停止维护，不建议使用，格式：yyyy-MM-dd）
+  optional bool delisting = 7; //是否退市
+  optional double listTimestamp = 8; //上市时间戳（此字段停止维护，不建议使用）
+  optional int32 exchType = 9; //Qot_Common.ExchType,所属交易所
+}
+
 enum PeriodType {
   PeriodType_INTRADAY = 0; //实时
   PeriodType_DAY = 1; //日
@@ -125,6 +170,13 @@ message AccCashInfo {
 message AccMarketInfo {
   optional TrdMarket trdMarket = 1;        // 交易市场, 参见TrdMarket的枚举定义
   optional double assets = 2;          // 分市场资产信息
+}
+
+enum RetType {
+  RetType_Succeed = 0; //成功
+  RetType_Failed = -1; //失败
+  RetType_TimeOut = -100; //超时
+  RetType_Unknown = -400; //未知结果
 }
 
 enum GtwEventType {
@@ -255,6 +307,15 @@ message WarrantBasicQotExData {
   optional double impliedVolatility = 2; //引申波幅,仅认购认沽支持该字段
   double premium = 3; //溢价（该字段为百分比字段，默认不展示%，如20实际对应20%）
 }
+
+// 订单有效期
+enum TimeInForce {
+  TimeInForce_DAY = 0;       // 当日有效
+  TimeInForce_GTC = 1;       // 撤单前有效，最多持续90自然日。
+  TimeInForce_IOC = 2;       // 立即成交或取消（仅适用于加密货币市价单）
+  TimeInForce_GTD = 3;       // 指定日期前有效
+}
+
 
 message BasicQot {
   Security security = 1; //股票
@@ -388,14 +449,6 @@ enum TrdMarket {
   TrdMarket_CA = 112; //加拿大市场
   TrdMarket_HK_Fund = 113; //香港基金市场
   TrdMarket_US_Fund = 123; //美国基金市场
-}
-
-/** 订单有效期 */
-enum TimeInForce {
-  /** 当日有效*/
-  TimeInForce_DAY = 0;
-  /** 撤单前有效，最多持续90自然日*/
-  TimeInForce_GTC = 1;
 }
 
 /** 订单跟踪类型*/
